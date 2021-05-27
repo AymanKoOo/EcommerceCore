@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Core.Entites.ApplicationUser>
+
+
+
+@{
+    ViewData["Title"] = "GetAllUseers";
+}
+
+@foreach (var a in Model)
+{
+    <h1>@a.Email</h1>
+
+
+    <h1>@a.UserName</h1>
+
+}
+

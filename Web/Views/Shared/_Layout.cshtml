@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css"
+          integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A=="
+          crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+          integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+          crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="~/css/stylenew.css" />
+</head>
+
+<body>
+
+
+    <div class="main-Container">
+
+
+
+        <div class="banner">
+
+            <nav class="navbar  navbar-expand-lg  navbar-light   bg-white">
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                    <ul class="navbar-nav left  ">
+
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">HOME <span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">COLLECTIONS</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link " href="#">PRODUCTS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="#">PAGES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="#">FEATURES</a>
+                        </li>
+                    </ul>
+
+                    <a class="mx-auto" href="#">
+
+                        <div class="logo">
+
+                            <img src="~/images/logoUp.png" alt="Card Back">
+
+
+                        </div>
+                    </a>
+
+                    <ul class="navbar-nav right">
+                        <li class="nav-itemP">
+                            <a class="nav-linkP" href="">
+                                <img class="picICon"
+                                     src="icons/profile.svg">
+                            </a>
+                        </li>
+                        <li class="nav-itemP">
+                            <a class="nav-linkP" href=""> <img class="picICon" src="icons/search.svg"></a>
+                        </li>
+
+
+                        <li class="nav-itemP">
+                            <a class="nav-linkP" href="">
+
+
+                                <div class="dropdown cart-dropdown">
+
+                                    <a class="dropdowncart-toggle" href="#">
+                                        <img class="picICon" src="icons/cart.svg">
+                                        <span class="cart-count">
+                                            2
+                                        </span>
+                                    </a>
+
+                                    <div class="dropdown-menu ">
+                                        <div class="dropdown-wrapper">
+                                            <div class="dropdown-cart-header">
+                                                <span>2 ITEMS</span>
+                                                <a href="#">View Cart</a>
+                                            </div>
+
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="dropdown-cart-product">
+
+                                            <div class="product-details">
+
+                                                <h4 class="product-title">Women Ring</h4>
+                                                <span class="cart-product-info">
+                                                    1x $99
+                                                </span>
+
+                                            </div>
+
+                                            <div class="product-image-container">
+                                                <img src="~/images/product8.jpg">
+
+                                            </div>
+
+                                        </div>
+                                        <hr>
+                                        <div class="dropdown-cart-total">
+
+                                            <span>Total</span>
+                                            <div class="cart-total-price">
+                                                $134.00
+                                            </div>
+                                        </div>
+
+                                        <div class="dropdown-cart-action">
+
+                                            <a class="btn tbn-block" href=#>
+                                                Check Out
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+
+        </div>
+
+    </div>
+
+    <div>
+        @RenderBody()
+    </div>
+
+    <div class="footer">
+
+
+
+
+
+    </div>
+
+    <!-- End Footer -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+    <script src="~/js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+            integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+            crossorigin="anonymous"></script>
+
+</body>
+
+</html>
