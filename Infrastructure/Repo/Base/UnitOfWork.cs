@@ -14,12 +14,15 @@ namespace Infrastructure.Repo.Base
 
         public IAdminRepo Admin { get; }
 
+        public IProductRepo Product { get; }
 
-        public UnitOfWork(DataContext context, IAdminRepo adminRepo)
+        public UnitOfWork(DataContext context, IAdminRepo adminRepo,IProductRepo productRepo)
         {
             this._dbContext = context;
 
             this.Admin = adminRepo;
+
+            this.Product = productRepo;
         }
 
         public int Commit()

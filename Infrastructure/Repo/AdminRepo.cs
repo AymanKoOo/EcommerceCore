@@ -16,7 +16,7 @@ namespace Infrastructure.Repo
         {
             this._dbcontext = dbcontext;
         }
-
+       
         public void AddUser(ApplicationUser model)
         {
         }

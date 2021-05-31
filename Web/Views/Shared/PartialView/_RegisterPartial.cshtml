@@ -1,0 +1,50 @@
+﻿@model Web.DTOs.RegisterDTO
+
+
+<div class="heading">
+
+    <div class="titlee">
+        CREATE AN ACCOUNT
+    </div>
+
+    <p>
+        By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.
+    </p>
+
+</div>
+
+@*@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+
+    }*@
+
+<form asp-controller="Account" asp-action="Register" method="post">
+
+    <div asp-validation-summary="All"></div>
+
+    <input asp-for="UserName" class="form-control" type="text" placeholder="First Name">
+
+    <input class="form-control" type="text" placeholder="Middle Name">
+
+    <input class="form-control" type="text" placeholder="Last Name">
+
+
+    <h2 class="titlee mb-4 mt-5">Login information</h2>
+
+    <input asp-for="Email" class="form-control" type="email" placeholder="Email">
+
+
+    <input asp-for="Password" class="form-control" type="password" placeholder="Password">
+
+
+    <input class="form-control" type="password" placeholder="Confirm Password">
+
+
+    <div class="form-footer">
+
+        <button class="btn btn-primary" type="submit">
+            CREATE ACCOUNT
+        </button>
+    </div>
+
+</form>

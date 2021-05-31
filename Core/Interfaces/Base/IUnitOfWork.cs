@@ -9,6 +9,7 @@ namespace Core.Interfaces
 
         IAdminRepo Admin { get; }
 
+        IProductRepo Product { get; }
         Task Commit();
     }
 }

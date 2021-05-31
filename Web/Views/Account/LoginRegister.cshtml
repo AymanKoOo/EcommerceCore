@@ -1,0 +1,47 @@
+﻿@model Web.DTOs.RegisterDTO
+<div class="alert">
+
+    <h1>Get 10% OFF at the Porto Kitchen Selection -<a class="shop" href="#">Shop Now!</a> </h1>
+
+</div>
+
+
+
+<ul class="breadcrumb">
+    <li><a href="#">HOME</a></li>
+    <li><a href="#">PRODUCT</a></li>
+</ul>
+
+<hr>
+<!---jUMPTron-->
+
+<div class="page-header">
+    <div class="container">
+        <h1>
+            Login and Create Account
+        </h1>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+           @{ Html.RenderPartial("~/Views/Shared/PartialView/_LoginPartial.cshtml");}
+
+            @*<partial name="_LoginPartial" />*@
+
+        </div>
+
+        <div class="col-md-6">
+
+            @{ Html.RenderPartial("~/Views/Shared/PartialView/_RegisterPartial.cshtml");}
+
+        </div>
+
+
+    </div>
+
+</div>

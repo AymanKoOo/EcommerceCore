@@ -1,0 +1,72 @@
+﻿@model Web.ViewModels.UserData
+
+
+<a class="nav-linkP" href=""></a>
+
+<div class="dropdown profile-dropdown">
+
+    <a class="dropdowncart-toggle" href="#">
+        <img class="picICon" src="icons/profile.svg">
+    </a>
+
+    <div class="dropdown-menu profile">
+        <div class="dropdown-wrapper">
+
+
+            @if (User.Identity.IsAuthenticated)
+            {
+
+                <div class="profile-header">
+                    <div class="img">
+                        <img src="pic.jpg">
+                    </div>
+                    <div class="user">
+                        <div class="user-name">
+                            @{
+                                string name = User.FindFirst(ClaimTypes.Name)?.Value;
+
+                                if (!string.IsNullOrEmpty(name))
+                                {
+                                    @name
+                                }
+                            }
+
+                        </div>
+                        <div class="user-email">
+                            @{
+                                string email = User.FindFirst(ClaimTypes.Email)?.Value;
+                                {
+                                    if (!string.IsNullOrEmpty(email))
+                                    {
+                                        @email
+
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdown-cart-action">
+                    @Html.ActionLink("LogOut", "Logout", "Account", null, new { @class = "btn tbn-block" });
+                </div>
+             }
+
+             else
+             {
+            <hr>
+            <div class="dropdown-cart-action">
+
+                @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn tbn-block" });
+
+            </div>
+            <div class="dropdown-cart-action">
+
+                    @Html.ActionLink("Register", "Login", "Account", null, new { @class = "btn tbn-block" });
+            </div>
+             }
+        </div>
+
+    </div>
+
+</div>

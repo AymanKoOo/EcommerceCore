@@ -1,0 +1,34 @@
+﻿@model Web.DTOs.LoginDTO
+
+
+<div class="heading">
+
+    <div class="titlee">
+        LOGIN
+    </div>
+
+    <p>
+        If you have an account with us, please log in.
+    </p>
+
+</div>
+
+<form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["returnUrl"]" method="post">
+
+    <input asp-for="Email" class="form-control" type="email" placeholder="Email Address">
+
+    <input asp-for="Password" class="form-control" type="password" placeholder="password">
+
+    <div class="form-footer">
+
+        <button class="btn btn-primary" type="submit">
+            LOGIN
+        </button>
+
+        <a class="forget-pass" href="#">
+            Forgot your password?
+        </a>
+
+    </div>
+
+</form>

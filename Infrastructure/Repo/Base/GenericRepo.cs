@@ -19,12 +19,7 @@ namespace Infrastructure.Repo
             table = _dbcontext.Set<T>();
         }
 
-        public void Add(T model)
-        {
-     
-            throw new NotImplementedException();
-        }
-
+       
         public bool Delete(T model)
         {
             
@@ -36,9 +31,6 @@ namespace Infrastructure.Repo
             throw new NotImplementedException();
         }
 
-        public void Update(T model)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

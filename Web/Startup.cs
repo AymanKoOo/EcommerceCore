@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.Entites;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repo;
 using Infrastructure.Repo.Base;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -30,20 +33,34 @@ namespace Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            
 
             //we deal wit contr and views (1)
             services.AddControllersWithViews();
-           
             ///
             services.AddDbContext<DataContext>(option => option.UseSqlServer(Configuration.GetConnectionString("EcoMeraceDb")));
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<DataContext>();
             ///
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                options.SlidingExpiration = true;
+            });
+
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
             services.AddScoped(typeof(IAdminRepo), typeof(AdminRepo));
-
+            services.AddScoped(typeof(IProductRepo), typeof(ProductRepo));
 
         }
 
@@ -56,12 +73,16 @@ namespace Web
             }
 
 
+            app.UseCors();
             //Static FIles//
             app.UseStaticFiles();
             //
-            app.UseAuthentication();
-            //
             app.UseRouting();
+        
+            app.UseCookiePolicy();
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

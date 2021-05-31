@@ -17,7 +17,6 @@ namespace Core.Entites
         public decimal UnitPrice { get; set; }
         public int? UnitsInStock { get; set; }
         public double Star { get; set; }
-
         // n-1 relationships
         public int CategoryId { get; set; }
         public Category Category { get; set; }

@@ -10,12 +10,12 @@ using Web.ViewModels;
 namespace Web.Controllers
 {
     [Route("api/[Controller]")]
-    public class AdminController : Controller
+    public class AdminContoller : Controller
     {
 
         private IUnitOfWork _unitOfWork;
 
-        public AdminController(IUnitOfWork unitOfwork)
+        public AdminContoller(IUnitOfWork unitOfwork)
         {
             _unitOfWork = unitOfwork;
         }
