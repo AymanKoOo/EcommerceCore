@@ -1,0 +1,191 @@
+﻿@model Web.DTOs.IndexDTO;
+
+
+<ul class="breadcrumb">
+    <li><a href="#">HOME</a></li>
+    <li><a href="#">PRODUCT</a></li>
+</ul>
+
+<hr>
+<!---jUMPTron-->
+
+<div class="container mt-5 product-detail">
+    <div class="row justify-content-md-center">
+
+        <div class="col-lg-2 col-md-4 col-sm-4 col-12">
+
+            <div class="right">
+                <div class="cat-list">
+
+                    <div class="cat-header">
+                        CATEGORY
+                    </div>
+
+                    <hr>
+                    <ul class="list-group">
+
+                        @foreach (var item in Model.categoryDTOs)
+                        {
+
+                            <li class="list-group-item">
+                                <input class="check" name="AreChecked" type="checkbox" value="@item.Id" /> @item.Name<br />
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+
+                <div class="brand-list mt-5">
+
+                    <div class="cat-header">
+
+                        SIZE
+
+                    </div>
+                    <hr>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <input type="checkbox" name="" id="">
+                            <label for="">
+                                <span>Shoes</span>
+                                <small>(10)</small>
+                            </label>
+                        </li>
+                        <li class="list-group-item">
+                            <input type="checkbox" name="" id="">
+                            <label for="">
+                                <span>Shoes</span>
+                                <small>(10)</small>
+                            </label>
+                        </li>
+                        <li class="list-group-item">
+                            <input type="checkbox" name="" id="">
+                            <label for="">
+                                <span>Shoes</span>
+                                <small>(10)</small>
+                            </label>
+                        </li>
+                        <li class="list-group-item">
+                            <input type="checkbox" name="" id="">
+                            <label for="">
+                                <span>Shoes</span>
+                                <small>(10)</small>
+                            </label>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-10 col-md-7 col-sm-7 col-12">
+
+            <div class="left">
+                <div class="sort-btn d-flex flex-row-reverse">
+                    <select>
+                        <option value="0">Sort by: Featured</option>
+                        <option value="1">Audi</option>
+                        <option value="2">BMW</option>
+                        <option value="3">Citroen</option>
+                        <option value="4">Ford</option>
+                    </select>
+                </div>
+                <div class="catg">
+
+                    <h1>Electronics</h1>
+                    <p>Shop home entertainment, TVs, home audio, headphones, cameras, accessories and more</p>
+                    <hr>
+
+                </div>
+                <div class="products">
+
+
+                    <div class="container">
+
+
+                        <div class="row justify-content-md-center  filterd-products">
+                            
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+<script src="~/jquery/jquery.js"></script>
+<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+<script>
+
+    $("input:checkbox").on('click', function() {
+  // in the handler, 'this' refers to the box clicked on
+  var $box = $(this);
+  if ($box.is(":checked")) {
+    // the name of the box is retrieved using the .attr() method
+    // as it is assumed and expected to be immutable
+    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+    // the checked state of the group/box on the other hand will change
+    // and the current value is retrieved using .prop() method
+    $(group).prop("checked", false);
+      $box.prop("checked", true);
+         $.ajax({
+                    type: "POST",
+                    url: "https://localhost:44333/Category/index",
+                    data: { "categoryID": $box.attr("value") },
+                    success: function (response) {
+                          $(".filterd-products").empty();
+
+                         for (var i = 0; i < response.productDTOs.length; i++ ) {
+                             console.log(response.productDTOs[i].name);
+                             $(".filterd-products").append(`
+
+                                 <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                <div id="productsClick">
+                                <div class="pic">
+                                    <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
+
+                                    <div class="product-content">
+                                        <h3>`+response.productDTOs[i].name+`</h3>
+                                        <a href="">`+response.productDTOs[i].unitPrice+`</a>
+                                    </div>
+
+                                    <button onclick="myFunction(`+response.productDTOs[i].id+`)">Details</button>        
+
+                                </div>
+                            </div>
+                            </div>	
+                                 `);
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                   }
+                });
+   }
+
+    else {
+    $box.prop("checked", false);
+        }
+    });
+
+
+    function myFunction(id) {
+
+        window.location.href = '@Url.Action("ProductDetail", "Products")/' + id;
+
+    }
+
+  
+
+</script>

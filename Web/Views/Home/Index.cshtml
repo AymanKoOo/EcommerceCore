@@ -1,4 +1,6 @@
-﻿
+﻿@model Web.DTOs.IndexDTO;
+
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -226,7 +228,31 @@
 <hr>
 
 
+<div class="container">
 
+
+    <div class="row justify-content-md-center">
+
+        @foreach (var item in Model.categoryDTOs)
+        {
+            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+
+                <div class="pic">
+                    <a href="#" class="picCont"> <img style="width:100%" src="images/promo1.jpg"></a>
+                    <div class="promotion-content">
+                        <h3>@item.Name</h3>
+                        <a href="">SHOP NOW</a>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>
+
+<hr />
 
 <div class="container mt-5">
 
@@ -284,191 +310,58 @@
 <div class="contain">
 
     <div class="owl-carousel carousel-main">
-        <div class="product item">
 
-            <div class="product-image">
+        @foreach (var item in Model.productDTOs)
+        {
 
-                <a href="#">
+            <div class="product item">
 
-                    <img class="pic-prduct" src="~/images/header/table.png">
+                <div class="product-image">
 
-                </a>
+                    <a href="#">
 
-                <span class="discount">Sale</span>
+                        <img class="pic-prduct" src="~/images/header/table.png">
 
-                <div class="quick-view">
-                    <span class="text">
-                        Quick View
-                    </span>
+                    </a>
+
+                    <span class="discount">Sale</span>
+
+                    <div class="quick-view">
+                        <span class="text">
+                            Quick View
+                        </span>
+                    </div>
+
                 </div>
 
-            </div>
-
-            <div class="category">
-                Kitchen
-            </div>
-
-            <div class="name">
-
-                Mouse
-
-            </div>
-            <div class="price">
-
-                $12.00
-            </div>
-
-
-            <div class="Cart-add">
-
-                <div class="pic-cart">
-                    <img src="icons/cart.svg">
+                <div class="category">
+                    @item.Name
                 </div>
 
-                <a hre="#" class="add-cartbtn">
-                    ADD TO CART
-                </a>
-            </div>
-        </div>
-        <div class="product item">
+                <div class="name">
 
-            <div class="product-image">
+                    @item.Name
 
-                <a href="#">
+                </div>
+                <div class="price">
 
-                    <img class="pic-cart" src="~/images/header/table.png">
-
-                </a>
-
-                <span class="discount">Sale</span>
-
-                <div class="quick-view">
-                    <span class="text">
-                        Quick View
-                    </span>
+                    @item.UnitPrice
                 </div>
 
-            </div>
 
-            <div class="category">
-                Kitchen
-            </div>
+                <div class="Cart-add">
 
-            <div class="name">
+                    <div class="pic-cart">
+                        <img src="icons/cart.svg">
+                    </div>
 
-                Mouse
-
-            </div>
-            <div class="price">
-
-                $12.00
-            </div>
-
-
-            <div class="Cart-add">
-
-                <div class="pic-cart">
-                    <img src="icons/cart.svg">
+                    <a hre="#" class="add-cartbtn">
+                        ADD TO CART
+                    </a>
                 </div>
-
-                <a hre="#" class="add-cartbtn">
-                    ADD TO CART
-                </a>
-            </div>
-        </div>
-        <div class="product item">
-
-            <div class="product-image">
-
-                <a href="#">
-
-                    <img class="pic-cart" src="~/images/header/table.png">
-
-                </a>
-
-                <span class="discount">Sale</span>
-
-                <div class="quick-view">
-                    <span class="text">
-                        Quick View
-                    </span>
-                </div>
-
             </div>
 
-            <div class="category">
-                Kitchen
-            </div>
-
-            <div class="name">
-
-                Mouse
-
-            </div>
-            <div class="price">
-
-                $12.00
-            </div>
-
-
-            <div class="Cart-add">
-
-                <div class="pic-cart">
-                    <img src="icons/cart.svg">
-                </div>
-
-                <a hre="#" class="add-cartbtn">
-                    ADD TO CART
-                </a>
-            </div>
-        </div>
-        <div class="product item">
-
-            <div class="product-image">
-
-                <a href="#">
-
-                    <img class="pic-cart" src="~/images/header/table.png">
-
-                </a>
-
-                <span class="discount">Sale</span>
-
-                <div class="quick-view">
-                    <span class="text">
-                        Quick View
-                    </span>
-                </div>
-
-            </div>
-
-            <div class="category">
-                Kitchen
-            </div>
-
-            <div class="name">
-
-                Mouse
-
-            </div>
-            <div class="price">
-
-                $12.00
-            </div>
-
-
-            <div class="Cart-add">
-
-                <div class="pic-cart">
-                    <img src="icons/cart.svg">
-                </div>
-
-                <a hre="#" class="add-cartbtn">
-                    ADD TO CART
-                </a>
-            </div>
-        </div>
-
+        }
     </div>
 
 
@@ -477,6 +370,11 @@
 
 </div>
 
+<div class="container-fluid">
+
+
+
+</div>
 
 
 <!---Eco Products-->

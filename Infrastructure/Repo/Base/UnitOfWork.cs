@@ -16,18 +16,22 @@ namespace Infrastructure.Repo.Base
 
         public IProductRepo Product { get; }
 
-        public UnitOfWork(DataContext context, IAdminRepo adminRepo,IProductRepo productRepo)
+        public ICategoryRepo Category { get; }
+
+        public UnitOfWork(DataContext context, IAdminRepo adminRepo,IProductRepo productRepo,ICategoryRepo categoryRepo)
         {
             this._dbContext = context;
 
             this.Admin = adminRepo;
 
             this.Product = productRepo;
+
+            this.Category = categoryRepo;
         }
 
-        public int Commit()
+        public void Save()
         {
-            return _dbContext.SaveChanges();
+             _dbContext.SaveChanges();
         }
 
         public void Dispose()
@@ -35,9 +39,6 @@ namespace Infrastructure.Repo.Base
          
         }
 
-        Task IUnitOfWork.Commit()
-        {
-            throw new NotImplementedException();
-        }
+    
     }
 }

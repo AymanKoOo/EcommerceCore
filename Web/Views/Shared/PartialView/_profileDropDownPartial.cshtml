@@ -1,4 +1,4 @@
-﻿@model Web.ViewModels.UserData
+﻿@model Web.DTOs.IndexDTO;
 
 
 <a class="nav-linkP" href=""></a>
@@ -50,21 +50,21 @@
                 <div class="dropdown-cart-action">
                     @Html.ActionLink("LogOut", "Logout", "Account", null, new { @class = "btn tbn-block" });
                 </div>
-             }
+            }
 
-             else
-             {
-            <hr>
-            <div class="dropdown-cart-action">
+            else
+            {
+                <hr>
+                <div class="dropdown-cart-action">
 
-                @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn tbn-block" });
+                    @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn tbn-block" });
 
-            </div>
-            <div class="dropdown-cart-action">
+                </div>
+                <div class="dropdown-cart-action">
 
                     @Html.ActionLink("Register", "Login", "Account", null, new { @class = "btn tbn-block" });
-            </div>
-             }
+                </div>
+            }
         </div>
 
     </div>

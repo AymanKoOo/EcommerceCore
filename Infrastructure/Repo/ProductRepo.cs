@@ -20,6 +20,7 @@ namespace Infrastructure.Repo
         public void AddProduct(Product product)
         {
                 _dbcontext.products.Add(product);
+
         }
 
         public void DeleteProduct(Product product)
@@ -34,7 +35,7 @@ namespace Infrastructure.Repo
 
         public Product GetProduct(int productId)
         {
-            throw new NotImplementedException();
+            return _dbcontext.products.FirstOrDefault(m => m.Id == productId);
         }
 
         //public Product GetProduct(int productId)
@@ -42,9 +43,16 @@ namespace Infrastructure.Repo
         //    return _dbcontext.products.FirstOrDefaultAsync(m => m.Id = productId);
         //}
 
-        public IEnumerable<Product> GetProducts()
+        public IEnumerable<Product> GetAllProducts()
         {
             return from products in _dbcontext.products
+                   select products;
+        }
+
+        public IEnumerable<Product> GetProductsByCatgory(int catgoryID)
+        {
+            return from products in _dbcontext.products
+                   where products.CategoryId == catgoryID
                    select products;
         }
     }

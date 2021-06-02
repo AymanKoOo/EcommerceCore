@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Web.DTOs
 {
-    public class ProductDTO
+    public class CategoryDTO
     {
         public int Id { get; set; }
-
         public string Name { get; set; }
-        public string Summary { get; set; }
         public string Description { get; set; }
-        public string ImageFile { get; set; }
-        public decimal UnitPrice { get; set; }
-        public string CategoryId { get; set; }
+        public string ImageName { get; set; }
+
+        [NotMapped]
+        public bool selected { get; set; }
 
     }
 }

@@ -1,0 +1,129 @@
+﻿@model Web.DTOs.IndexDTO
+
+<div class="alert">
+
+    <h1>Get 10% OFF at the Porto Kitchen Selection -<a class="shop" href="#">Shop Now!</a> </h1>
+
+</div>
+
+
+<ul class="breadcrumb">
+    <li><a href="#">HOME</a></li>
+    <li><a href="#">PRODUCT</a></li>
+</ul>
+
+<hr>
+<!---jUMPTron-->
+
+<div class="container mt-5 product-detail">
+    <div class="row justify-content-md-center">
+
+        <div class="col-lg-5 col-md-6 col-sm-12 col-12">
+            <div class="d-flex ">
+                <div class="card">
+
+                    <fieldset id="f11" class="active">
+                        <div class="product-pic">
+                            <div class="product-pic"> <img class="pic0" src="images/a.png"> </div>
+                        </div>
+                    </fieldset>
+                    <fieldset id="f21" class="">
+                        <div class="product-pic"> <img class="pic0" src="images/a.png"> </div>
+                    </fieldset>
+                    <fieldset id="f31" class="">
+                        <div class="product-pic"> <img class="pic0" src="images/a.png"> </div>
+                    </fieldset>
+                    <fieldset id="f41" class="">
+                        <div class="product-pic"> <img class="pic0" src="images/product8.jpg"> </div>
+                    </fieldset>
+
+                    <div class="d-flex flex-row thumbnails">
+                        <div id="f1" class="tb tb-active">
+                            <img class="thumbnail-img fit-image"
+                                 src="https://i.imgur.com/wL1uRBk.jpg">
+                        </div>
+                        <div id="f2" class="tb"> <img class="thumbnail-img fit-image" src="images/a.png"> </div>
+                        <div id="f3" class="tb"> <img class="thumbnail-img fit-image" src="images/product8.jpg"> </div>
+                        <div id="f4" class="tb"> <img class="thumbnail-img fit-image" src="images/product7.jpg"> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 col-md-6 col-sm-12 col-12">
+
+            <div class="container">
+
+
+                <div class="product-name">
+                    @Model.productDTO.Name
+                </div>
+
+                <div class="start">
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                </div>
+
+                <div class="price mt-3">$@Model.productDTO.UnitPrice</div>
+
+                <div class="product-desc">
+                    @Model.productDTO.Description
+                </div>
+
+                <span>COLOR BLACK</span>
+
+                <ul class="list-inline color-pick">
+                    <li id="c-1" onclick="changeColor('c-1')" class="list-inline-item color onColor"> <label for="" class="b-color"></label></li>
+                    <li id="c-2" onclick="changeColor('c-2')" class="list-inline-item color"> <label for="" class="r-color"></label></li>
+                </ul>
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <span>Size</span>
+                        <ul class="list-inline size-pick">
+                            <li id="s-1" onclick="changeSize('s-1')" class="list-inline-item size onSize"> <label for="" class="SizeSwatch">S</label></li>
+                            <li id="s-2" onclick="changeSize('s-2')" class="list-inline-item size"> <label for="" class="SizeSwatch">M</label></li>
+                            <li id="s-3" onclick="changeSize('s-3')" class="list-inline-item size"> <label for="" class="SizeSwatch">L</label></li>
+                            <li id="s-4" onclick="changeSize('s-4')" class="list-inline-item size"> <label for="" class="SizeSwatch">XL</label></li>
+                            <li id="s-5" onclick="changeSize('s-5')" class="list-inline-item size"> <label for="" class="SizeSwatch">2XL</label></li>
+                            <li id="s-6" onclick="changeSize('s-6')" class="list-inline-item size"> <label for="" class="SizeSwatch">3XL</label></li>
+                        </ul>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <label for="" class="Size "></label>
+                        </div>
+
+                        <button type="button" class="btnn">ADD TO CART</button>
+
+                        <p class="mt-5">
+                            Designed and produced locally in Los Angeles.
+
+                            100% Cotton.
+
+                            6.0 oz.
+
+                            Screen print on front.
+
+                            True to size standard fit.
+
+                            *Ships in 3-4 weeks
+                            Next »
+                            Write a review
+                        </p>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

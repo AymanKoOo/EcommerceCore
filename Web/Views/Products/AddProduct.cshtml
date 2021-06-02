@@ -17,71 +17,57 @@
 
 <div class="contenti">
     <div class="container">
-        <form method="post" id="form" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Name:</label>
-                        <input asp-for="Name" type="text" class="form-control required" />
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Description:</label>
-                        <div id="textarea" class="descriptionRequired">
+            <form asp-controller="Products" asp-action="AddProduct" method="post">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input asp-for="Name" type="text" class="form-control required" />
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Price:</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Sale Price:</label>
-                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Description:</label>
+
+                            <input asp-for="Description" type="text" class="form-control required" />
+
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Quantity:</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Categories:</label>
-                    </div>
-                </div>
-            
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Thumbnail:</label>
-                        <div class="col-md-3">
-                            <input type="file" id="upload" class="required uploadi">
-                        </div>
-                        <div class="col">
-                            <div class="col-md-8 text-center">
-                                <div id="upload-canvas" style=" display:none;"></div>
-                            </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>ImageFile:</label>
+
+                            <input asp-for="ImageFile" type="text" class="form-control required" />
                         </div>
                     </div>
-                    <hr />
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Other images:</label>
-                        <div class="file-loading">
-                            <input id="Uploads" name="uploads" type="file" multiple />
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>UnitPrice:</label>
+                            <input asp-for="UnitPrice" type="text" class="form-control required" />
                         </div>
                     </div>
+
+                  
+
+                    @*@Html.DropDownList(Model.CategoryName, new SelectList(catgeories),"Select Category")*@
+
+                   
+
+                    <select asp-for="CategoryId" asp-items="@(new SelectList(@ViewBag.ListCategories,"Id","Name"))">
+                           <option value="">Select Role</option>
+                    </select>
+
+
+                    <button class="btn btn-primary" type="submit">
+                        Add
+                    </button>
+
+
+
                 </div>
-                <div class="col-md-12 text-right">
-                    <button id="saveContentBtn" type="button" class="btn btn-primary">SUBMIT</button>
-                </div>
-            </div>
-        </form>
-    </div>
+            </form>
+</div>
 </div>
 

@@ -57,11 +57,23 @@ namespace Web
                 options.SlidingExpiration = true;
             });
 
+            services.AddAutoMapper(typeof(Startup));
+
+
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
             services.AddScoped(typeof(IAdminRepo), typeof(AdminRepo));
             services.AddScoped(typeof(IProductRepo), typeof(ProductRepo));
+            services.AddScoped(typeof(ICategoryRepo), typeof(CategoryRepo));
 
+            //Static FIles//
+            services.AddCors(c => {
+                c.AddPolicy("policyName", p => {
+                    p.AllowAnyOrigin().AllowAnyMethod();
+                });
+            });
+
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,8 +84,9 @@ namespace Web
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("policyName");
 
-            app.UseCors();
+
             //Static FIles//
             app.UseStaticFiles();
             //

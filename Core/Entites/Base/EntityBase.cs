@@ -6,6 +6,6 @@ namespace Core.Entites.Base
 {
     public class EntityBase
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
     }
 }

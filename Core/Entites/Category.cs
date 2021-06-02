@@ -13,7 +13,5 @@ namespace Core.Entites
         public string Description { get; set; }
         public string ImageName { get; set; }
 
-
-
     }
 }

@@ -10,6 +10,9 @@ namespace Core.Interfaces
         IAdminRepo Admin { get; }
 
         IProductRepo Product { get; }
-        Task Commit();
+
+        ICategoryRepo Category { get; }
+
+        void Save();
     }
 }

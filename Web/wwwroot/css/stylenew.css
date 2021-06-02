@@ -741,7 +741,7 @@ body.open .lightbox {
 .container-fluid {
     margin-top: 50px;
     margin-bottom: 50px;
-    background-image: url("part.png");
+    background-image: url("../images/images/part.png");
     width: 100%;
     height: 400px;
 }
@@ -1038,4 +1038,47 @@ ul.breadcrumb li {
     margin-bottom: 10px;
     font-size: 20px;
     font-weight: bolder;
+}
+
+
+
+
+
+.product-name {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.product-desc {
+    margin-top: 18px;
+    font-weight: lighter;
+    margin-bottom: 10px;
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+}
+
+.cat-header {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+.list-group-item {
+    border-style: none;
+    font-size: 13px;
+    font-weight: 300;
+    color: gray;
+}
+
+    .list-group-item label {
+        margin-left: 5px;
+    }
+
+.sort-btn select {
+    padding: 10px;
+    border-radius: 0;
+    border: 1px solid gray;
 }
