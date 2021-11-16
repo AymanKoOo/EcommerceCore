@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using Core.Entites;
 using Microsoft.AspNetCore.Identity;
+using Infrastructure.ModelConfig;
+
 namespace Infrastructure.Data
 {
     public class DataContext: IdentityDbContext<ApplicationUser, ApplicationRole, string>
@@ -12,10 +14,11 @@ namespace Infrastructure.Data
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            new ProductTypeConfig().Configure(builder.Entity<Product>());
             base.OnModelCreating(builder);
         }
 

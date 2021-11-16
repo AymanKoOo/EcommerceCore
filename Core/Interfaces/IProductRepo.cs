@@ -12,9 +12,9 @@ namespace Core.Interfaces
         IEnumerable<Product> GetAllProducts();
 
         Product GetProduct(int productId);
-        void AddProduct(Product product);
-        void EditProduct(Product product);
-        void DeleteProduct(Product product);
+        //void AddProduct(Product product);
+        //void EditProduct(Product product);
+        //void DeleteProduct(Product product);
 
         
         //IEnumerable<Price> GetPricesOfProduct(int productId);

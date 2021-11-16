@@ -33,8 +33,6 @@ namespace Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            
-
             //we deal wit contr and views (1)
             services.AddControllersWithViews();
             ///
@@ -65,6 +63,8 @@ namespace Web
             services.AddScoped(typeof(IAdminRepo), typeof(AdminRepo));
             services.AddScoped(typeof(IProductRepo), typeof(ProductRepo));
             services.AddScoped(typeof(ICategoryRepo), typeof(CategoryRepo));
+            services.AddScoped(typeof(ICustomerRepo), typeof(CustomerRepo));
+            services.AddScoped(typeof(IRoleRepo), typeof(RoleRepo));
 
             //Static FIles//
             services.AddCors(c => {
@@ -99,7 +99,13 @@ namespace Web
 
             app.UseEndpoints(endpoints =>
             {
-                    endpoints.MapControllerRoute(
+                endpoints.MapControllerRoute(
+                     name: "areaRoute",
+                   pattern: "{area:exists}/{controller=AdminHome}/{action=Index}/{id?}"
+
+                 );
+
+                endpoints.MapControllerRoute(
                      name:   "defualtRoute",
                       pattern:  "{controller=Home}/{action=Index}/{id?}"
                         ); 

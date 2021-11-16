@@ -35,7 +35,7 @@ namespace Web.Controllers
         public IActionResult AddCategory(CategoryDTO categoryDTO)
         {
             var result = _mapper.Map<Category>(categoryDTO);
-            _unitOfWork.Category.AddCategory(result);
+            _unitOfWork.Category.Add(result);
             _unitOfWork.Save();
             return View();
         }
@@ -44,7 +44,7 @@ namespace Web.Controllers
         public IActionResult Index()
         {
             var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetAllProducts());
-            var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetCategories());
+            var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetAllCategories());
 
 
             var indexdto = new IndexDTO

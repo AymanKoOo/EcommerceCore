@@ -32,11 +32,11 @@ namespace Web.Controllers
         [HttpGet]
         public IActionResult AddProduct()
         {
-            var ListCategories = _unitOfWork.Category.GetCategories();
+            var ListCategories = _unitOfWork.Category.GetAllCategories();
             ViewBag.ListCategories = ListCategories;
-
             return View();
         }
+
 
         [Route("AddProduct")]
         [HttpPost]
@@ -44,13 +44,22 @@ namespace Web.Controllers
         {
             var result = _mapper.Map<Product>(productDTO);
 
-            _unitOfWork.Product.AddProduct(result);
+            _unitOfWork.Product.Add(result);
             _unitOfWork.Save();
 
             return View();
         }
 
-      
+        [Route("GetProducts")]
+        [HttpGet]
+        public IActionResult GetProducts(ProductDTO productDTO)
+        {
+            var products = _unitOfWork.Product.GetAllProducts();
+            return Ok(products);
+        }
+
+
+
         [Route("ProductDetail/{productID}")]
         [HttpGet]
         public IActionResult ProductDetail(int productID)
@@ -66,5 +75,7 @@ namespace Web.Controllers
 
             return View(obj);
         }
+
+        
     }
 }

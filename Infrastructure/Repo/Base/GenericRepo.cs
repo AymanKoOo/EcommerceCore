@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repo
 {
@@ -19,18 +20,22 @@ namespace Infrastructure.Repo
             table = _dbcontext.Set<T>();
         }
 
-       
-        public bool Delete(T model)
+
+        public async Task Add(T entity)
         {
-            
-            throw new NotImplementedException();
+            await _dbcontext.AddAsync(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public  void Delete(T entity)
         {
-            throw new NotImplementedException();
+            _dbcontext.Remove(entity);
         }
 
-      
+
+        public void Update(T entity)
+        {
+            _dbcontext.Update(entity);
+        }
+
     }
 }

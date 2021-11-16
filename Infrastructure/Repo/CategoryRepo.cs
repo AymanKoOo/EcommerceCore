@@ -21,22 +21,16 @@ namespace Infrastructure.Repo
             _dbcontext.Categories.Add(category);
         }
 
-        public void DeleteCategory(Category category)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditCategory(Category category)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Category> GetCategories()
+        public List<Category> GetAllCategories()
         {
             return (from cat in _dbcontext.Categories
                    select cat).ToList();
         }
-
+        
+        public Category GetCategoryByID(int id)
+        {
+            return _dbcontext.Categories.FirstOrDefault(m => m.Id == id);
+        }
         public Category GetCategory(string categoryName)
         {
             return _dbcontext.Categories.FirstOrDefault(m => m.Name == categoryName);

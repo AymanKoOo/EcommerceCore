@@ -8,11 +8,10 @@ namespace Core.Interfaces
     {
 
         IAdminRepo Admin { get; }
-
         IProductRepo Product { get; }
-
         ICategoryRepo Category { get; }
-
+        ICustomerRepo Customer { get; }
+        IRoleRepo role { get; }
         void Save();
     }
 }

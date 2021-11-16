@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Web.Areas.Admin.ViewModels.EditProductVM
+
+
+
+<div class="contenti">
+    <div class="container">
+        <form asp-controller="Product" asp-action="AddProduct" method="post">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input asp-for="Name" type="text"  class="form-control required" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Description:</label>
+
+                        <input asp-for="Description" type="text"  class="form-control required" />
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>ImageFile:</label>
+                        <input asp-for="ImageFile" type="file" class="form-control required" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>UnitPrice:</label>
+                        <input asp-for="UnitPrice" type="text" value="@Model.UnitPrice" class="form-control required" />
+                    </div>
+                </div>
+
+
+
+                @*@Html.DropDownList(Model.CategoryName, new SelectList(catgeories),"Select Category")*@
+
+
+                <select asp-for="CategoryId">
+
+                    @foreach (var category in Model.categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+
+                    }
+
+                </select>
+
+
+
+                <button class="btn btn-primary" type="submit">
+                    Add
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+

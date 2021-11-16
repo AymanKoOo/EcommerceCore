@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Core.Entites.CustomerWithRole
+
+
+<div class="contenti">
+    <div class="container">
+        <form asp-controller="Customer" asp-action="EditCustomer" method="post">
+
+            <input name="UserId" value="@Model.UserId" asp-for="UserId" type="hidden" />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input asp-for="UserName" type="text" value="@Model.UserName" class="form-control required" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input asp-for="Email" type="email" value="@Model.Email" class="form-control required" />
+                    </div>
+                </div>
+
+                @*@Html.DropDownList(Model.CategoryName, new SelectList(catgeories),"Select Category")*@
+
+
+                <select asp-for="roles">
+
+                    @foreach (var role in Model.roles)
+                    {
+                        <option value="@role.Id">@role.Name</option>
+                    }
+
+                </select>
+
+                <button class="btn btn-primary" type="submit">
+                    Edit
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+

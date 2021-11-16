@@ -7,11 +7,9 @@ namespace Core.Interfaces
 {
     public interface ICategoryRepo:IGenericRepo<Category>
     {
-        List<Category> GetCategories();
+        List<Category> GetAllCategories();
         Product GetCategory(string categoryName);
-        void AddCategory (Category category);
-        void EditCategory(Category category);
-        void DeleteCategory(Category category);
+        Category GetCategoryByID(int categoryID);
 
     }
 }

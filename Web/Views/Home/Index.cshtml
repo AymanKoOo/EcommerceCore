@@ -244,6 +244,7 @@
                         <a href="">SHOP NOW</a>
                     </div>
 
+
                 </div>
             </div>
         }
@@ -314,52 +315,51 @@
         @foreach (var item in Model.productDTOs)
         {
 
-            <div class="product item">
+        <div class="product item">
 
-                <div class="product-image">
+            <div class="product-image">
 
-                    <a href="#">
+                <a href="#">
 
-                        <img class="pic-prduct" src="~/images/header/table.png">
+                    <img class="pic-prduct" src="~/images/header/table.png">
 
-                    </a>
+                </a>
 
-                    <span class="discount">Sale</span>
+                <span class="discount">Sale</span>
 
-                    <div class="quick-view">
-                        <span class="text">
-                            Quick View
-                        </span>
-                    </div>
-
+                <div class="quick-view">
+                    <span class="text">
+                        Quick View
+                    </span>
                 </div>
 
-                <div class="category">
-                    @item.Name
-                </div>
-
-                <div class="name">
-
-                    @item.Name
-
-                </div>
-                <div class="price">
-
-                    @item.UnitPrice
-                </div>
-
-
-                <div class="Cart-add">
-
-                    <div class="pic-cart">
-                        <img src="icons/cart.svg">
-                    </div>
-
-                    <a hre="#" class="add-cartbtn">
-                        ADD TO CART
-                    </a>
-                </div>
             </div>
+
+            <div class="category">
+                @item.Name
+            </div>
+
+            <div class="name">
+
+                @item.Name
+
+            </div>
+            <div class="price">
+
+                @item.UnitPrice
+            </div>
+
+
+            <div class="Cart-add">
+
+                <div class="pic-cart">
+                    <img src="icons/cart.svg">
+                </div>
+
+              
+
+            </div>
+        </div>
 
         }
     </div>
@@ -385,509 +385,54 @@
 
         <div class="row">
 
-            <div class="col-lg-3 col-md-3 col-sm-6">
+            @foreach (var item in Model.productDTOs)
+            {
+                <div class="col-lg-3 col-md-3 col-sm-6">
 
-                <div class="product">
+                    <div class="product">
 
-                    <div class="product-image">
+                        <div class="product-image">
 
-                        <a href="#">
+                            <a href="#">
 
-                            <img class="pic-cart" src="~/images/header/table.png">
+                                <img class="pic-cart" src="~/images/header/table.png">
 
-                        </a>
+                            </a>
 
-                        <span class="discount">Sale</span>
 
-                        <div class="quick-view">
-                            <span class="text">
-                                Quick View
-                            </span>
-                        </div>
 
-                    </div>
+                            <span class="discount">Sale</span>
 
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-pr" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-                    </div>
-
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-
-
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-cart" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-                    </div>
-
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-
-
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-cart" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-
-                        <div class="quick-view">
-                            <div class="text">
-                                Quick View
+                            <div class="quick-view">
+                                <span class="text">
+                                    Quick View
+                                </span>
                             </div>
+
                         </div>
 
-                    </div>
+                        <div class="category">
 
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-
-
-        </div>
-
-
-        <div class="row">
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-cart" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-                        <div class="quick-view">
-                            <span class="text">
-                                Quick View
-                            </span>
                         </div>
 
-                    </div>
+                        <div class="name">
+                            @item.Name
 
-                    <div class="category">
-                        Kitchen
-                    </div>
+                        </div>
+                        <div class="price">
 
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-pr" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-                    </div>
-
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-
-
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-cart" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-                    </div>
-
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-
-
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-cart" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-
-                        <div class="quick-view">
-                            <div class="text">
-                                Quick View
-                            </div>
+                            @item.UnitPrice
                         </div>
 
-                    </div>
+                        <button class="add-cartbtn" type="button" onclick="addToCart('@item.Name')">Add to Cart</button>
 
-                    <div class="category">
-                        Kitchen
-                    </div>
 
-                    <div class="name">
-
-                        Mouse
 
                     </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
 
                 </div>
 
-            </div>
-
-
-
-
-        </div>
-
-
-
-        <div class="row">
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-cart" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-                        <div class="quick-view">
-                            <span class="text">
-                                Quick View
-                            </span>
-                        </div>
-
-                    </div>
-
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-pr" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-                    </div>
-
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-
-
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-cart" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-                    </div>
-
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-
-
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 col-sm-6">
-
-                <div class="product">
-
-                    <div class="product-image">
-
-                        <a href="#">
-
-                            <img class="pic-cart" src="~/images/header/table.png">
-
-                        </a>
-
-                        <span class="discount">Sale</span>
-
-
-                        <div class="quick-view">
-                            <div class="text">
-                                Quick View
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="category">
-                        Kitchen
-                    </div>
-
-                    <div class="name">
-
-                        Mouse
-
-                    </div>
-                    <div class="price">
-
-                        $12.00
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-
-
+            }
         </div>
 
     </div>
@@ -902,3 +447,70 @@
 
 </div>
 
+
+
+<script src="~/jquery/jquery.js"></script>
+<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+<script>
+
+
+    let carProductLength = document.querySelectorAll(".dropdown-cart-product .product-details h4");
+
+    let products=[];
+    $.ajax({
+
+        type: "GET",
+        url: "https://localhost:44333/Products/GetProducts",
+        success: function (response) {
+            products = response;
+            console.log(response);
+        },
+        failure: function (response) {
+            alert(response.responseText);
+        },
+        error: function (response) {
+            alert(response.responseText);
+        }
+    });
+
+    console.log(products);
+    let addedItems=[];
+    
+    function addToCart(namee) {
+        let selectedItem = products.filter((item) => item.name === namee);
+        console.log(selectedItem[0].name);
+
+
+          addedItems = [...addedItems, selectedItem];
+
+        localStorage.setItem("productsInCart", JSON.stringify(addedItems));
+
+        document.getElementById("cart-added").innerHTML += `
+
+ <div class="dropdown-cart-product">
+
+                                                <div class="product-details">
+
+                                                    <h4 class="product-title">   ${ selectedItem[0].name} </h4>
+                                                    <span class="cart-product-info">
+                                                        1x $99
+                                                    </span>
+    
+                                                </div>
+    
+                                                <div class="product-image-container">
+                                                    <img src="images/product8.jpg">
+    
+                                                </div>
+                                                
+    
+                                            </div>
+
+`
+        let carProductLength = document.querySelectorAll(".dropdown-cart-product .product-details h4");
+        document.getElementById("badge").innerHTML = carProductLength.length;
+    }
+
+
+</script>

@@ -13,7 +13,6 @@ using Web.DTOs;
 
 namespace Web.Controllers
 {
-    [Route("[Controller]")]
     public class AccountController : Controller
     {
         //usermanger
@@ -41,16 +40,12 @@ namespace Web.Controllers
         }
         ////// //////// ////// /////// /////
 
-
-
-
         [HttpGet]
         [Route("Register")]
         public ActionResult Register()
         {
             return View("~/Views/Account/LoginRegister.cshtml");
         }
-
 
 
         [HttpGet]

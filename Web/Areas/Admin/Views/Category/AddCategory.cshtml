@@ -1,0 +1,50 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Core.Entites.Category
+
+
+<div class="contenti">
+    <div class="container">
+        <form asp-controller="Category" asp-action="AddCategory" method="post">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input asp-for="Name" type="text" class="form-control required" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Description:</label>
+
+                        <input asp-for="Description" type="text" class="form-control required" />
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>ImageFile:</label>
+                        <input asp-for="ImageName" type="file" class="form-control required" />
+                    </div>
+                </div>
+
+
+                <button class="btn btn-primary" type="submit">
+                    Add
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+

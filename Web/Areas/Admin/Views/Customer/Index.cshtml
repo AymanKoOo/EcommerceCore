@@ -1,0 +1,75 @@
+﻿@model IQueryable<Core.Entites.CustomerWithRole>
+
+
+<div class="table-responsive">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="show-entries">
+                        <span><font style="vertical-align: inherit;">Show </font></span>
+                        <select>
+                            <option><font style="vertical-align: inherit;">5 </font></option>
+                            <option><font style="vertical-align: inherit;">10 </font></option>
+                            <option><font style="vertical-align: inherit;">15 </font></option>
+                            <option><font style="vertical-align: inherit;">20 </font></option>
+                        </select>
+                        <span><font style="vertical-align: inherit;">entries </font></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <h2 class="text-center"><font style="vertical-align: inherit;">Customer  </font><b><font style="vertical-align: inherit;">Details </font></b></h2>
+                </div>
+                <div class="col-sm-4">
+                    <div class="search-box">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="material-icons"><font style="vertical-align: inherit;"> </font></i></span>
+                            <input type="text" class="form-control" placeholder="Search…">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><font style="vertical-align: inherit;"># </font></th>
+                    <th><font style="vertical-align: inherit;">Name  </font><i class="fa fa-sort"></i></th>
+                    <th><font style="vertical-align: inherit;">Email </font></th>
+                    <th><font style="vertical-align: inherit;"> Role </font><i class="fa fa-sort"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cust in Model)
+                {
+
+                    <tr>
+                        <td><font style="vertical-align: inherit;"># </font></td>
+                        <td><font style="vertical-align: inherit;">@cust.UserName </font></td>
+                        <td><font style="vertical-align: inherit;">@cust.Email  </font></td>
+                        <td><font style="vertical-align: inherit;">@cust.Role </font></td>
+
+                        <td>
+                            <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
+                            <a asp-controller="Customer" asp-action="EditCustomer" asp-route-customerID="@cust.UserId">Edit</a>
+                            <a asp-controller="Customer" asp-action="DeleteCustomer" asp-route-cutomerID="@cust.UserId">Delete</a>
+                        </td>
+                     @*edit user >>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="clearfix">
+            <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
+            <ul class="pagination">
+                <li class="page-item disabled"><a href="#"><font style="vertical-align: inherit;">Previous </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">1 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">2 </font></a></li>
+                <li class="page-item active"><a href="#" class="page-link"><font style="vertical-align: inherit;">3 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">4 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">5 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">Next </font></a></li>
+            </ul>
+        </div>
+    </div>
+</div>

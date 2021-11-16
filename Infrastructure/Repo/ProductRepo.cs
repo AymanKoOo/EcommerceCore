@@ -17,25 +17,25 @@ namespace Infrastructure.Repo
             this._dbcontext = dbcontext;
         }
 
-        public void AddProduct(Product product)
-        {
-                _dbcontext.products.Add(product);
+        //public void AddProduct(Product product)
+        //{
+        //        _dbcontext.products.Add(product);
+        //}
 
-        }
+        //public void DeleteProduct(Product product)
+        //{
+        //    _dbcontext.products.Remove(product);
+        //}
 
-        public void DeleteProduct(Product product)
-        {
-            _dbcontext.products.Remove(product);
-        }
-
-        public void EditProduct(Product product)
-        {
-            _dbcontext.Entry(product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-        }
+        //public void EditProduct(Product product)
+        //{
+        //  //  _dbcontext.Entry(product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        //    _dbcontext.Update(product);
+        //}
 
         public Product GetProduct(int productId)
         {
-            return _dbcontext.products.FirstOrDefault(m => m.Id == productId);
+            return _dbcontext.products.Include(x=>x.Category).FirstOrDefault(m => m.Id == productId);
         }
 
         //public Product GetProduct(int productId)
@@ -45,8 +45,7 @@ namespace Infrastructure.Repo
 
         public IEnumerable<Product> GetAllProducts()
         {
-            return from products in _dbcontext.products
-                   select products;
+            return _dbcontext.products.Include(x => x.Category);
         }
 
         public IEnumerable<Product> GetProductsByCatgory(int catgoryID)

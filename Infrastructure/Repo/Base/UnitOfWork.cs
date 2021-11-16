@@ -17,16 +17,23 @@ namespace Infrastructure.Repo.Base
         public IProductRepo Product { get; }
 
         public ICategoryRepo Category { get; }
+        public ICustomerRepo Customer { get; }
 
-        public UnitOfWork(DataContext context, IAdminRepo adminRepo,IProductRepo productRepo,ICategoryRepo categoryRepo)
+        public IRoleRepo role { get; }
+
+
+        public UnitOfWork(DataContext context)
         {
             this._dbContext = context;
 
-            this.Admin = adminRepo;
+            this.Admin = new AdminRepo(_dbContext);
 
-            this.Product = productRepo;
+            this.Product = new ProductRepo(_dbContext);
 
-            this.Category = categoryRepo;
+            this.Category = new CategoryRepo(_dbContext);
+            this.Customer = new CustomerRepo(_dbContext);
+            this.role = new RoleRepo(_dbContext);
+
         }
 
         public void Save()
@@ -38,7 +45,5 @@ namespace Infrastructure.Repo.Base
         {
          
         }
-
-    
     }
 }
