@@ -1,4 +1,5 @@
-﻿using Infrastructure.Repo;
+﻿using Core.Interfaces.Discounts;
+using Infrastructure.Repo;
 using System;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace Core.Interfaces
         ICategoryRepo Category { get; }
         ICustomerRepo Customer { get; }
         IRoleRepo role { get; }
+        IDiscount discount { get; }
         void Save();
     }
 }

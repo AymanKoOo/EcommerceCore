@@ -1,5 +1,7 @@
 ﻿using Core.Interfaces;
+using Core.Interfaces.Discounts;
 using Infrastructure.Data;
+using Infrastructure.Repo.Discounts;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,19 +23,17 @@ namespace Infrastructure.Repo.Base
 
         public IRoleRepo role { get; }
 
+        public IDiscount discount { get; }
 
         public UnitOfWork(DataContext context)
         {
             this._dbContext = context;
-
             this.Admin = new AdminRepo(_dbContext);
-
             this.Product = new ProductRepo(_dbContext);
-
             this.Category = new CategoryRepo(_dbContext);
             this.Customer = new CustomerRepo(_dbContext);
             this.role = new RoleRepo(_dbContext);
-
+            this.discount = new DiscountRepo(_dbContext);
         }
 
         public void Save()

@@ -1,0 +1,70 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Core.Entites.Discount
+@using Core.Entites.Discounts
+
+<div class="contenti">
+    <div class="container">
+        <form asp-controller="Discount" asp-action="Edit" method="post">
+            <input name="Id" value="@Model.Id" asp-for="Id" type="hidden" />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input asp-for="Name" value="@Model.Name" type="text" class="form-control required" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Discount Type:</label>
+                        <select asp-for="DiscountTypeId" asp-items="Html.GetEnumSelectList<DiscountTyp>()">
+                            <option>Select Type</option>
+                        </select>
+                        <span asp-validation-for="DiscountTypeId"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Discount precentange:</label>
+                        <input asp-for="DiscountPercentage" value="@Model.DiscountPercentage" type="number" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Start date:</label>
+                        <input asp-for="StartDateUtc" value="@Model.StartDateUtc" type="date" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>End date:</label>
+                        <input asp-for="EndDateUtc" value="@Model.EndDateUtc" type="date" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Admin Comment</label>
+                        <textarea asp-for="AdminComment" value="@Model.AdminComment"></textarea>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">
+                    Edit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+

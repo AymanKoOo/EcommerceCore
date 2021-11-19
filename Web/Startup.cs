@@ -5,9 +5,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.Entites;
 using Core.Interfaces;
+using Core.Interfaces.Discounts;
 using Infrastructure.Data;
 using Infrastructure.Repo;
 using Infrastructure.Repo.Base;
+using Infrastructure.Repo.Discounts;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -65,6 +67,7 @@ namespace Web
             services.AddScoped(typeof(ICategoryRepo), typeof(CategoryRepo));
             services.AddScoped(typeof(ICustomerRepo), typeof(CustomerRepo));
             services.AddScoped(typeof(IRoleRepo), typeof(RoleRepo));
+            services.AddScoped(typeof(IDiscount), typeof(DiscountRepo));
 
             //Static FIles//
             services.AddCors(c => {

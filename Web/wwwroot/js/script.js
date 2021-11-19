@@ -1,3 +1,16 @@
+let search = document.querySelector(".search")
+let btn = document.querySelector(".btn")
+let input = document.querySelector(".input")
+
+btn.addEventListener('click', () => {
+    search.classList.toggle('active');
+    input.focus()
+})
+
+
+
+
+// /////////////////////////////////////
 $('.carousel').carousel({
     interval: 7000
 })
@@ -154,3 +167,14 @@ $(".cart-dropdown").hover(function () {
     $("#cart").removeClass("show");
 
 })
+
+
+
+
+function addToCart(id) {
+
+    console.log(id);
+
+
+
+}

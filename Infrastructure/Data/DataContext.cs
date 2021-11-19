@@ -6,6 +6,8 @@ using System.Text;
 using Core.Entites;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.ModelConfig;
+using Core.Entites.Base;
+using Core.Entites.Discounts;
 
 namespace Infrastructure.Data
 {
@@ -28,6 +30,9 @@ namespace Infrastructure.Data
         public DbSet<OrderItem> orderItems { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Cart> Carts { get; set; }
+
+        public DbSet<Discount> discounts { get; set; }
+        public DbSet<DiscountType> DiscountType { get; set; }
 
     }
 }

@@ -1,0 +1,70 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Core.Entites.Discount
+@using Core.Entites.Discounts
+
+<div class="contenti">
+    <div class="container">
+        <form asp-controller="Discount" asp-action="Create" method="post">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input asp-for="Name" type="text" class="form-control required" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Discount Type:</label>
+                        <select asp-for="DiscountTypeId" asp-items="Html.GetEnumSelectList<DiscountTyp>()">
+                            <option>Select Type</option>
+                        </select>
+                        <span asp-validation-for="DiscountTypeId"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Discount precentange:</label>
+                        <input asp-for="DiscountPercentage" type="number" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Start date:</label>
+                        <input asp-for="StartDateUtc" type="date" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>End date:</label>
+                        <input asp-for="EndDateUtc" type="date" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Admin Comment</label>
+                        <textarea asp-for="AdminComment"></textarea>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">
+                    Add
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+

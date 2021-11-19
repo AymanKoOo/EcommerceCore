@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211119103611_addDiscount")]
+    partial class addDiscount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,24 +233,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DiscountTypeId");
-
                     b.ToTable("discounts");
-                });
-
-            modelBuilder.Entity("Core.Entites.Discounts.DiscountType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DiscountType");
                 });
 
             modelBuilder.Entity("Core.Entites.Order", b =>
@@ -478,17 +463,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Core.Entites.Discount", b =>
-                {
-                    b.HasOne("Core.Entites.Discounts.DiscountType", "DiscountType")
-                        .WithMany("Discounts")
-                        .HasForeignKey("DiscountTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DiscountType");
-                });
-
             modelBuilder.Entity("Core.Entites.OrderItem", b =>
                 {
                     b.HasOne("Core.Entites.Order", null)
@@ -584,11 +558,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entites.Cart", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("Core.Entites.Discounts.DiscountType", b =>
-                {
-                    b.Navigation("Discounts");
                 });
 
             modelBuilder.Entity("Core.Entites.Order", b =>
