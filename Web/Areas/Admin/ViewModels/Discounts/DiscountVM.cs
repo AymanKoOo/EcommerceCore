@@ -41,6 +41,6 @@ namespace Web.Areas.Admin.ViewModels.Discounts
 
         public string CouponCode { get; set; }
 
-        public List<DiscountType> discountTypes { get; set; }
+        //public List<DiscountType> discountTypes { get; set; }
     }         
 }

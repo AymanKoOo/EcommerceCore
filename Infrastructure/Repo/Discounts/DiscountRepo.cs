@@ -26,5 +26,23 @@ namespace Infrastructure.Repo.Discounts
         {
             return _dbcontext.discounts.FirstOrDefault(x => x.Id == id);
         }
+
+        //public Discount GetProductsByDiscount(int id)
+        //{
+        //    var customers = (from ur in _dbcontext.discountProducts
+        //                     join u in _dbcontext.discounts on ur.DiscountsId equals u.Id
+        //                     join a in _dbcontext.products on ur.ProductsId equals a.Id
+        //                     select new CustomerWithRole
+        //                     {
+        //                         UserId = u.Id,
+        //                         UserName = u.UserName,
+        //                         Email = u.Email,
+        //                         Role = a.Name
+        //                     }).FirstOrDefault();
+
+        //    var roles = _dataContext.Roles.ToList();
+
+        //    customers.roles = roles;
+        //}
     }
 }

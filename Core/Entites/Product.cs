@@ -16,6 +16,7 @@ namespace Core.Entites
         public string ImageFile { get; set; }
         public decimal UnitPrice { get; set; }
         public int? UnitsInStock { get; set; }
+        public bool HasDiscountsApplied { get; set; }
         public double Star { get; set; }
         // n-1 relationships
         public int CategoryId { get; set; }

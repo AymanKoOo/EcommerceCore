@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211119103611_addDiscount")]
-    partial class addDiscount
+    [Migration("20211121220252_aaskvkfaf")]
+    partial class aaskvkfaf
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -236,6 +236,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("discounts");
                 });
 
+            modelBuilder.Entity("Core.Entites.DiscountProduct", b =>
+                {
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiscountsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductsId", "DiscountsId");
+
+                    b.HasIndex("DiscountsId");
+
+                    b.ToTable("discountProducts");
+                });
+
             modelBuilder.Entity("Core.Entites.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -301,6 +316,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("HasDiscountsApplied")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ImageFile")
                         .HasColumnType("nvarchar(max)");
@@ -461,6 +479,25 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Core.Entites.DiscountProduct", b =>
+                {
+                    b.HasOne("Core.Entites.Discount", "discounts")
+                        .WithMany()
+                        .HasForeignKey("DiscountsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entites.Product", "products")
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("discounts");
+
+                    b.Navigation("products");
                 });
 
             modelBuilder.Entity("Core.Entites.OrderItem", b =>

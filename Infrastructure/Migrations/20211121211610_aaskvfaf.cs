@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class editId : Migration
+    public partial class aaskvfaf : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -74,6 +74,29 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "discounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AdminComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DiscountTypeId = table.Column<int>(type: "int", nullable: false),
+                    UsePercentage = table.Column<bool>(type: "bit", nullable: false),
+                    DiscountPercentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DiscountAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MaximumDiscountAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    StartDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDateUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RequiresCouponCode = table.Column<bool>(type: "bit", nullable: false),
+                    CouponCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_discounts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -204,7 +227,7 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageFile = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UnitsInStock = table.Column<int>(type: "int", nullable: true),
@@ -247,6 +270,54 @@ namespace Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_CartItems_products_ProductId",
                         column: x => x.ProductId,
+                        principalTable: "products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DiscountProduct",
+                columns: table => new
+                {
+                    DiscountsId = table.Column<int>(type: "int", nullable: false),
+                    ProductsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiscountProduct", x => new { x.DiscountsId, x.ProductsId });
+                    table.ForeignKey(
+                        name: "FK_DiscountProduct_discounts_DiscountsId",
+                        column: x => x.DiscountsId,
+                        principalTable: "discounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DiscountProduct_products_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "discountProducts",
+                columns: table => new
+                {
+                    DiscountsId = table.Column<int>(type: "int", nullable: false),
+                    ProductsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_discountProducts", x => new { x.ProductsId, x.DiscountsId });
+                    table.ForeignKey(
+                        name: "FK_discountProducts_discounts_DiscountsId",
+                        column: x => x.DiscountsId,
+                        principalTable: "discounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_discountProducts_products_ProductsId",
+                        column: x => x.ProductsId,
                         principalTable: "products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -332,6 +403,16 @@ namespace Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DiscountProduct_ProductsId",
+                table: "DiscountProduct",
+                column: "ProductsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_discountProducts_DiscountsId",
+                table: "discountProducts",
+                column: "DiscountsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_orderItems_OrderId",
                 table: "orderItems",
                 column: "OrderId");
@@ -368,6 +449,12 @@ namespace Infrastructure.Migrations
                 name: "CartItems");
 
             migrationBuilder.DropTable(
+                name: "DiscountProduct");
+
+            migrationBuilder.DropTable(
+                name: "discountProducts");
+
+            migrationBuilder.DropTable(
                 name: "orderItems");
 
             migrationBuilder.DropTable(
@@ -378,6 +465,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "discounts");
 
             migrationBuilder.DropTable(
                 name: "Orders");

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels;
+using Web.Areas.Admin.ViewModels.Discounts;
 using Web.DTOs;
 
 namespace Web.Mapper
@@ -24,6 +25,12 @@ namespace Web.Mapper
 
             CreateMap<ApplicationUser, CustomerDTO>();
             CreateMap<CustomerDTO, ApplicationUser>();
+
+            CreateMap<DiscountProductListModel, Product>(); 
+            CreateMap<DiscountProductModel, Product>();
+            CreateMap<Product, DiscountProductModel>();
+
+
         }
     }
 }

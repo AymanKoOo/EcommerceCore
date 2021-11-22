@@ -22,6 +22,11 @@ namespace Infrastructure.Data
 
             new ProductTypeConfig().Configure(builder.Entity<Product>());
             base.OnModelCreating(builder);
+           
+
+            builder.Entity<DiscountProduct>().HasKey(sc => new { sc.ProductsId, sc.DiscountsId });
+
+         
         }
 
         public DbSet<Product> products { get; set; }
@@ -32,7 +37,8 @@ namespace Infrastructure.Data
         public DbSet<Cart> Carts { get; set; }
 
         public DbSet<Discount> discounts { get; set; }
-        public DbSet<DiscountType> DiscountType { get; set; }
+     
+        public DbSet<DiscountProduct> discountProducts { get; set; }
 
     }
 }

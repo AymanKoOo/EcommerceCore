@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Areas.Admin.Factories;
 using Web.Areas.Admin.ViewModels.Discounts;
 
 namespace Web.Areas.Admin.Controllers
@@ -17,18 +18,24 @@ namespace Web.Areas.Admin.Controllers
     {
         readonly private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public DiscountController(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public IDiscountModelFactory DiscountModelFactory { get; }
+
+        public DiscountController(IUnitOfWork unitOfWork, IMapper mapper, IDiscountModelFactory discountModelFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            DiscountModelFactory = discountModelFactory;
         }
 
 
         public IActionResult Index()
         {
             var discounts = _unitOfWork.discount.GetAll();
+            DiscountModelFactory.PrepareDiscountProductListModelAsync(2, 6, 1);
             return View(discounts);
         }
+
 
   
         [HttpGet]
@@ -82,28 +89,28 @@ namespace Web.Areas.Admin.Controllers
 
         #region Create Discount Type
 
-        [HttpGet]
-        [Route("TypeCreate")]
-        public async Task<IActionResult> TypeCreate()
-        {
+        //[HttpGet]
+        //[Route("TypeCreate")]
+        //public async Task<IActionResult> TypeCreate()
+        //{
            
-            return View();
-        }
+        //    return View();
+        //}
  
 
 
-        [HttpPost]
-        [Route("TypeCreate")]
-        public  async Task<IActionResult> TypeCreate(DiscountType model)
-        {
-            if (ModelState.IsValid)
-            {
-                //discount services add
+        //[HttpPost]
+        //[Route("TypeCreate")]
+        //public  async Task<IActionResult> TypeCreate(DiscountType model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //discount services add
 
-                return Redirect("/");
-            }
-            return Redirect("/failed");
-        }
+        //        return Redirect("/");
+        //    }
+        //    return Redirect("/failed");
+        //}
         #endregion
 
         //public virtual async Task<IActionResult> Edit(int id)

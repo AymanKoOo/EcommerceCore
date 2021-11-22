@@ -1,4 +1,5 @@
-﻿using Core.Entites;
+﻿using AyyBlog.ViewModel;
+using Core.Entites;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,40 @@ namespace Infrastructure.Repo
             return from products in _dbcontext.products
                    where products.CategoryId == catgoryID
                    select products;
+        }
+
+
+
+        public IQueryable<Product> FindAll()
+        {
+            //  dataContext.post.Include(a => a.applicationUser);
+
+            return _dbcontext.products;               ;
+        }
+
+        public PagedList<Product> GetProducts(int pageSize, int pageNumber)
+        {
+            return PagedList<Product>.ToPagedList(FindAll().OrderBy(on => on.Name),
+            pageNumber,
+            pageSize);
+        }
+
+
+        public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, int pageSize, int pageNumber)
+        {
+            var products = _dbcontext.products.Where(x => x.HasDiscountsApplied);
+
+            if (discountId >= 0)
+                products = from product in products
+                           join dpm in _dbcontext.discountProducts on product.Id equals dpm.ProductsId
+                           where dpm.DiscountsId == discountId
+                           select product;
+
+            products = products.OrderBy(product => product.Name).ThenBy(product => product.Id);
+
+            return PagedList<Product>.ToPagedList(products,
+            pageNumber,
+            pageSize);
         }
     }
 }

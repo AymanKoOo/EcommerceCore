@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Web.Areas.Admin.Factories;
 
 namespace Web
 {
@@ -68,7 +69,9 @@ namespace Web
             services.AddScoped(typeof(ICustomerRepo), typeof(CustomerRepo));
             services.AddScoped(typeof(IRoleRepo), typeof(RoleRepo));
             services.AddScoped(typeof(IDiscount), typeof(DiscountRepo));
-
+            
+            services.AddScoped(typeof(IDiscountModelFactory), typeof(DiscountModelFactory));
+             
             //Static FIles//
             services.AddCors(c => {
                 c.AddPolicy("policyName", p => {
