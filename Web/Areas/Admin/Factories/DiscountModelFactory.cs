@@ -26,7 +26,7 @@ namespace Web.Areas.Admin.Factories
             var discountProducts = unitOfWork.Product.GetProductsWithAppliedDiscountAsync(discountid, pageSize, pageNumber);
 
             //var discountProductModels = mapper.Map<DiscountProductModel>(discountProducts.postsData);
-
+           
             var model = new DiscountProductListModel().PrepareToGrid(discountProducts, () =>
             {
                 //fill in model values from the entity

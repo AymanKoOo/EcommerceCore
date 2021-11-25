@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels;
 using Web.Areas.Admin.ViewModels.Discounts;
+using Web.Areas.Admin.ViewModels.Products;
 using Web.DTOs;
 
 namespace Web.Mapper
@@ -30,7 +31,8 @@ namespace Web.Mapper
             CreateMap<DiscountProductModel, Product>();
             CreateMap<Product, DiscountProductModel>();
 
-
+            CreateMap<ProductModel, Product>();
+            CreateMap<Product, ProductModel>();
         }
     }
 }

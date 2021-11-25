@@ -17,6 +17,19 @@ namespace Infrastructure.Repo.Discounts
             this._dbcontext = dbcontext;
         }
 
+        public void AddProductsToDiscount(IEnumerable<int> ids)
+        {
+            //var productDiscount = new DiscountProduct();
+            //productDiscount.ProductsId=
+            //foreach(var id in ids)
+            //{
+            //    _dbcontext.discountProducts.Add()
+
+            //}
+
+
+        }
+
         public List<Discount> GetAll()
         {
             return _dbcontext.discounts.ToList();

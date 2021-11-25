@@ -15,7 +15,7 @@
 <div class="contenti">
     <div class="container">
         <form asp-controller="Discount" asp-action="Edit" method="post">
-            <input name="Id" value="@Model.Id" asp-for="Id" type="hidden" />
+            <input name="Id" id="discoutID" value="@Model.Id" asp-for="Id" type="hidden" />
 
             <div class="row">
                 <div class="col-md-12">
@@ -68,3 +68,208 @@
     </div>
 </div>
 
+<section id="posts">
+</section>
+
+<section id="select-page">
+</section>
+
+
+<script src="~/jquery/jquery.js"></script>
+<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+<script>
+
+    //posts.TotalPages to create page numbers
+    //posts.CurrentPage create circle
+    //posts.HasNext, posts.HasPrevious  check
+    $(function () {
+
+        var CurrentPage,
+            HasNext,
+            HasPrev,
+            TotalPages = 0,
+            pageSize = 5,
+            page = 1,
+        discountID = $("#discoutID").val();
+
+        console.log(discountID);
+        getPosts(pageSize, page);
+
+
+
+        $('body').on('click', '.prev-btn', function () {
+            //$('html, body').animate({
+            //    scrollTop: $("#posts").offset().top
+            //}, 600);
+
+            if (HasPrev == true) {
+                getPosts(pageSize, --CurrentPage);
+
+                if ($(".next-btn").hasClass("stop")) {
+                    $(".next-btn").removeClass("stop");
+                    $(".next-btn").addClass("go");
+                }
+            }
+
+            else {
+                if ($(".prev-btn").hasClass("go")) {
+                    $(".prev-btn").removeClass("go");
+                    $(".prev-btn").addClass("stop");
+                }
+            }
+        });
+
+       
+        $('body').on('click', '.next-btnn', function () {
+            //$('html, body').animate({
+            //    scrollTop: $("#posts").offset().top
+            //}, 600);
+
+            if (HasNext == true) {
+                console.log("aww");
+                getPosts(pageSize, ++CurrentPage);
+                if ($(".prev-btn").hasClass("stop")) {
+                    $(".prev-btn").removeClass("stop");
+                    $(".prev-btn").addClass("go");
+                }
+            }
+            else {
+                if ($(".next-btn").hasClass("go")) {
+                    $(".next-btn").removeClass("go");
+                    $(".next-btn").addClass("stop");
+                }
+            }
+        });
+
+        $('body').on('click', '#add-selected', function () {
+            var aa = $("#checkBoxAdd :checkbox:checked");
+            var list = [];
+            for (var i = 0; i < aa.length; i++) {
+                list.push(aa[i].value)
+            }
+            console.log(list);
+            checkbox_addPorducts(list);
+        })
+
+        function checkbox_addPorducts(arr_products){
+                $.ajax({
+                    type: "POST",
+                    url: "https://localhost:5001/Admin/Product/DeleteProducts",
+                    data: { "productID": arr_products},
+                    success: function (response) {
+
+                        console.log(response);
+                            
+                    },
+                    failure: function (response) {
+
+                    },
+                    error: function (response) {
+
+                    }
+                });
+        }
+
+
+        html = "";
+        $("#posts").html(html);
+
+        function getPosts(pageSize, pageNumber) {
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:5001/Admin/Discount/GetDiscountProducts",
+                data: { "discountID": discountID, "pageSize": pageSize, "pageNumber": pageNumber },
+                success: function (response) {
+                    //var data = response.success.data;
+                    console.log(response);
+
+                    //Assign vars
+                    CurrentPage = parseInt(response.currentPage);
+                    HasNext = response.hasNext;
+                    HasPrev = response.hasPrevious;
+                    TotalPages = parseInt(response.totalPages);
+
+
+                    //////////////
+                    if (response.data.length > 0) {
+                        $('#select-page').html(`
+                            
+
+                        <div class="container  control-btn">
+                            <div class="col-md-12 text-center">
+                                
+                                <button class="prev-btn">Previous</button>
+
+                                <button class="next-btnn">Next</button>
+
+                            </div>
+                        </div>
+                    `);
+                    }
+                    else {
+                        $('#select-page').html(`
+
+                           <div class="no-posts">
+                                No Posts
+                           </div>
+
+                    `);
+                    }
+                    console.log("seeee");
+                    $("#posts").html("");
+
+                    html = `
+
+                      <a href="#" id="add-selected">Remove</a>
+
+                <table id="checkBoxAdd" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><font style="vertical-align: inherit;"># </font></th>
+                    <th><font style="vertical-align: inherit;">ID  </font><i class="fa fa-sort"></i></th>
+                    <th><font style="vertical-align: inherit;">Name </font></th>
+                </tr>
+            </thead>
+            <tbody>
+                `;
+                    console.log(response.data);
+                    for (var i = 0; i < response.data.length; i++) {
+                        html += `
+
+                     <tr>
+                        <td><input type="checkbox" value="`+ response.data[i].productId + `" ></td>
+                        <td><font style="vertical-align: inherit;">`+ response.data[i].productId  + ` </font></td>
+                        <td><font style="vertical-align: inherit;">`+ response.data[i].productName  + `  </font></td>
+
+                        <td>
+                            <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
+                             </td>
+                     @*edit user >>*@
+                    </tr>
+    
+
+                `;
+                    }
+
+                    html += `      </tbody>
+        </table>`;
+
+                    $("#posts").html(html);
+                    console.log(response);
+                },
+                failure: function (response) {
+
+                },
+                error: function (response) {
+
+                }
+            });
+
+        }
+
+    
+
+    })
+
+</script>

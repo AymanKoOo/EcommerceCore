@@ -12,7 +12,7 @@ namespace Core.Interfaces
         IEnumerable<Product> GetProductsByCatgory(int catgoryID);
 
         IEnumerable<Product> GetAllProducts();
-
+        public PagedList<Product> GetAllProductsList(int pageSize, int pageNumber);
         Product GetProduct(int productId);
         //void AddProduct(Product product);
         //void EditProduct(Product product);

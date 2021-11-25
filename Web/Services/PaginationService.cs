@@ -18,7 +18,7 @@ namespace Web.Services
         {
             if (listModel == null)
                 throw new ArgumentNullException(nameof(listModel));
-            listModel.Data = dataFillFunction?.Invoke();
+                listModel.Data = dataFillFunction?.Invoke();
                 listModel.PageSize = objectList.PageSize;
                 listModel.CurrentPage = objectList.CurrentPage;
                 listModel.TotalPages = objectList.TotalPages;

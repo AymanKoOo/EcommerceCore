@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Areas.Admin.Factories;
 using Web.Areas.Admin.ViewModels;
+using Web.Areas.Admin.ViewModels.Products;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -20,17 +22,27 @@ namespace Web.Areas.Admin.Controllers
         readonly private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public Product(IUnitOfWork unitOfWork, IMapper mapper)
+        public IProductModelFactory ProductModelFactory { get; }
+
+        public Product(IUnitOfWork unitOfWork, IMapper mapper, IProductModelFactory ProductModelFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            this.ProductModelFactory = ProductModelFactory;
         }
 
-        
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageSize=1, int pageNumber=1)
         {
-            var products = _unitOfWork.Product.GetAllProducts();
-            return View(products);
+            // var products = _unitOfWork.Product.GetAllProducts();
+            var productsList = await ProductModelFactory.PrepareDiscountProductListModelAsync(pageSize, pageNumber);
+            return View(productsList);
+        }
+
+        [HttpPost]
+        public IActionResult Index(int products)
+        {
+            
+            return View();
         }
 
         [HttpGet("EditProduct")]
@@ -98,5 +110,21 @@ namespace Web.Areas.Admin.Controllers
             _unitOfWork.Save();
             return Redirect("/");
         }
+
+        [HttpPost("DeleteProducts")]
+        public IActionResult DeleteProducts(int[] productID)
+        {
+
+            foreach(var id in productID)
+            {
+                var product = _unitOfWork.Product.GetProduct(id);
+                _unitOfWork.Product.Delete(product);
+            }
+
+            _unitOfWork.Save();
+            return Redirect("/");
+        }
+
+      
     }
 }

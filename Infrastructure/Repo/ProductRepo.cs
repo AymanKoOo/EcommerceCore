@@ -72,7 +72,14 @@ namespace Infrastructure.Repo
             pageSize);
         }
 
-
+        public PagedList<Product> GetAllProductsList(int pageSize, int pageNumber)
+        {
+            var products =  _dbcontext.products.Include(x => x.Category);
+           
+            return PagedList<Product>.ToPagedList(products,
+            pageNumber,
+            pageSize);
+        }
         public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, int pageSize, int pageNumber)
         {
             var products = _dbcontext.products.Where(x => x.HasDiscountsApplied);

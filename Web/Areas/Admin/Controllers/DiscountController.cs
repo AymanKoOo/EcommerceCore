@@ -32,12 +32,19 @@ namespace Web.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var discounts = _unitOfWork.discount.GetAll();
-            DiscountModelFactory.PrepareDiscountProductListModelAsync(2, 6, 1);
             return View(discounts);
         }
 
 
-  
+        [HttpPost]
+        [Route("GetDiscountProducts")]
+        public async Task<IActionResult> GetDiscountProducts(int discountID,int pageSize,int pageNumber)
+        {
+            var products = await DiscountModelFactory.PrepareDiscountProductListModelAsync(discountID, pageSize, pageNumber);
+            return Ok(products);
+        }
+
+
         [HttpGet]
         [Route("Create")]
         public  async Task<IActionResult> Create()
@@ -84,8 +91,30 @@ namespace Web.Areas.Admin.Controllers
             return Redirect("/failed");
         }
 
-      
 
+        [HttpGet("AddProductsDiscount")]
+        public IActionResult AddProductsDiscount()
+        {
+
+            //foreach (var id in productID)
+            //{
+            //    _unitOfWork.Product.Add(id);
+            //}
+            //_unitOfWork.Save();
+            return Redirect("/");
+        }
+
+        [HttpPost("AddProductsDiscount")]
+        public IActionResult AddProductsDiscount(int[] productID)
+        {
+
+            //foreach (var id in productID)
+            //{
+            //    _unitOfWork.Product.Add(id);
+            //}
+            //_unitOfWork.Save();
+            return Redirect("/");
+        }
 
         #region Create Discount Type
 
@@ -93,10 +122,10 @@ namespace Web.Areas.Admin.Controllers
         //[Route("TypeCreate")]
         //public async Task<IActionResult> TypeCreate()
         //{
-           
+
         //    return View();
         //}
- 
+
 
 
         //[HttpPost]

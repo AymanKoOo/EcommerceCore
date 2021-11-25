@@ -71,7 +71,8 @@ namespace Web
             services.AddScoped(typeof(IDiscount), typeof(DiscountRepo));
             
             services.AddScoped(typeof(IDiscountModelFactory), typeof(DiscountModelFactory));
-             
+            services.AddScoped(typeof(IProductModelFactory), typeof(ProductModelFactory));
+
             //Static FIles//
             services.AddCors(c => {
                 c.AddPolicy("policyName", p => {

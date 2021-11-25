@@ -2,11 +2,12 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    int nextPage = @Model.CurrentPage+1;
+    int prevPage = @Model.CurrentPage -1;
+
 }
 
-@model IEnumerable<Core.Entites.Product>
-
-
+@model Web.Areas.Admin.ViewModels.Products.ProductListModel
 
 <div class="table-responsive">
     <div class="table-wrapper">
@@ -37,48 +38,57 @@
                 </div>
             </div>
         </div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th><font style="vertical-align: inherit;"># </font></th>
-                    <th><font style="vertical-align: inherit;">Id  </font><i class="fa fa-sort"></i></th>
-                    <th><font style="vertical-align: inherit;">Name </font></th>
-                    <th><font style="vertical-align: inherit;"> Description </font><i class="fa fa-sort"></i></th>
-                    <th><font style="vertical-align: inherit;">Category </font><i class="fa fa-sort"></i></th>
-                    <th><font style="vertical-align: inherit;">Actions </font></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var prod in Model)
-                {
-                
-                <tr>
-                    <td><font style="vertical-align: inherit;"># </font></td>
-                    <td><font style="vertical-align: inherit;">@prod.Id </font></td>
-                    <td><font style="vertical-align: inherit;">@prod.Name  </font></td>
-                    <td><font style="vertical-align: inherit;">@prod.Description </font></td>
-                    <td><font style="vertical-align: inherit;">@prod.Category.Name  </font></td>
 
-                    <td>
-                        <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
-                        <a asp-controller="Product" asp-action="EditProduct" asp-route-productID="@prod.Id">Edit</a>
-                        <a asp-controller="Product" asp-action="DeleteProduct" asp-route-productID="@prod.Id">Delete</a>
-                    </td>
-                </tr>
-                }
+        <form method="post" asp-controller="Product" asp-action="Index">
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th><font style="vertical-align: inherit;"># </font></th>
+                        <th><font style="vertical-align: inherit;">Id  </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Name </font></th>
+                        <th><font style="vertical-align: inherit;"> Description </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Category </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Actions </font></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.Data)
+                    {
+
+                        <tr>
+                            <td>
+                                <input type="checkbox" value="@p.Id" name="products"   />
+                            </td>
+                            <td><font style="vertical-align: inherit;">@p.Id </font></td>
+                            <td><font style="vertical-align: inherit;">@p.Name  </font></td>
+                            <td><font style="vertical-align: inherit;">@p.Description </font></td>
+                            <td><font style="vertical-align: inherit;">@p.Category.Name  </font></td>
+
+                            <td>
+                                <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
+                                <a asp-controller="Product" asp-action="EditProduct" asp-route-productID="@p.Id">Edit</a>
+                                <a asp-controller="Product" asp-action="DeleteProduct" asp-route-productID="@p.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
-        </table>
-        <div class="clearfix">
-            <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
-            <ul class="pagination">
-                <li class="page-item disabled"><a href="#"><font style="vertical-align: inherit;">Previous </font></a></li>
-                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">1 </font></a></li>
-                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">2 </font></a></li>
-                <li class="page-item active"><a href="#" class="page-link"><font style="vertical-align: inherit;">3 </font></a></li>
-                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">4 </font></a></li>
-                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">5 </font></a></li>
-                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">Next </font></a></li>
-            </ul>
-        </div>
+            </table>
+            <input type="submit" value="Submit" />
+        </form>
+            <div class="clearfix">
+                <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
+                <ul class="pagination">
+                    <li class="page-item"> <a asp-controller="Product" asp-action="Index" asp-route-pageNumber="@prevPage">Next</a></li>
+                    <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">1 </font></a></li>
+                    <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">2 </font></a></li>
+                    <li class="page-item active"><a href="#" class="page-link"><font style="vertical-align: inherit;">3 </font></a></li>
+                    <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">4 </font></a></li>
+                    <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">5 </font></a></li>
+                    <li class="page-item"> <a asp-controller="Product" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a></li>
+                </ul>
+            </div>
+
+         
     </div>
 </div>
