@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repo.Discounts
 {
@@ -39,7 +40,17 @@ namespace Infrastructure.Repo.Discounts
         {
             return _dbcontext.discounts.FirstOrDefault(x => x.Id == id);
         }
-
+        public Discount AddProductToDiscount(int id)
+        {
+            return _dbcontext.discounts.FirstOrDefault(x => x.Id == id);
+        }
+        public void RemoveProductToDiscount(Product product)
+        {
+            var discountProduct = _dbcontext.discountProducts.FirstOrDefault(x => x.ProductsId == product.Id);
+          
+            if (discountProduct!=null)
+             _dbcontext.discountProducts.Remove(discountProduct);
+        }
         //public Discount GetProductsByDiscount(int id)
         //{
         //    var customers = (from ur in _dbcontext.discountProducts

@@ -31,19 +31,13 @@ namespace Web.Areas.Admin.Controllers
             this.ProductModelFactory = ProductModelFactory;
         }
 
-        public async Task<IActionResult> Index(int pageSize=1, int pageNumber=1)
+        public async Task<IActionResult> Index(int pageSize=5, int pageNumber=1)
         {
             // var products = _unitOfWork.Product.GetAllProducts();
-            var productsList = await ProductModelFactory.PrepareDiscountProductListModelAsync(pageSize, pageNumber);
+            var productsList = await ProductModelFactory.PrepareProductListModelAsync(pageSize, pageNumber);
             return View(productsList);
         }
 
-        [HttpPost]
-        public IActionResult Index(int products)
-        {
-            
-            return View();
-        }
 
         [HttpGet("EditProduct")]
         public IActionResult EditProduct(int productID)

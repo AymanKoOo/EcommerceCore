@@ -11,6 +11,7 @@ namespace Core.Interfaces.Discounts
         //create , update , delete
         public List<Discount> GetAll();
         public Discount GetByID(int id);
+        public void RemoveProductToDiscount(Product product);
 
         public void AddProductsToDiscount(IEnumerable<int> id);
     }

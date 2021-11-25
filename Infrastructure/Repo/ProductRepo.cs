@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repo
 {
@@ -80,6 +81,15 @@ namespace Infrastructure.Repo
             pageNumber,
             pageSize);
         }
+        public PagedList<Product> GetAllProductsWithoutDiscountList(int pageSize, int pageNumber)
+        {
+            var products = _dbcontext.products.Include(x => x.Category).Where(x=>x.HasDiscountsApplied==false);
+
+            return PagedList<Product>.ToPagedList(products,
+            pageNumber,
+            pageSize);
+        }
+        
         public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, int pageSize, int pageNumber)
         {
             var products = _dbcontext.products.Where(x => x.HasDiscountsApplied);
@@ -95,6 +105,21 @@ namespace Infrastructure.Repo
             return PagedList<Product>.ToPagedList(products,
             pageNumber,
             pageSize);
+        }
+
+        public async Task AddProductTODiscount(Product product, int discountID)
+        {
+            var checkProduct = _dbcontext.discountProducts.FirstOrDefault(x=>x.ProductsId==product.Id);
+            if (checkProduct == null)
+            {
+                var dp = new DiscountProduct
+                {
+                    ProductsId = product.Id,
+                    DiscountsId = discountID
+                };
+                _dbcontext.discountProducts.Add(dp);
+            }
+           
         }
     }
 }

@@ -8,8 +8,8 @@ namespace Web.Areas.Admin.Factories
 {
     public  interface IProductModelFactory
     {
-        Task<ProductListModel> PrepareDiscountProductListModelAsync( int pageSize, int pageNumber);
+        Task<ProductListModel> PrepareProductListModelAsync( int pageSize, int pageNumber);
 
-
+        Task<ProductListModel> PrepareProductNODiscountListModelAsync(int pageSize, int pageNumber);
     }
 }

@@ -63,10 +63,13 @@
                 <button class="btn btn-primary" type="submit">
                     Edit
                 </button>
+                <a asp-controller="Discount" asp-action="AddProductsDiscount" asp-route-discountID="@Model.Id">Add More Products</a>
             </div>
         </form>
     </div>
 </div>
+
+
 
 <section id="posts">
 </section>
@@ -120,7 +123,7 @@
             }
         });
 
-       
+
         $('body').on('click', '.next-btnn', function () {
             //$('html, body').animate({
             //    scrollTop: $("#posts").offset().top
@@ -155,12 +158,12 @@
         function checkbox_addPorducts(arr_products){
                 $.ajax({
                     type: "POST",
-                    url: "https://localhost:5001/Admin/Product/DeleteProducts",
+                    url: "https://localhost:5001/Admin/Discount/RemoveProductsDiscount",
                     data: { "productID": arr_products},
                     success: function (response) {
 
                         console.log(response);
-                            
+
                     },
                     failure: function (response) {
 
@@ -194,11 +197,11 @@
                     //////////////
                     if (response.data.length > 0) {
                         $('#select-page').html(`
-                            
+
 
                         <div class="container  control-btn">
                             <div class="col-md-12 text-center">
-                                
+
                                 <button class="prev-btn">Previous</button>
 
                                 <button class="next-btnn">Next</button>
@@ -247,7 +250,7 @@
                              </td>
                      @*edit user >>*@
                     </tr>
-    
+
 
                 `;
                     }
@@ -268,7 +271,7 @@
 
         }
 
-    
+
 
     })
 

@@ -18,14 +18,16 @@ namespace Web.Areas.Admin.Controllers
     {
         readonly private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IProductModelFactory productModelFactory;
 
         public IDiscountModelFactory DiscountModelFactory { get; }
 
-        public DiscountController(IUnitOfWork unitOfWork, IMapper mapper, IDiscountModelFactory discountModelFactory)
+        public DiscountController(IUnitOfWork unitOfWork, IMapper mapper, IDiscountModelFactory discountModelFactory, IProductModelFactory ProductModelFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             DiscountModelFactory = discountModelFactory;
+            productModelFactory = ProductModelFactory;
         }
 
 
@@ -91,29 +93,43 @@ namespace Web.Areas.Admin.Controllers
             return Redirect("/failed");
         }
 
-
         [HttpGet("AddProductsDiscount")]
-        public IActionResult AddProductsDiscount()
+        public async Task<IActionResult> AddProductsDiscount(int discountID, int pageSize=2 , int pageNumber=1 )
         {
-
-            //foreach (var id in productID)
-            //{
-            //    _unitOfWork.Product.Add(id);
-            //}
-            //_unitOfWork.Save();
-            return Redirect("/");
+            ViewBag.DiscountID = discountID;
+            // var products = _unitOfWork.Product.GetAllProducts();
+            var productsList = await productModelFactory.PrepareProductNODiscountListModelAsync(pageSize, pageNumber);
+            return View(productsList);
         }
 
         [HttpPost("AddProductsDiscount")]
-        public IActionResult AddProductsDiscount(int[] productID)
+        public IActionResult AddProductsDiscount(int[] products, int IDdiscount)
         {
 
-            //foreach (var id in productID)
-            //{
-            //    _unitOfWork.Product.Add(id);
-            //}
-            //_unitOfWork.Save();
-            return Redirect("/");
+            for (int i = 0; i < products.Length; i++)
+            {
+                var product = _unitOfWork.Product.GetProduct(products[i]);
+                _unitOfWork.Product.AddProductTODiscount(product, IDdiscount);
+                product.HasDiscountsApplied = true;
+                _unitOfWork.Product.Update(product);
+            }
+            _unitOfWork.Save();
+            return View("/");
+        }
+
+        [HttpPost("RemoveProductsDiscount")]
+        public async Task<IActionResult> RemoveProductsDiscount(int[] productID)
+        {
+            // var products = _unitOfWork.Product.GetAllProducts();
+            for (int i = 0; i < productID.Length; i++)
+            {
+                var product = _unitOfWork.Product.GetProduct(productID[i]);
+                product.HasDiscountsApplied = false;
+                _unitOfWork.Product.Update(product);
+                _unitOfWork.discount.RemoveProductToDiscount(product);
+            }
+            _unitOfWork.Save();
+            return View();
         }
 
         #region Create Discount Type

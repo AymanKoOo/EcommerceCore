@@ -40,6 +40,7 @@
         </div>
 
         <form method="post" asp-controller="Product" asp-action="Index">
+            <input type="hidden" value="" name="products" />
 
             <table class="table table-bordered">
                 <thead>
@@ -58,7 +59,7 @@
 
                         <tr>
                             <td>
-                                <input type="checkbox" value="@p.Id" name="products"   />
+                                <input type="checkbox" value="@p.Id" name="products" />
                             </td>
                             <td><font style="vertical-align: inherit;">@p.Id </font></td>
                             <td><font style="vertical-align: inherit;">@p.Name  </font></td>

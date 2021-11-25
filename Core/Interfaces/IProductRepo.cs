@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
@@ -13,6 +14,8 @@ namespace Core.Interfaces
 
         IEnumerable<Product> GetAllProducts();
         public PagedList<Product> GetAllProductsList(int pageSize, int pageNumber);
+        public PagedList<Product> GetAllProductsWithoutDiscountList(int pageSize, int pageNumber);
+
         Product GetProduct(int productId);
         //void AddProduct(Product product);
         //void EditProduct(Product product);
@@ -28,5 +31,10 @@ namespace Core.Interfaces
         public IQueryable<Product> FindAll();
         public PagedList<Product> GetProducts(int pageSize, int pageNumber);
         public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, int pageSize, int pageNumber);
+
+
+        public Task AddProductTODiscount(Product product,int discountID);
+
+
     }
 }
