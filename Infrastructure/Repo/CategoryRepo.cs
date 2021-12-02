@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Core.Entites.Catalog;
+
 namespace Infrastructure.Repo
 {
     public class CategoryRepo:GenericRepo<Category>,ICategoryRepo
@@ -24,21 +28,48 @@ namespace Infrastructure.Repo
         public List<Category> GetAllCategories()
         {
             return (from cat in _dbcontext.Categories
-                   select cat).ToList();
+                   select cat).Include(x=>x.categoryPictures).ThenInclude(e=>e.picture).ToList();
         }
-        
+        public async Task<IEnumerable<Category>> GetAllCategoriesHome()
+        {
+            return await _dbcontext.Categories.Include(x => x.categoryPictures).ThenInclude(e => e.picture).ToListAsync();
+        }
+
         public Category GetCategoryByID(int id)
         {
             return _dbcontext.Categories.FirstOrDefault(m => m.Id == id);
         }
-        public Category GetCategory(string categoryName)
+        public async Task<Category> GetCategory(string categoryName)
         {
-            return _dbcontext.Categories.FirstOrDefault(m => m.Name == categoryName);
+            return  await  _dbcontext.Categories.FirstOrDefaultAsync(m => m.Name == categoryName);
         }
 
-        Product ICategoryRepo.GetCategory(string categoryName)
+        public async Task AddPicture(int categoryID, int picID)
         {
-            throw new NotImplementedException();
+            var model = new CategoryPicture
+            {
+                categoryID = categoryID,
+                PictureId = picID
+            };
+             await  _dbcontext.categoryPictures.AddAsync(model);
         }
+
+        //public void AddCategoryPic(int categoryID,string picPath)
+        //{
+
+        //    var pic = new Picture
+        //    {
+        //       MimeType = picPath
+        //    };
+
+        //    _dbcontext.pictures.Add(pic);
+
+        //    var catpr = new CategoryPicture()
+        //    {
+        //        categoryID = categoryID,
+
+        //    }
+        //    _dbcontext.categoryPictures.Add();
+        //}
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Core.Entites;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Areas.Admin.ViewModels.Categories;
 
 namespace Web.Areas.Admin.ViewModels.Products
 {
@@ -12,10 +14,9 @@ namespace Web.Areas.Admin.ViewModels.Products
         public string Name { get; set; }
         public string Summary { get; set; }
         public string Description { get; set; }
-        public string ImageFile { get; set; }
         public decimal UnitPrice { get; set; }
         public string CategoryId { get; set; }
         public bool Checked { get; set; }
-        public Category Category { get; set; }
+        public CategoryVM Category { get; set; }
     }
 }

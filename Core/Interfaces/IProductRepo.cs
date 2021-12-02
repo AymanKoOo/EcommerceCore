@@ -12,10 +12,13 @@ namespace Core.Interfaces
     {
         IEnumerable<Product> GetProductsByCatgory(int catgoryID);
 
-        IEnumerable<Product> GetAllProducts();
+        public Task<Product> GetProductByName(string name);
+       
+        Task<IEnumerable<Product>> GetAllProducts();
+
         public PagedList<Product> GetAllProductsList(int pageSize, int pageNumber);
         public PagedList<Product> GetAllProductsWithoutDiscountList(int pageSize, int pageNumber);
-
+        public  Task AddPicture(int prdouctID, int picID);
         Product GetProduct(int productId);
         //void AddProduct(Product product);
         //void EditProduct(Product product);

@@ -8,13 +8,12 @@
 *@
 @{
 }
-
-@model Core.Entites.Category
-
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Web.Areas.Admin.ViewModels.Categories.CategoryVM
 
 <div class="contenti">
     <div class="container">
-        <form asp-controller="Category" asp-action="AddCategory" method="post">
+        <form asp-controller="Category"  enctype="multipart/form-data" asp-action="AddCategory" method="post">
 
             <div class="row">
                 <div class="col-md-12">
@@ -34,10 +33,9 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>ImageFile:</label>
-                        <input asp-for="ImageName" type="file" class="form-control required" />
+                        <input type="file" accept="image/*" name="ImgCategory" asp-for="ImgCategory" />
                     </div>
                 </div>
-
 
                 <button class="btn btn-primary" type="submit">
                     Add

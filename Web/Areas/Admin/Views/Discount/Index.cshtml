@@ -3,7 +3,6 @@
 *@
 @{
 }
-
 @model IEnumerable<Core.Entites.Discount>
 @using Core.Entites.Discounts
 
@@ -51,29 +50,29 @@
                 @foreach (var discount in Model)
                 {
 
-                <tr>
+                    <tr>
 
-                    <td><font style="vertical-align: inherit;"># </font></td>
-                    <td><font style="vertical-align: inherit;">@discount.Name </font></td>
-                    @if (discount.Id == 1)
-                    {
-                        <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToProducts</font></td>
-                    }
-                    else
-                    {
-                        <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToCategories</font></td>
+                        <td><font style="vertical-align: inherit;"># </font></td>
+                        <td><font style="vertical-align: inherit;">@discount.Name </font></td>
+                        @if (discount.Id == 1)
+                        {
+                            <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToProducts</font></td>
+                        }
+                        else
+                        {
+                            <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToCategories</font></td>
 
-                    }
-                    <td><font style="vertical-align: inherit;">@discount.DiscountPercentage </font></td>
-                    <td><font style="vertical-align: inherit;">@discount.StartDateUtc  </font></td>
-                    <td><font style="vertical-align: inherit;">@discount.EndDateUtc  </font></td>
+                        }
+                        <td><font style="vertical-align: inherit;">@discount.DiscountPercentage </font></td>
+                        <td><font style="vertical-align: inherit;">@discount.StartDateUtc  </font></td>
+                        <td><font style="vertical-align: inherit;">@discount.EndDateUtc  </font></td>
 
-                    <td>
-                        <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
-                        <a asp-controller="Discount" asp-action="Edit" asp-route-Id="@discount.Id">Edit</a>
-                        <a asp-controller="Discount" asp-action="DeleteCategory" asp-route-Id="@discount.Id">Delete</a>
-                    </td>
-                </tr>
+                        <td>
+                            <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
+                            <a asp-controller="Discount" asp-action="Edit" asp-route-Id="@discount.Id">Edit</a>
+                            <a asp-controller="Discount" asp-action="DeleteCategory" asp-route-Id="@discount.Id">Delete</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -88,6 +87,39 @@
                 <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">5 </font></a></li>
                 <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">Next </font></a></li>
             </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="jumbotron">
+    <div class="container-fluid">
+
+        <div class="row">
+
+            @foreach (var discount in Model)
+            {
+                if (discount.DiscountTypeId == 1)
+                {
+
+            <div class="col-lg-6 col-12">
+
+                <img class="img-fluid" src="~/images/HomeBanners/discount.Picture">
+
+            </div>
+
+                }
+
+                else
+                {
+             <div class="col-lg-6 col-12">
+
+                   <img class="img-fluid" src="~/images/HomeBanners/discount.Picture">
+
+             </div>
+                }
+            }
+
         </div>
     </div>
 </div>

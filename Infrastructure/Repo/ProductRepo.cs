@@ -1,5 +1,6 @@
 ﻿using AyyBlog.ViewModel;
 using Core.Entites;
+using Core.Entites.Catalog;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -45,11 +46,20 @@ namespace Infrastructure.Repo
         //    return _dbcontext.products.FirstOrDefaultAsync(m => m.Id = productId);
         //}
 
-        public IEnumerable<Product> GetAllProducts()
+      
+        public async Task<Product> GetProductByName(string name)
         {
-            return _dbcontext.products.Include(x => x.Category);
+            return await _dbcontext.products.FirstOrDefaultAsync(x => x.Name == name);
         }
-
+        public async Task AddPicture(int prdouctID, int picID)
+        {
+            var model = new ProductPicture
+            {
+                ProductId = prdouctID,
+                PictureId = picID
+            };
+            await _dbcontext.productPictures.AddAsync(model);
+        }
         public IEnumerable<Product> GetProductsByCatgory(int catgoryID)
         {
             return from products in _dbcontext.products
@@ -120,6 +130,10 @@ namespace Infrastructure.Repo
                 _dbcontext.discountProducts.Add(dp);
             }
            
+        }
+        public async Task<IEnumerable<Product>> GetAllProducts()
+        {
+            return await _dbcontext.products.Include(d=>d.Discounts).Include(q=>q.Category).Include(x => x.productPictures).ThenInclude(e => e.picture).ToListAsync();
         }
     }
 }

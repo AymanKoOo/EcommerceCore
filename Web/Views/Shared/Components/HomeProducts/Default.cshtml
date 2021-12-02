@@ -1,0 +1,83 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<Web.DTOs.ProductDTO>
+
+<div class="container mt-5">
+
+    <div class="row">
+
+        <div class="col-lg-5 col-md-5 col-sm-12">
+
+            <div class="featured-products">
+                FEATURED PRODUCTS
+            </div>
+
+        </div>
+
+        <div class="col-lg-7 col-md-7 col-sm-12">
+            <div class="carosul-links">
+
+                <a class="link active" href="#">KITCHEN</a>
+
+                <a class="link" href="#">DINNIG</a>
+
+                <a class="link" href="#">SPORT</a>
+
+                <a class="link" href="#">SWIM</a>
+
+                <a class="link" href="#">OFFICE</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="contain">
+
+    <div id="owl-products" class="owl-carousel carousel-main">
+
+        @foreach (var product in Model)
+        {
+            <div class="product item">
+
+                <div class="product-image">
+
+                    <a href="#">
+
+                        <img class="pic-prduct" src="~/uploads/@product.productPictures[0].picture">
+
+                    </a>
+
+                    <span class="discount">Sale</span>
+
+                    <div class="quick-view">
+                        <span class="text">
+                            Quick View
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="category">
+                   @product.Category.Name
+                </div>
+
+                <div class="name">
+
+                    @product.Name
+
+                </div>
+
+                <div class="price">
+                    <del class="old-price">@product.UnitPrice</del>
+                    <span class="product-price">$49.00</span>
+                </div>
+            </div>
+        }
+    </div>
+
+

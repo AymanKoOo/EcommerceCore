@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Infrastructure.ModelConfig;
 using Core.Entites.Base;
 using Core.Entites.Discounts;
+using Core.Entites.Catalog;
 
 namespace Infrastructure.Data
 {
@@ -26,7 +27,30 @@ namespace Infrastructure.Data
 
             builder.Entity<DiscountProduct>().HasKey(sc => new { sc.ProductsId, sc.DiscountsId });
 
+            builder.Entity<CategoryPicture>().HasKey(sc => new { sc.categoryID, sc.PictureId });
+
+            builder.Entity<CategoryPicture>()
+              .HasOne(pt => pt.category)
+              .WithMany(p => p.categoryPictures)
+              .HasForeignKey(pt => pt.categoryID);
+
+            builder.Entity<CategoryPicture>()
+                .HasOne(pt => pt.picture)
+                .WithMany(t => t.categoryPictures)
+                .HasForeignKey(pt => pt.PictureId);
+
+
+            builder.Entity<ProductPicture>().HasKey(sc => new { sc.ProductId, sc.PictureId });
          
+            builder.Entity<ProductPicture>()
+               .HasOne(pt => pt.product)
+               .WithMany(p => p.productPictures)
+               .HasForeignKey(pt => pt.ProductId);
+
+            builder.Entity<ProductPicture>()
+                .HasOne(pt => pt.picture)
+                .WithMany(t => t.productPictures)
+                .HasForeignKey(pt => pt.PictureId);
         }
 
         public DbSet<Product> products { get; set; }
@@ -39,6 +63,8 @@ namespace Infrastructure.Data
         public DbSet<Discount> discounts { get; set; }
      
         public DbSet<DiscountProduct> discountProducts { get; set; }
-
+        public DbSet<ProductPicture> productPictures { get; set; }
+        public DbSet<CategoryPicture> categoryPictures { get; set; }
+        public DbSet<Picture> pictures { get; set; }
     }
 }

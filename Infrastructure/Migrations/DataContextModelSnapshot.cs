@@ -166,6 +166,36 @@ namespace Infrastructure.Migrations
                     b.ToTable("CartItems");
                 });
 
+            modelBuilder.Entity("Core.Entites.Catalog.CategoryPicture", b =>
+                {
+                    b.Property<int>("categoryID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.HasKey("categoryID", "PictureId");
+
+                    b.HasIndex("PictureId");
+
+                    b.ToTable("categoryPictures");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductPicture", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "PictureId");
+
+                    b.HasIndex("PictureId");
+
+                    b.ToTable("productPictures");
+                });
+
             modelBuilder.Entity("Core.Entites.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -173,16 +203,38 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CreatedOnUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageName")
+                    b.Property<bool>("IncludeInTopMenu")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MetaDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MetaTitle")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ParentCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Published")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShowOnHomepage")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedOnUtc")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -218,6 +270,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("RequiresCouponCode")
@@ -299,6 +354,33 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("orderItems");
+                });
+
+            modelBuilder.Entity("Core.Entites.Picture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AltAttribute")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsNew")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MimeType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoFilename")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleAttribute")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("pictures");
                 });
 
             modelBuilder.Entity("Core.Entites.Product", b =>
@@ -479,6 +561,44 @@ namespace Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Core.Entites.Catalog.CategoryPicture", b =>
+                {
+                    b.HasOne("Core.Entites.Picture", "picture")
+                        .WithMany("categoryPictures")
+                        .HasForeignKey("PictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entites.Category", "category")
+                        .WithMany("categoryPictures")
+                        .HasForeignKey("categoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("category");
+
+                    b.Navigation("picture");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductPicture", b =>
+                {
+                    b.HasOne("Core.Entites.Picture", "picture")
+                        .WithMany("productPictures")
+                        .HasForeignKey("PictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entites.Product", "product")
+                        .WithMany("productPictures")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("picture");
+
+                    b.Navigation("product");
+                });
+
             modelBuilder.Entity("Core.Entites.DiscountProduct", b =>
                 {
                     b.HasOne("Core.Entites.Discount", "discounts")
@@ -595,9 +715,26 @@ namespace Infrastructure.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("Core.Entites.Category", b =>
+                {
+                    b.Navigation("categoryPictures");
+                });
+
             modelBuilder.Entity("Core.Entites.Order", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Core.Entites.Picture", b =>
+                {
+                    b.Navigation("categoryPictures");
+
+                    b.Navigation("productPictures");
+                });
+
+            modelBuilder.Entity("Core.Entites.Product", b =>
+                {
+                    b.Navigation("productPictures");
                 });
 #pragma warning restore 612, 618
         }

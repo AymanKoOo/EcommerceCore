@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Core.Entites.Category>
+
+    <div class="list_item_categories mt-5">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-12">
+                    <h3 class="title">Explore Popular Categories</h3>
+                </div>
+            </div>
+            <div class="contain">
+
+                <div id="owl-category" class="owl-carousel carousel-main">
+
+                    @foreach (var cat in Model)
+                    {
+                        @if (cat.categoryPictures != null)
+                        {
+                        <div class="item-card_list">
+
+                            <div class="category-image">
+                                <img class="lazyautosizes lazyloaded " data-widths="[160, 240, 320]"
+                                     data-aspectratio="" data-sizes="auto"
+                                     alt="" style="" 
+                                     src="/uploads/@cat.categoryPictures[0].picture.MimeType" />
+                            </div>
+                            <div class="category-name">
+                                <h3 class="cat-block-title">@cat.Name</h3>
+
+                            </div>
+                        </div>
+                        }
+                    }
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>

@@ -43,6 +43,7 @@ namespace Core.Entites
         public string CouponCode { get; set; }
 
         //public bool IsCumulative { get; set; }
+        public string Picture { get; set; }
 
         //public int DiscountLimitationId { get; set; }
 

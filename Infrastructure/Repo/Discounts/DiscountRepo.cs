@@ -1,6 +1,7 @@
 ﻿using Core.Entites;
 using Core.Interfaces.Discounts;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,11 @@ namespace Infrastructure.Repo.Discounts
             return _dbcontext.discounts.ToList();
         }
 
+        public Task<List<Discount>> GetForbanner()
+        {
+            return _dbcontext.discounts.Take(6).OrderBy(x=>x.DiscountTypeId).ToListAsync();
+        }
+
         public Discount GetByID(int id)
         {
             return _dbcontext.discounts.FirstOrDefault(x => x.Id == id);
@@ -51,6 +57,85 @@ namespace Infrastructure.Repo.Discounts
             if (discountProduct!=null)
              _dbcontext.discountProducts.Remove(discountProduct);
         }
+
+        public async Task<IList<Discount>> GetAppliedDiscountsOnProductAsync(Product product)
+        {
+            var products = _dbcontext.products.Where(x => x.HasDiscountsApplied);
+
+            var discounts = await (from dp in _dbcontext.discountProducts 
+                           join dpm in _dbcontext.discounts on dp.DiscountsId equals dpm.Id
+                           where dp.ProductsId == product.Id
+                           select dpm).ToListAsync();
+            return discounts;
+        }
+
+        public virtual List<Discount> GetPreferredDiscount(IList<Discount> discounts,
+          decimal amount, out decimal discountAmount)
+        {
+            if (discounts == null)
+                throw new ArgumentNullException(nameof(discounts));
+
+            var result = new List<Discount>();
+            discountAmount = decimal.Zero;
+            if (!discounts.Any())
+                return result;
+
+            //first we check simple discounts
+            foreach (var discount in discounts)
+            {
+                var currentDiscountValue = GetDiscountAmount(discount, amount);
+                if (currentDiscountValue <= discountAmount)
+                    continue;
+
+                discountAmount = currentDiscountValue;
+
+                result.Clear();
+                result.Add(discount);
+            }
+            //now let's check cumulative discounts
+            //right now we calculate discount values based on the original amount value
+            //please keep it in mind if you're going to use discounts with "percentage"
+            var cumulativeDiscounts = discounts.ToList();
+            if (cumulativeDiscounts.Count <= 1)
+                return result;
+
+            var cumulativeDiscountAmount = cumulativeDiscounts.Sum(d => GetDiscountAmount(d, amount));
+            if (cumulativeDiscountAmount <= discountAmount)
+                return result;
+
+            discountAmount = cumulativeDiscountAmount;
+
+            result.Clear();
+            result.AddRange(cumulativeDiscounts);
+
+            return result;
+        }
+
+        public virtual decimal GetDiscountAmount(Discount discount, decimal amount)
+        {
+            if (discount == null)
+                throw new ArgumentNullException(nameof(discount));
+
+            //calculate discount amount
+            decimal result;
+            if (discount.UsePercentage)
+                result = (decimal)((float)amount * (float)discount.DiscountPercentage / 100f);
+            else
+                result = discount.DiscountAmount;
+
+            //validate maximum discount amount
+            if (discount.UsePercentage &&
+                discount.MaximumDiscountAmount.HasValue &&
+                result > discount.MaximumDiscountAmount.Value)
+                result = discount.MaximumDiscountAmount.Value;
+
+            if (result < decimal.Zero)
+                result = decimal.Zero;
+
+            return result;
+        }
+
+
         //public Discount GetProductsByDiscount(int id)
         //{
         //    var customers = (from ur in _dbcontext.discountProducts

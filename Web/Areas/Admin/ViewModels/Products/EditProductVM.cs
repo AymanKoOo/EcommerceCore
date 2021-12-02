@@ -17,7 +17,7 @@ namespace Web.Areas.Admin.ViewModels
 
         // n-1 relationships
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category category { get; set; }
         public  List<Category> categories { get; set; }
     }
 }

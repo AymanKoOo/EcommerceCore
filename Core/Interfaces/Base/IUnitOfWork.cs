@@ -1,4 +1,5 @@
 ﻿using Core.Interfaces.Discounts;
+using Core.Interfaces.Media;
 using Infrastructure.Repo;
 using System;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace Core.Interfaces
         ICustomerRepo Customer { get; }
         IRoleRepo role { get; }
         IDiscount discount { get; }
+        IPictureRepo picture { get; }
         void Save();
     }
 }

@@ -1,11 +1,115 @@
-let search = document.querySelector(".search")
-let btn = document.querySelector(".btn")
-let input = document.querySelector(".input")
+// function extend(Child,Parent){
+//   Child.prototype = Object.create(Parent.prototype);
+//   Child.prototype.constructor = Parent;
+// }
+// function Cat(){
+// }
 
-btn.addEventListener('click', () => {
-    search.classList.toggle('active');
-    input.focus()
-})
+// Cat.prototype.walk = function(){
+// console.log("aa");
+// }
+
+// let cat = new Cat();
+// console.log(cat);
+
+// function aa(){
+
+
+// }
+// extend(aa,Cat);
+// let b = new aa();
+// console.log(b);
+
+
+// function myFunction(event) {
+//   var x = event.offsetX;
+//   console.log("aa");
+// }
+
+
+// document.querySelector("#panel").addEventListener("click",function(event){
+// var x= event.offsetX;
+// var y=event.offsetY;
+
+// console.log(x,y)
+
+// var square = document.createElement("div");
+// var widthh =String(console.log(Math.abs(x-y)));
+// square.style.width="25px";
+// square.style.height="25px";
+// square.style.position="absolute";
+// square.style.left=x+"px";
+// square.style.top=y+"px";
+// square.style.backgroundColor="black"
+// square.style.animation
+// console.log(square);
+// var panel = document.querySelector("#panel");
+// panel.appendChild(square);
+
+// })
+
+// document.querySelector("#bb").addEventListener("change",function(event){
+//  console.log(event.target.value);
+// })
+
+// //foreach https://stackoverflow.com/questions/14544104/checkbox-check-event-listener
+// document.querySelector("input[name=checkbox]").addEventListener("change",function(event){
+// console.log(event.target.value);
+// })
+/////////////////////////////
+// var items = document.querySelectorAll(".products li");
+// var cart = document.getElementById("crt");
+// items.forEach(function(item){
+//   item.onclick = function(){
+//      cart.innerHTML+=item.textContent;
+//   }})
+
+//   const data = null;
+
+// const xhr = new XMLHttpRequest();
+
+
+// xhr.onreadystatechange= function(){
+
+//   if(this.status==200){
+//      console.log(JSON.parse(xhr.responseText))    
+//   }
+
+// };
+// xhr.open("GET","httt");
+// xhr.send();
+
+// $(document).ready(function(){
+
+//   $("button").animate(){
+
+//   }
+
+//   var t = $("div").text(); // get text in that div
+
+//   $("div").text("aaaa");
+//   $("div").html("aaaa");
+//   $("input").val("")
+//   $("input").attr("id","33");
+//   $("input").attr("id")
+//   $("p").addClass("test")
+//   $('aa').removeClass("aa");
+//   $('aa').css("aa");
+//   $('aa').toggleClass("red");
+//   $('aa').on("click".function(){
+
+//   })
+
+//   document.getElementById("dd").addClass("test");
+//   //.innerhtml
+
+//   });
+
+
+
+
+// });
+
 
 
 
@@ -123,7 +227,7 @@ function removeProduct(e) {
 
 ////////
 jQuery(document).ready(function ($) {
-    var $owl = $('.owl-carousel');
+    var $owl = $('#owl-category');
     $owl.children().each(function (index) {
         jQuery(this).attr('data-position', index);
     });
@@ -131,16 +235,51 @@ jQuery(document).ready(function ($) {
     $owl.owlCarousel({
         loop: true,
         margin: 10,
-        nav: true,
+        responsiveClass: true,
         responsive: {
             0: {
-                items: 1
+                items: 2,
+                nav: true
             },
             600: {
-                items: 3
+                items: 2,
+                nav: false
             },
             1000: {
-                items: 5
+                items: 5,
+                nav: true,
+                loop: false
+            }
+        }
+    });
+    $(document).on('click', '.item', function () {
+        $owl.trigger('to.owl.carousel', $(this).data('position'));
+    });
+});
+
+jQuery(document).ready(function ($) {
+    var $owl = $('#owl-discount');
+    $owl.children().each(function (index) {
+        jQuery(this).attr('data-position', index);
+    });
+
+    $owl.owlCarousel({
+        loop: true,
+        margin: 10,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: true
+            },
+            600: {
+                items: 1,
+                nav: false
+            },
+            1000: {
+                items: 1,
+                nav: true,
+                loop: false
             }
         }
     });
@@ -150,7 +289,36 @@ jQuery(document).ready(function ($) {
 });
 
 
+jQuery(document).ready(function ($) {
+    var $owl = $('#owl-products');
+    $owl.children().each(function (index) {
+        jQuery(this).attr('data-position', index);
+    });
 
+    $owl.owlCarousel({
+        loop: true,
+        margin: 10,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 2,
+                nav: true
+            },
+            600: {
+                items: 1,
+                nav: false
+            },
+            1000: {
+                items: 5,
+                nav: true,
+                loop: false
+            }
+        }
+    });
+    $(document).on('click', '.item', function () {
+        $owl.trigger('to.owl.carousel', $(this).data('position'));
+    });
+});
 
 $(".profile-dropdown").hover(function () {
 

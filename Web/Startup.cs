@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 using Core.Entites;
 using Core.Interfaces;
 using Core.Interfaces.Discounts;
+using Core.Interfaces.Media;
 using Infrastructure.Data;
 using Infrastructure.Repo;
 using Infrastructure.Repo.Base;
 using Infrastructure.Repo.Discounts;
+using Infrastructure.Repo.Media;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -69,7 +72,10 @@ namespace Web
             services.AddScoped(typeof(ICustomerRepo), typeof(CustomerRepo));
             services.AddScoped(typeof(IRoleRepo), typeof(RoleRepo));
             services.AddScoped(typeof(IDiscount), typeof(DiscountRepo));
-            
+            services.AddScoped(typeof(IPictureRepo), typeof(PictureRepo));
+
+            services.AddScoped(typeof(IPictureService), typeof(PictureService));
+
             services.AddScoped(typeof(IDiscountModelFactory), typeof(DiscountModelFactory));
             services.AddScoped(typeof(IProductModelFactory), typeof(ProductModelFactory));
 
