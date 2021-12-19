@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Core.Entites;
 using Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Areas.Admin.ViewModels.Catalog;
 using Web.Areas.Admin.ViewModels.Products;
 using Web.Services;
 
@@ -42,7 +44,29 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
 
-  
+        public async Task<AProductModel> PrepareProductModelAsync(AProductModel model, Product product)
+        {
+            if (product != null)
+            {
+                //fill in model values from the entity
+                if (model == null)
+                {
+                    model = mapper.Map<AProductModel>(product);
+                }
+            }
+            //set default values for the new model
+            if (product == null)
+            {
+                
+            }
+            
+            //prepare model select categories
+            var categories = await unitOfWork.Category.GetAllCategoriesAsync();
+            model.categories = categories;
+
+            return model;
+        }
+
         public virtual async Task<ProductListModel> PrepareProductNODiscountListModelAsync(int pageSize, int pageNumber)
         {
             var products = unitOfWork.Product.GetAllProductsWithoutDiscountList(pageSize, pageNumber);

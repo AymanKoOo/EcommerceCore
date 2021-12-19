@@ -61,7 +61,7 @@ namespace Infrastructure.Repo.Discounts
         public async Task<IList<Discount>> GetAppliedDiscountsOnProductAsync(Product product)
         {
             var products = _dbcontext.products.Where(x => x.HasDiscountsApplied);
-
+            //
             var discounts = await (from dp in _dbcontext.discountProducts 
                            join dpm in _dbcontext.discounts on dp.DiscountsId equals dpm.Id
                            where dp.ProductsId == product.Id

@@ -346,3 +346,18 @@ function addToCart(id) {
 
 
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    // add padding top to show content behind navbar
+    navbar_height = document.querySelector('.navbar').offsetHeight;
+    document.body.style.paddingTop = navbar_height + 'px';
+});
+
+window.addEventListener('scroll', (e) => {
+    const nav = document.querySelector('.navbar');
+    if (window.pageYOffset > 0) {
+        nav.classList.add("add-shadow");
+    } else {
+        nav.classList.remove("add-shadow");
+    }
+});

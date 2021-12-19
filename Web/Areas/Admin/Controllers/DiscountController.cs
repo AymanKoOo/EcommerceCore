@@ -60,6 +60,7 @@ namespace Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.UsePercentage = true;
                 //Insert Discount
                 // await .InsertDiscountAsync(discount);
                 var response =  _unitOfWork.discount.Add(model);

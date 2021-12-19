@@ -1,4 +1,5 @@
 ﻿using Core.Entites;
+using Core.Interfaces;
 using Infrastructure.Repo.Base;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace Infrastructure.Services
 {
     public class PriceCalculationService : IPriceCalculationService
     {
-        private readonly UnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
-        public PriceCalculationService(UnitOfWork unitOfWork)
+        public PriceCalculationService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
@@ -20,47 +21,47 @@ namespace Infrastructure.Services
         {
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
-          
-                var discounts = new List<Discount>();
-                var appliedDiscountAmount = decimal.Zero;
 
-                //initial price
-                var price = product.UnitPrice;
+            var discounts = new List<Discount>();
+            var appliedDiscountAmount = decimal.Zero;
 
-              
-                var priceWithoutDiscount = price;
-                
-                //if has discount
-             
-                    //discount
-                    var (tmpDiscountAmount, tmpAppliedDiscounts) = await GetDiscountAmountAsync(product,price);
-                    price -= tmpDiscountAmount;
-                   
-                    if (tmpAppliedDiscounts?.Any() ?? false)
-                    {
-                        discounts.AddRange(tmpAppliedDiscounts);
-                        appliedDiscountAmount = tmpDiscountAmount;
-                    }
-              
+            //initial price
+            var price = product.Price;
 
-                if (price < decimal.Zero)
-                    price = decimal.Zero;
 
-                if (priceWithoutDiscount < decimal.Zero)
-                    priceWithoutDiscount = decimal.Zero;
+            var priceWithoutDiscount = price;
 
-                return (priceWithoutDiscount, price, appliedDiscountAmount, discounts);
+            //if has discount
+
+            //discount
+            var (tmpDiscountAmount, tmpAppliedDiscounts) = await GetDiscountAmountAsync(product, price);
+            price -= tmpDiscountAmount;
+
+            if (tmpAppliedDiscounts?.Any() ?? false)
+            {
+                discounts.AddRange(tmpAppliedDiscounts);
+                appliedDiscountAmount = tmpDiscountAmount;
+            }
+
+
+            if (price < decimal.Zero)
+                price = decimal.Zero;
+
+            if (priceWithoutDiscount < decimal.Zero)
+                priceWithoutDiscount = decimal.Zero;
+
+            return (priceWithoutDiscount, price, appliedDiscountAmount, discounts);
         }
-        
+
         protected virtual async Task<(decimal, List<Discount>)> GetDiscountAmountAsync(Product product,
              decimal productPriceWithoutDiscount)
-          {
+        {
             if (product == null)
                 throw new ArgumentNullException(nameof(product));
 
             var appliedDiscounts = new List<Discount>();
             var appliedDiscountAmount = decimal.Zero;
-        
+
             var allowedDiscounts = await GetAllowedDiscountsAsync(product);
 
             //no discounts
@@ -78,7 +79,7 @@ namespace Infrastructure.Services
 
             //discounts applied to products
             foreach (var discount in await GetAllowedDiscountsAppliedToProductAsync(product))
-                    allowedDiscounts.Add(discount);
+                allowedDiscounts.Add(discount);
 
             return allowedDiscounts;
         }
@@ -91,7 +92,7 @@ namespace Infrastructure.Services
 
             //we use this property ("HasDiscountsApplied") for performance optimization to async Task unnecessary database calls
             foreach (var discount in await unitOfWork.discount.GetAppliedDiscountsOnProductAsync(product))
-                    allowedDiscounts.Add(discount);
+                allowedDiscounts.Add(discount);
 
             return allowedDiscounts;
         }

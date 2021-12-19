@@ -24,7 +24,7 @@ namespace Core.Entites
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public virtual ICollection<Discount> Discounts { get; set; }
+        public virtual ICollection<DiscountProduct> Discounts { get; set; }
 
         public List<ProductPicture> productPictures { get; set; }
     }

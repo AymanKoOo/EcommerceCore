@@ -6,16 +6,14 @@
 
 @model IEnumerable<Web.DTOs.ProductDTO>
 
-<div class="container mt-5">
+<div class="container mb-5 mt-5">
 
     <div class="row">
 
         <div class="col-lg-5 col-md-5 col-sm-12">
-
             <div class="featured-products">
                 FEATURED PRODUCTS
             </div>
-
         </div>
 
         <div class="col-lg-7 col-md-7 col-sm-12">
@@ -48,16 +46,16 @@
 
                     <a href="#">
 
-                        <img class="pic-prduct" src="~/uploads/@product.productPictures[0].picture">
+                        <img class="pic-prduct" src="/uploads/@product.productPictures[0].picture.MimeType" />
 
                     </a>
 
-                    <span class="discount">Sale</span>
+                    <span class="discount">@product.Discounts[0].discounts.DiscountPercentage %</span>
 
-                    <div class="quick-view">
-                        <span class="text">
-                            Quick View
-                        </span>
+                    <div class="product-button">
+                        <a href="Javascript:Void(0)" onclick="AddToCart(4);" class="tool-btn" data-mode="top" data-tip="Add to cart"><i class="fa fa-shopping-bag"></i></a>
+                        <a href="Javascript:Void(0)" onclick="AddToWish(4);" class="tool-btn" data-mode="top" data-tip="Add to wish"><i class="fa fa-heart"></i></a>
+                        <a href="Javascript:Void(0)" onclick="AddToCompare(4);" class="tool-btn" data-mode="top" data-tip="Add To Compare"><i class="fa fa-refresh"></i></a>
                     </div>
 
                 </div>
@@ -73,8 +71,11 @@
                 </div>
 
                 <div class="price">
-                    <del class="old-price">@product.UnitPrice</del>
-                    <span class="product-price">$49.00</span>
+                    @if (product.HasDiscountsApplied == true)
+                    {
+                        <del class="old-price">@product.OldPrice</del>
+                    }
+                    <span class="product-price">@product.Price</span>
                 </div>
             </div>
         }

@@ -1,0 +1,88 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<Web.DTOs.ProductDTO>
+
+<hr>
+
+<div class="section-title text-center w-100 mt-5 mb-5" style="margin-bottom: 1.6rem">
+    <h3 class="title">Deals &amp; Outlet</h3>
+</div>
+<div class="section-products">
+    <div class="main-Container">
+
+        <div class="container">
+
+            <div class="row products-list">
+
+
+                @foreach (var product in Model)
+                {<div class="col-lg-3 col-md-3 col-6">
+
+                        <div class="product item">
+
+                            <div class="product-image">
+
+                                <a href="#">
+
+                                    <img class="pic-prduct" src="/uploads/@product.productPictures[0].picture.MimeType" />
+                                  
+                                </a>
+
+                                <span class="discount">@product.Discounts[0].discounts.DiscountPercentage %</span>
+
+                                <div class="product-button">
+                                    <a href="Javascript:Void(0)" onclick="AddToCart(4);" class="tool-btn" data-mode="top" data-tip="Add to cart"><i class="fa fa-shopping-bag"></i></a>
+                                    <a href="Javascript:Void(0)" onclick="AddToWish(4);" class="tool-btn" data-mode="top" data-tip="Add to wish"><i class="fa fa-heart"></i></a>
+                                    <a href="Javascript:Void(0)" onclick="AddToCompare(4);" class="tool-btn" data-mode="top" data-tip="Add To Compare"><i class="fa fa-refresh"></i></a>
+                                </div>
+
+                            </div>
+
+                            <div class="category">
+                                @product.Category.Name
+                            </div>
+
+                            <div class="name">
+
+                                @product.Name
+
+                            </div>
+
+                            <div class="price">
+                                @if (product.HasDiscountsApplied == true)
+                                {
+                                    <del class="old-price">@product.OldPrice</del>
+                                }
+                                <span class="product-price">@product.Price</span>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+
+
+            </div>
+
+        </div>
+
+        <div class="browse-btn">
+
+            <a href="#">
+                BROWSE ALL ->
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

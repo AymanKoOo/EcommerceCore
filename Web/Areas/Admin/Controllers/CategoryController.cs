@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Areas.Admin.Factories;
+using Web.Areas.Admin.ViewModels.Catalog;
 using Web.Areas.Admin.ViewModels.Categories;
 namespace Web.Areas.Admin.Controllers
 {
@@ -19,13 +21,15 @@ namespace Web.Areas.Admin.Controllers
 
         readonly private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ICategoryModelFactory categoryModelFactory;
         private readonly IWebHostEnvironment environment;
         private readonly IPictureService picture;
 
-        public CategoryController(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment, IPictureService picture)
+        public CategoryController(IUnitOfWork unitOfWork, IMapper mapper, ICategoryModelFactory categoryModelFactory, IWebHostEnvironment environment, IPictureService picture)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            this.categoryModelFactory = categoryModelFactory;
             this.environment = environment;
             this.picture = picture;
         }
@@ -59,13 +63,15 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpGet("AddCategory")]
-        public IActionResult AddCategory()
+        public async Task<IActionResult> AddCategory()
         {
-            return View();
+            var model = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(), null);
+
+            return View(model);
         }
 
         [HttpPost("AddCategory")]
-        public async Task<IActionResult> AddCategory(CategoryVM model)
+        public async Task<IActionResult> AddCategory(ACategoryModel model)
         {
             //if (!ModelState.IsValid)
             //{

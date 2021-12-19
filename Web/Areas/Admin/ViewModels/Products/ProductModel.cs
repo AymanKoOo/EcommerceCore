@@ -17,6 +17,8 @@ namespace Web.Areas.Admin.ViewModels.Products
         public decimal UnitPrice { get; set; }
         public string CategoryId { get; set; }
         public bool Checked { get; set; }
+
+        public List<Category> categories { get; set; }
         public CategoryVM Category { get; set; }
     }
 }

@@ -27,13 +27,13 @@ namespace Web.Areas.Admin.Controllers
         private readonly IPictureService picture;
         private readonly IWebHostEnvironment environment;
 
-        public IProductModelFactory ProductModelFactory { get; }
+        public IProductModelFactory _productModelFactory { get; }
 
         public ProductController(IUnitOfWork unitOfWork, IMapper mapper, IProductModelFactory ProductModelFactory, IPictureService picture, IWebHostEnvironment environment)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            this.ProductModelFactory = ProductModelFactory;
+            this._productModelFactory = ProductModelFactory;
             this.picture = picture;
             this.environment = environment;
         }
@@ -41,44 +41,37 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index(int pageSize=5, int pageNumber=1)
         {
             // var products = _unitOfWork.Product.GetAllProducts();
-            var productsList = await ProductModelFactory.PrepareProductListModelAsync(pageSize, pageNumber);
+            var productsList = await _productModelFactory.PrepareProductListModelAsync(pageSize, pageNumber);
             return View(productsList);
         }
 
 
         [HttpGet("EditProduct")]
-        public IActionResult EditProduct(int productID)
+        public async Task<IActionResult> EditProduct(int productID)
         {
             var product = _unitOfWork.Product.GetProduct(productID);
-            var categories = _unitOfWork.Category.GetAllCategories();
 
-            var model = new EditProductVM
-            {
-                Id = productID,
-                Name = product.Name,
-                Description = product.Description,
-                ImageFile = product.ImageFile,
-                UnitPrice = product.UnitPrice,
-                // n-1 relationships
-                CategoryId = product.CategoryId,
-            //    categories = categories
-            };
+            var model = await _productModelFactory.PrepareProductModelAsync(null, product);
+
             return View(model);
         }
 
         [HttpPost("EditProduct")]
         public IActionResult EditProduct(Core.Entites.Product product)
         {
-            var Product = _unitOfWork.Product.GetProduct(product.Id);
-            Product.ImageFile = product.ImageFile;
-            Product.Name = product.Name;
-            Product.UnitPrice = product.UnitPrice;
+            if (ModelState.IsValid)
+            {
+                var Product = _unitOfWork.Product.GetProduct(product.Id);
+                Product.ImageFile = product.ImageFile;
+                Product.Name = product.Name;
+                Product.Price = product.Price;
 
-            Product.CategoryId = product.CategoryId;
-            Product.Description = product.Description;
+                Product.CategoryId = product.CategoryId;
+                Product.Description = product.Description;
 
-            _unitOfWork.Product.Update(Product);
-            _unitOfWork.Save();
+                _unitOfWork.Product.Update(Product);
+                _unitOfWork.Save();
+            }
             return Redirect("/");
         }
 
@@ -97,7 +90,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost("AddProduct")]
         public async Task<IActionResult> AddProduct(ProductDTO model)
         {
-            var picName = await picture.UploadPictureAsync(model.ImageFile, environment.WebRootPath);
+            var picName = await picture.UploadPictureAsync(model.PictureFile, environment.WebRootPath);
 
             var picObj = new Picture
             {

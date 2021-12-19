@@ -9,7 +9,7 @@
 @{
 }
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model Web.Areas.Admin.ViewModels.Categories.CategoryVM
+@model Web.Areas.Admin.ViewModels.Catalog.ACategoryModel
 
 <div class="contenti">
     <div class="container">
@@ -36,6 +36,19 @@
                         <input type="file" accept="image/*" name="ImgCategory" asp-for="ImgCategory" />
                     </div>
                 </div>
+
+                <label>
+                    Parent category:
+                </label>
+
+                <select asp-for="ParentCategoryId">
+
+                    @foreach (var category in Model.AvailableCategories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+
+                </select>
 
                 <button class="btn btn-primary" type="submit">
                     Add

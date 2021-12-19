@@ -6,6 +6,8 @@ using AutoMapper;
 using Core.Entites;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Web.Areas.Admin.Factories;
+using Web.Areas.Admin.ViewModels.Catalog;
 using Web.DTOs;
 
 namespace Web.Controllers
@@ -15,11 +17,13 @@ namespace Web.Controllers
     {
         private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ICategoryModelFactory categoryModelFactory;
 
-        public CategoryController(IUnitOfWork unitOfWork, IMapper mapper)
+        public CategoryController(IUnitOfWork unitOfWork, IMapper mapper, ICategoryModelFactory categoryModelFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            this.categoryModelFactory = categoryModelFactory;
         }
 
 
@@ -40,35 +44,38 @@ namespace Web.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Index()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Index(int id)
         {
-            var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetAllProducts());
-            var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetAllCategories());
+            //var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetAllProducts());
+            //var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetAllCategories());
 
+            //var indexdto = new IndexDTO
+            //{
+            //    productDTOs = products,
+            //    categoryDTOs = categories
+            //};
+            var category = _unitOfWork.Category.GetCategoryByID(id);
 
-            var indexdto = new IndexDTO
-            {
-                productDTOs = products,
-                categoryDTOs = categories
-            };
+            //prepare model
+            var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(), category);
 
-            return View(indexdto);
+            return View(categoryModel);
         }
 
-        [HttpPost]
-        [Route("index")]
-        public IActionResult Index(int categoryID)
-        {
-            var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetProductsByCatgory(categoryID));
+        //[HttpPost]
+        //[Route("index")]
+        //public IActionResult Index(int categoryID,int s)
+        //{
+        //    var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetProductsByCatgory(categoryID));
 
-            var indexdto = new IndexDTO
-            {
-                productDTOs = products
-            };
+        //    var indexdto = new IndexDTO
+        //    {
+        //        productDTOs = products
+        //    };
 
-            return Ok(indexdto);
-        }
+        //    return Ok(indexdto);
+        //}
 
     }
 }

@@ -30,6 +30,11 @@ namespace Infrastructure.Repo
             return (from cat in _dbcontext.Categories
                    select cat).Include(x=>x.categoryPictures).ThenInclude(e=>e.picture).ToList();
         }
+        public async Task<List<Category>> GetAllCategoriesAsync()
+        {
+            return await (from cat in _dbcontext.Categories
+                    select cat).Include(x => x.categoryPictures).ThenInclude(e => e.picture).ToListAsync();
+        }
         public async Task<IEnumerable<Category>> GetAllCategoriesHome()
         {
             return await _dbcontext.Categories.Include(x => x.categoryPictures).ThenInclude(e => e.picture).ToListAsync();
@@ -39,6 +44,12 @@ namespace Infrastructure.Repo
         {
             return _dbcontext.Categories.FirstOrDefault(m => m.Id == id);
         }
+
+        public async Task<List<Category>> GetSubCategory(int CategoryId)
+        {
+            return await _dbcontext.Categories.Where(x => x.ParentCategoryId == CategoryId).ToListAsync();
+        }
+
         public async Task<Category> GetCategory(string categoryName)
         {
             return  await  _dbcontext.Categories.FirstOrDefaultAsync(m => m.Name == categoryName);

@@ -53,7 +53,7 @@ namespace Core.Entites
 
         //public bool AppliedToSubCategories { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<DiscountProduct> Discounts { get; set; }
         //public virtual DiscountType DiscountType { get; set; }
     }
 }

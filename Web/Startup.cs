@@ -76,8 +76,12 @@ namespace Web
 
             services.AddScoped(typeof(IPictureService), typeof(PictureService));
 
+            services.AddScoped(typeof(IPriceCalculationService), typeof(PriceCalculationService));
+
+
             services.AddScoped(typeof(IDiscountModelFactory), typeof(DiscountModelFactory));
             services.AddScoped(typeof(IProductModelFactory), typeof(ProductModelFactory));
+            services.AddScoped(typeof(ICategoryModelFactory), typeof(CategoryModelFactory));
 
             //Static FIles//
             services.AddCors(c => {

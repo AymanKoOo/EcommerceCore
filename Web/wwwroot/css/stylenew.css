@@ -3,15 +3,16 @@
 
 html {
 }
+
 body {
     font-family: sans-serif;
-    perspective: 600px;
+ 
 }
 
 .main-Container {
     margin-left: 90px;
     margin-right: 90px;
-    margin-top:20px;
+    margin-top: 20px;
 }
 
 a {
@@ -75,7 +76,7 @@ li {
 
 .nav-item {
     position: relative;
-    margin-right: 20px;
+    margin-left: 40px;
 }
 
 
@@ -220,15 +221,12 @@ li {
     }
 /*
  
- 
- 
- 
  */
 .title {
     text-align: center;
     font-weight: 700;
+    font-size: 2.75rem;
 }
-
 
 .pic .picCont img {
     object-fit: cover;
@@ -640,8 +638,8 @@ body.open .lightbox {
 }
 
     .product-image img {
-        width: 100%;
-        height: 100%;
+        width: 200px;
+        height: 200px;
     }
 
 .quick-view {
@@ -726,10 +724,11 @@ body.open .lightbox {
     .product:hover .add-btn .cart-pic {
         color: white;
     }
-
-.product:hover .product-image .quick-view {
-    display: inline-block;
+.product:hover .product-image .product-button {
+    opacity: 1;
+    visibility: visible;
 }
+
 
 .price {
     margin-top: 5px;
@@ -784,7 +783,6 @@ body.open .lightbox {
 
 .product {
     width: 200px;
-    height: 300px;
 }
 
 .browse-btn {
@@ -1234,7 +1232,7 @@ ddd */
     color: #333;
     font-weight: 400;
     font-size: 1rem;
-    margin-left:30%;
+    margin-left: 30%;
     letter-spacing: -.01em;
     margin-bottom: 0;
     overflow: hidden;
@@ -1364,8 +1362,9 @@ ddd */
 }
 
 .jumbotron img {
-    height: 300px;
+    max-height: 300px;
     opacity: 1;
+    cursor: pointer;
     width: 100%;
     margin-top: 10px;
 }
@@ -1373,7 +1372,6 @@ ddd */
     .jumbotron img:hover {
         opacity: 0.9;
     }
-
 
 .navbar .active a {
     border-bottom: 2px solid rgb(196, 76, 76);
@@ -1386,9 +1384,8 @@ ddd */
 
 .owl-carousel .owl-item .item-card_list img {
     width: 150px;
+    height: 119px;
 }
-
-
 
 
 .banner-discount img {
@@ -1405,4 +1402,153 @@ ddd */
 .contain {
     margin: auto;
 }
+
+.owl-carousel .owl-item .product-image img {
+    /* height: 220px; */
+    height: 320px;
+    width: 260px;
+}
+
+.submenu {
+    position: absolute;
+    background-color: white;
+    width: 140px;
+    left: 0;
+    padding: 0;
+    transition: all ease-in 0.3s;
+    width: 280px;
+    display: none;
+}
+
+    .submenu li:hover a {
+        color: #da7676;
+    }
+
+    .submenu li:hover .arrow {
+        border: solid #da7676;
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: 3px;
+        position: absolute;
+        margin-top: 7px;
+        right: 10%;
+    }
+
+    .submenu a {
+        color: rgb(91, 91, 91);
+        font-size: 15px;
+        margin-left: 20px;
+        font-weight: bold;
+    }
+
+    .submenu li {
+        margin-top: 20px;
+    }
+
+
+.arrow {
+    border: solid #1c1b1b;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    position: absolute;
+    margin-top: 7px;
+    right: 10%;
+}
+
+
+
+.submenu li {
+    margin-bottom: 10px;
+}
+
+.submenu2 {
+    transition: 0.3s;
+    width: 280px;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: white;
+    display: none;
+    height: 100%;
+    border-left: 0.1px solid rgb(209, 203, 203);
+}
+
+.navbar-nav li:hover > .submenu {
+    display: block;
+}
+
+.submenu li:hover > .submenu2 {
+    display: block;
+}
+.navbar-nav {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+.navbar {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.product .product-button {
+    position: absolute;
+    top: 75%;
+    width: 50%;
+    display: table;
+    text-align: center;
+    background-color: white;
+    border: 1px solid #eeeeee;
+    visibility: hidden;
+    transition: visibility 0.3s linear,;
+    align-content: center;
+    left: 20%;
+    right: 20%;
+}
+
+    .product .product-button a {
+        display: table-cell;
+        color: black;
+        font-size: 20px;
+        padding: 12px 20px;
+        border-right: 1px solid #eeeeee;
+        transition: color ease-in 0.1s;
+        opacity: 0.3s linear;
+    }
+
+    .product .product-button .tool-btn:hover {
+        color: #da7676;
+    }
+
+
+
+.product-image img {
+    height: 320px;
+    width: 260px;
+}
+
+nav .fa {
+    font-size: 25px;
+    color: #282626;
+    margin-right: 15px;
+}
+
+
+.add-shadow {
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+}
+
+.nav-itemP svg {
+    font-size: 25px;
+    color: #282626;
+    margin-right: 15px;
+}
+
+
+
+
+
+
 

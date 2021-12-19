@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211203232315_aa")]
+    partial class aa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -430,6 +432,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("products");
                 });
 
+            modelBuilder.Entity("DiscountProduct", b =>
+                {
+                    b.Property<int>("DiscountsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DiscountsId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("DiscountProduct");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -590,13 +607,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entites.DiscountProduct", b =>
                 {
                     b.HasOne("Core.Entites.Discount", "discounts")
-                        .WithMany("Discounts")
+                        .WithMany()
                         .HasForeignKey("DiscountsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entites.Product", "products")
-                        .WithMany("Discounts")
+                        .WithMany()
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -630,6 +647,21 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("DiscountProduct", b =>
+                {
+                    b.HasOne("Core.Entites.Discount", null)
+                        .WithMany()
+                        .HasForeignKey("DiscountsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entites.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -693,11 +725,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("categoryPictures");
                 });
 
-            modelBuilder.Entity("Core.Entites.Discount", b =>
-                {
-                    b.Navigation("Discounts");
-                });
-
             modelBuilder.Entity("Core.Entites.Order", b =>
                 {
                     b.Navigation("Items");
@@ -712,8 +739,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entites.Product", b =>
                 {
-                    b.Navigation("Discounts");
-
                     b.Navigation("productPictures");
                 });
 #pragma warning restore 612, 618

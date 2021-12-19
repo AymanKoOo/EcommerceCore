@@ -1,4 +1,4 @@
-﻿@model Web.DTOs.IndexDTO;
+﻿@model Web.Areas.Admin.ViewModels.Catalog.ACategoryModel
 
 
 <ul class="breadcrumb">
@@ -8,6 +8,13 @@
 
 <hr>
 <!---jUMPTron-->
+@foreach (var item in Model.AvailableCategories)
+{
+    <li class="list-group-item">
+        <a href="#">@item.Name</a>
+
+    </li>
+}
 
 <div class="container mt-5 product-detail">
     <div class="row justify-content-md-center">
@@ -24,13 +31,15 @@
                     <hr>
                     <ul class="list-group">
 
-                        @foreach (var item in Model.categoryDTOs)
-                        {
 
+                        @foreach (var item in Model.SubCategories)
+                        {
                             <li class="list-group-item">
-                                <input class="check" name="AreChecked" type="checkbox" value="@item.Id" /> @item.Name<br />
+                                <a href="#">@item.Name</a>
+
                             </li>
                         }
+
                     </ul>
 
                 </div>
@@ -105,8 +114,26 @@
 
 
                         <div class="row justify-content-md-center  filterd-products">
-                            
 
+                            @foreach (var product in Model.Products)
+                            {
+                                           <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                <div id="productsClick">
+                                    <div class="pic">
+                                        <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
+
+                                        <div class="product-content">
+                                            <h3>@product.Name</h3>
+                                            <a href="">@product.Price</a>
+                                        </div>
+
+                                        <button onclick="">Details</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            }
                         </div>
 
                     </div>
@@ -157,11 +184,11 @@
                                         <a href="">`+response.productDTOs[i].unitPrice+`</a>
                                     </div>
 
-                                    <button onclick="myFunction(`+response.productDTOs[i].id+`)">Details</button>        
+                                    <button onclick="myFunction(`+response.productDTOs[i].id+`)">Details</button>
 
                                 </div>
                             </div>
-                            </div>	
+                            </div>
                                  `);
                         }
                     },
@@ -186,6 +213,6 @@
 
     }
 
-  
+
 
 </script>

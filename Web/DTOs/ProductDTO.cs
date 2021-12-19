@@ -18,12 +18,14 @@ namespace Web.DTOs
         public decimal OldPrice { get; set; }
         public decimal Price { get; set; }
         public string CategoryId { get; set; }
-        public IFormFile ImageFile { get; set; }
+        public IFormFile PictureFile { get; set; }
+        public bool HasDiscountsApplied { get; set; }
 
-        
+        public string ImageFile { get; set; }
+
         public Category Category { get; set; }
 
-        public virtual ICollection<Discount> Discounts { get; set; }
+        public virtual List<DiscountProduct> Discounts { get; set; }
 
         public List<ProductPicture> productPictures { get; set; }
 

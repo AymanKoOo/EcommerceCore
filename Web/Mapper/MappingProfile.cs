@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels;
+using Web.Areas.Admin.ViewModels.Catalog;
 using Web.Areas.Admin.ViewModels.Categories;
 using Web.Areas.Admin.ViewModels.Discounts;
 using Web.Areas.Admin.ViewModels.Products;
@@ -32,12 +33,22 @@ namespace Web.Mapper
             CreateMap<DiscountProductModel, Product>();
             CreateMap<Product, DiscountProductModel>();
 
-            CreateMap<ProductModel, Product>();
-            CreateMap<Product, ProductModel>();
-
+            CreateMap<List<ProductDTO>, Product>();
+            CreateMap<ProductDTO, Product>();
+            CreateMap<Product, ProductDTO>();
 
             CreateMap<Category, CategoryVM>();
             CreateMap<CategoryVM, Category>();
+
+            CreateMap<ProductModel, Product>();
+            CreateMap<Product, ProductModel>();
+
+            CreateMap<AProductModel, Product>();
+            CreateMap<Product, AProductModel>();
+
+            CreateMap<ACategoryModel, Category>();
+            CreateMap<Category, ACategoryModel>();
+
         }
     }
 }
