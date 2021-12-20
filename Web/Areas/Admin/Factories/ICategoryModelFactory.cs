@@ -9,6 +9,6 @@ namespace Web.Areas.Admin.Factories
 {
     public interface ICategoryModelFactory
     {
-        public Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category);
+        public Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category, int pageSize = 5, int pageNumber = 1);
     }
 }

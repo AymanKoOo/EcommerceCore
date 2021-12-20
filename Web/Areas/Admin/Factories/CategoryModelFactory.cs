@@ -13,13 +13,16 @@ namespace Web.Areas.Admin.Factories
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
-        public CategoryModelFactory(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IProductModelFactory productModelFactory;
+
+        public CategoryModelFactory(IUnitOfWork unitOfWork, IMapper mapper, IProductModelFactory productModelFactory)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.productModelFactory = productModelFactory;
         }
 
-        public async Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model,Category category)
+        public async Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model,Category category, int pageSize = 5, int pageNumber = 1)
         {
             if (category != null)
             {
@@ -28,7 +31,7 @@ namespace Web.Areas.Admin.Factories
                 model.SubCategories = await unitOfWork.Category.GetSubCategory(category.Id);
 
                 //assign category products
-                model.Products = unitOfWork.Product.GetProductsByCatgory(category.Id);
+                model.ProductsList = await productModelFactory.PrepareProductByCategoryListModelAsync(category.Id,pageSize,pageNumber);
             }
 
             var categories = await unitOfWork.Category.GetAllCategoriesAsync();

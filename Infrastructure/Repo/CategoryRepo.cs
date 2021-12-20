@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Core.Entites.Catalog;
+using AyyBlog.ViewModel;
 
 namespace Infrastructure.Repo
 {
@@ -34,6 +35,16 @@ namespace Infrastructure.Repo
         {
             return await (from cat in _dbcontext.Categories
                     select cat).Include(x => x.categoryPictures).ThenInclude(e => e.picture).ToListAsync();
+        }
+
+        public PagedList<Category> GetAllCategoriesList(int pageSize, int pageNumber)
+        {
+            var category =  (from cat in _dbcontext.Categories
+                                  select cat).Include(x => x.categoryPictures).ThenInclude(e => e.picture);
+
+            return PagedList<Category>.ToPagedList(category,
+            pageNumber,
+            pageSize);
         }
         public async Task<IEnumerable<Category>> GetAllCategoriesHome()
         {
@@ -64,6 +75,7 @@ namespace Infrastructure.Repo
             };
              await  _dbcontext.categoryPictures.AddAsync(model);
         }
+      
 
         //public void AddCategoryPic(int categoryID,string picPath)
         //{

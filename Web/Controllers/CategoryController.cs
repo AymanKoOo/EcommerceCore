@@ -45,7 +45,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int id,int pageSize = 1, int pageNumber = 1)
         {
             //var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetAllProducts());
             //var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetAllCategories());
@@ -58,7 +58,7 @@ namespace Web.Controllers
             var category = _unitOfWork.Category.GetCategoryByID(id);
 
             //prepare model
-            var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(), category);
+            var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(),category,pageSize,pageNumber);
 
             return View(categoryModel);
         }

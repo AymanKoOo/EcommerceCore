@@ -15,6 +15,8 @@ namespace Core.Interfaces
         public Task<Product> GetProductByName(string name);
        
         Task<IEnumerable<Product>> GetAllProducts();
+        
+        public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber);
 
         public PagedList<Product> GetAllProductsList(int pageSize, int pageNumber);
         public PagedList<Product> GetAllProductsWithoutDiscountList(int pageSize, int pageNumber);

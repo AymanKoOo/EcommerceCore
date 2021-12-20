@@ -1,4 +1,5 @@
-﻿using Core.Entites;
+﻿using AyyBlog.ViewModel;
+using Core.Entites;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,5 +17,6 @@ namespace Core.Interfaces
         Task AddPicture(int categoryID,int picID);
         Task<List<Category>> GetAllCategoriesAsync();
         Task<List<Category>> GetSubCategory(int CategoryId);
+        PagedList<Category> GetAllCategoriesList(int pageSize, int pageNumber);
     }
 }

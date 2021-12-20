@@ -67,7 +67,16 @@ namespace Infrastructure.Repo
                    select products;
         }
 
+        public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber)
+        {
+            var products = from product in _dbcontext.products
+                           where product.CategoryId == catgoryID
+                           select product;
 
+            return PagedList<Product>.ToPagedList(products,
+            pageNumber,
+            pageSize);
+        }
 
         public IQueryable<Product> FindAll()
         {

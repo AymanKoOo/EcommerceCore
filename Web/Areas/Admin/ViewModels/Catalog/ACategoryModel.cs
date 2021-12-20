@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Areas.Admin.ViewModels.Products;
 
 namespace Web.Areas.Admin.ViewModels.Catalog
 {
@@ -25,7 +26,7 @@ namespace Web.Areas.Admin.ViewModels.Catalog
         //                 //
         public IList<Category> SubCategories { get; set; }
         public IList<Category> AvailableCategories { get; set; }
-        public IEnumerable<Product> Products { get; set; }
+        public ProductListModel ProductsList { get; set; }
         //discounts
     }
 }

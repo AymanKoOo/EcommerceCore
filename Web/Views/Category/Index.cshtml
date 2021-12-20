@@ -1,5 +1,9 @@
 ﻿@model Web.Areas.Admin.ViewModels.Catalog.ACategoryModel
 
+@{
+    int nextPage = @Model.ProductsList.CurrentPage + 1;
+    int prevPage = @Model.ProductsList.CurrentPage - 1;
+}
 
 <ul class="breadcrumb">
     <li><a href="#">HOME</a></li>
@@ -12,7 +16,6 @@
 {
     <li class="list-group-item">
         <a href="#">@item.Name</a>
-
     </li>
 }
 
@@ -31,12 +34,10 @@
                     <hr>
                     <ul class="list-group">
 
-
                         @foreach (var item in Model.SubCategories)
                         {
                             <li class="list-group-item">
                                 <a href="#">@item.Name</a>
-
                             </li>
                         }
 
@@ -115,28 +116,60 @@
 
                         <div class="row justify-content-md-center  filterd-products">
 
-                            @foreach (var product in Model.Products)
+                            @if (Model.SubCategories.Count > 0)
                             {
-                                           <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-                                <div id="productsClick">
-                                    <div class="pic">
-                                        <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
+                                @foreach (var item in Model.SubCategories)
+                                {
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                        <div id="productsClick">
+                                            <div class="pic">
+                                                <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
 
-                                        <div class="product-content">
-                                            <h3>@product.Name</h3>
-                                            <a href="">@product.Price</a>
+                                                <div class="product-content">
+                                                    <h3>@item.Name</h3>
+                                                    <a asp-controller="category" asp-action="Index" asp-route-id="@item.Id">@item.Description</a>
+                                                </div>
+
+                                                <button onclick="">Details</button>
+                                            </div>
                                         </div>
-
-                                        <button onclick="">Details</button>
-
                                     </div>
-                                </div>
-                            </div>
+                                }
+                            }
 
+                            else
+                            {
+                                @foreach (var product in Model.ProductsList.Data)
+                                {
+                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                        <div id="productsClick">
+                                            <div class="pic">
+                                                <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
+
+                                                <div class="product-content">
+                                                    <h3>@product.Name</h3>
+                                                    <a href="">@product.UnitPrice</a>
+                                                </div>
+
+                                                <button onclick="">Details</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             }
                         </div>
 
                     </div>
+
+                    <div class="clearfix">
+                            <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
+                            <ul class="pagination">
+                                <li class="page-item"> <a asp-controller="Category" asp-action="Index" asp-route-pageNumber="@prevPage">Next</a></li>
+                                
+                                <li class="page-item"> <a asp-controller="Category" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a></li>
+                            </ul>
+                        </div>
 
                 </div>
             </div>
