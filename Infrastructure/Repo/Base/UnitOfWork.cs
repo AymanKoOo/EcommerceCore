@@ -1,7 +1,9 @@
 ﻿using Core.Interfaces;
+using Core.Interfaces.Catalog;
 using Core.Interfaces.Discounts;
 using Core.Interfaces.Media;
 using Infrastructure.Data;
+using Infrastructure.Repo.Catalog;
 using Infrastructure.Repo.Discounts;
 using Infrastructure.Repo.Media;
 using System;
@@ -27,6 +29,9 @@ namespace Infrastructure.Repo.Base
 
         public IDiscount discount { get; }
         public IPictureRepo picture { get; }
+
+        public ISpecificationAttributesRepo SpecificationAttributes { get; }
+
         public UnitOfWork(DataContext context)
         {
             this._dbContext = context;
@@ -37,6 +42,7 @@ namespace Infrastructure.Repo.Base
             this.role = new RoleRepo(_dbContext);
             this.discount = new DiscountRepo(_dbContext);
             this.picture = new PictureRepo(_dbContext);
+            this.SpecificationAttributes = new SpecificationAttributesRepo(_dbContext);
         }
 
         public void Save()

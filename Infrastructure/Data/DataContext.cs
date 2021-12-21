@@ -51,6 +51,19 @@ namespace Infrastructure.Data
                 .HasOne(pt => pt.picture)
                 .WithMany(t => t.productPictures)
                 .HasForeignKey(pt => pt.PictureId);
+
+
+            builder.Entity<ProductSpecificationAttribute>().HasKey(sc => new { sc.ProductId, sc.SpecificationAttributeOptionId });
+
+            builder.Entity<ProductSpecificationAttribute>()
+               .HasOne(pt => pt.product)
+               .WithMany(p => p.ProductSpecificationAttributes)
+               .HasForeignKey(pt => pt.ProductId);
+
+            builder.Entity<ProductSpecificationAttribute>()
+                .HasOne(pt => pt.specificationAttributeOption)
+                .WithMany(t => t.ProductSpecificationAttributes)
+                .HasForeignKey(pt => pt.SpecificationAttributeOptionId);
         }
 
         public DbSet<Product> products { get; set; }
@@ -66,5 +79,11 @@ namespace Infrastructure.Data
         public DbSet<ProductPicture> productPictures { get; set; }
         public DbSet<CategoryPicture> categoryPictures { get; set; }
         public DbSet<Picture> pictures { get; set; }
+
+        public DbSet<SpecificationAttribute> specificationAttributes { get; set; }
+        public DbSet<SpecificationAttributeGroup> specificationAttributeGroups { get; set; }
+        public DbSet<SpecificationAttributeOption> SpecificationAttributeOptions { get; set; }
+
+        public DbSet<ProductSpecificationAttribute> ProductSpecificationAttribute { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211221170451_adding-specificatioan")]
+    partial class addingspecificatioan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,21 +198,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("productPictures");
                 });
 
-            modelBuilder.Entity("Core.Entites.Catalog.ProductSpecificationAttribute", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SpecificationAttributeOptionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "SpecificationAttributeOptionId");
-
-                    b.HasIndex("SpecificationAttributeOptionId");
-
-                    b.ToTable("ProductSpecificationAttribute");
-                });
-
             modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttribute", b =>
                 {
                     b.Property<int>("Id")
@@ -224,12 +211,12 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SpecificationAttributeGroupId1")
+                    b.Property<int?>("SpecificationAttributeGroupId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SpecificationAttributeGroupId1");
+                    b.HasIndex("SpecificationAttributeGroupId");
 
                     b.ToTable("specificationAttributes");
                 });
@@ -265,12 +252,12 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("specificationAttributeId1")
+                    b.Property<int?>("specificationAttributeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("specificationAttributeId1");
+                    b.HasIndex("specificationAttributeId");
 
                     b.ToTable("SpecificationAttributeOptions");
                 });
@@ -666,30 +653,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("product");
                 });
 
-            modelBuilder.Entity("Core.Entites.Catalog.ProductSpecificationAttribute", b =>
-                {
-                    b.HasOne("Core.Entites.Product", "product")
-                        .WithMany("ProductSpecificationAttributes")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entites.Catalog.SpecificationAttributeOption", "specificationAttributeOption")
-                        .WithMany("ProductSpecificationAttributes")
-                        .HasForeignKey("SpecificationAttributeOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("product");
-
-                    b.Navigation("specificationAttributeOption");
-                });
-
             modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttribute", b =>
                 {
                     b.HasOne("Core.Entites.Catalog.SpecificationAttributeGroup", "SpecificationAttributeGroup")
                         .WithMany("SpecificationAttribute")
-                        .HasForeignKey("SpecificationAttributeGroupId1");
+                        .HasForeignKey("SpecificationAttributeGroupId");
 
                     b.Navigation("SpecificationAttributeGroup");
                 });
@@ -698,7 +666,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Core.Entites.Catalog.SpecificationAttribute", "specificationAttribute")
                         .WithMany("specificationAttributeOptions")
-                        .HasForeignKey("specificationAttributeId1");
+                        .HasForeignKey("specificationAttributeId");
 
                     b.Navigation("specificationAttribute");
                 });
@@ -814,11 +782,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("SpecificationAttribute");
                 });
 
-            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeOption", b =>
-                {
-                    b.Navigation("ProductSpecificationAttributes");
-                });
-
             modelBuilder.Entity("Core.Entites.Category", b =>
                 {
                     b.Navigation("categoryPictures");
@@ -846,8 +809,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Discounts");
 
                     b.Navigation("productPictures");
-
-                    b.Navigation("ProductSpecificationAttributes");
                 });
 #pragma warning restore 612, 618
         }

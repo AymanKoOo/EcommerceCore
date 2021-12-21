@@ -5,11 +5,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.Entites;
 using Core.Interfaces;
+using Core.Interfaces.Catalog;
 using Core.Interfaces.Discounts;
 using Core.Interfaces.Media;
 using Infrastructure.Data;
 using Infrastructure.Repo;
 using Infrastructure.Repo.Base;
+using Infrastructure.Repo.Catalog;
 using Infrastructure.Repo.Discounts;
 using Infrastructure.Repo.Media;
 using Infrastructure.Services;
@@ -73,15 +75,15 @@ namespace Web
             services.AddScoped(typeof(IRoleRepo), typeof(RoleRepo));
             services.AddScoped(typeof(IDiscount), typeof(DiscountRepo));
             services.AddScoped(typeof(IPictureRepo), typeof(PictureRepo));
+            services.AddScoped(typeof(ISpecificationAttributesRepo), typeof(SpecificationAttributesRepo));
+
 
             services.AddScoped(typeof(IPictureService), typeof(PictureService));
-
             services.AddScoped(typeof(IPriceCalculationService), typeof(PriceCalculationService));
-
-
             services.AddScoped(typeof(IDiscountModelFactory), typeof(DiscountModelFactory));
             services.AddScoped(typeof(IProductModelFactory), typeof(ProductModelFactory));
             services.AddScoped(typeof(ICategoryModelFactory), typeof(CategoryModelFactory));
+            services.AddScoped(typeof(ISpecificationAttributeModelFactory), typeof(SpecificationAttributeModelFactory));
 
             //Static FIles//
             services.AddCors(c => {

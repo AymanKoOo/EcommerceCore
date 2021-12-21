@@ -1,5 +1,6 @@
 ﻿using AyyBlog.ViewModel;
 using Core.Entites;
+using Core.Entites.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,10 +37,9 @@ namespace Core.Interfaces
         public IQueryable<Product> FindAll();
         public PagedList<Product> GetProducts(int pageSize, int pageNumber);
         public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, int pageSize, int pageNumber);
-
-
         public Task AddProductTODiscount(Product product,int discountID);
 
 
+        public Task AddProductSpecificationAttribute(ProductSpecificationAttribute model);
     }
 }

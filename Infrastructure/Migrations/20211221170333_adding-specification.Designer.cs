@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211221170333_adding-specification")]
+    partial class addingspecification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,85 +196,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("PictureId");
 
                     b.ToTable("productPictures");
-                });
-
-            modelBuilder.Entity("Core.Entites.Catalog.ProductSpecificationAttribute", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SpecificationAttributeOptionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "SpecificationAttributeOptionId");
-
-                    b.HasIndex("SpecificationAttributeOptionId");
-
-                    b.ToTable("ProductSpecificationAttribute");
-                });
-
-            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttribute", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SpecificationAttributeGroupId1")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SpecificationAttributeGroupId1");
-
-                    b.ToTable("specificationAttributes");
-                });
-
-            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("specificationAttributeGroups");
-                });
-
-            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeOption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("specificationAttributeId1")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("specificationAttributeId1");
-
-                    b.ToTable("SpecificationAttributeOptions");
                 });
 
             modelBuilder.Entity("Core.Entites.Category", b =>
@@ -666,43 +589,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("product");
                 });
 
-            modelBuilder.Entity("Core.Entites.Catalog.ProductSpecificationAttribute", b =>
-                {
-                    b.HasOne("Core.Entites.Product", "product")
-                        .WithMany("ProductSpecificationAttributes")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entites.Catalog.SpecificationAttributeOption", "specificationAttributeOption")
-                        .WithMany("ProductSpecificationAttributes")
-                        .HasForeignKey("SpecificationAttributeOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("product");
-
-                    b.Navigation("specificationAttributeOption");
-                });
-
-            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttribute", b =>
-                {
-                    b.HasOne("Core.Entites.Catalog.SpecificationAttributeGroup", "SpecificationAttributeGroup")
-                        .WithMany("SpecificationAttribute")
-                        .HasForeignKey("SpecificationAttributeGroupId1");
-
-                    b.Navigation("SpecificationAttributeGroup");
-                });
-
-            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeOption", b =>
-                {
-                    b.HasOne("Core.Entites.Catalog.SpecificationAttribute", "specificationAttribute")
-                        .WithMany("specificationAttributeOptions")
-                        .HasForeignKey("specificationAttributeId1");
-
-                    b.Navigation("specificationAttribute");
-                });
-
             modelBuilder.Entity("Core.Entites.DiscountProduct", b =>
                 {
                     b.HasOne("Core.Entites.Discount", "discounts")
@@ -804,21 +690,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttribute", b =>
-                {
-                    b.Navigation("specificationAttributeOptions");
-                });
-
-            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeGroup", b =>
-                {
-                    b.Navigation("SpecificationAttribute");
-                });
-
-            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeOption", b =>
-                {
-                    b.Navigation("ProductSpecificationAttributes");
-                });
-
             modelBuilder.Entity("Core.Entites.Category", b =>
                 {
                     b.Navigation("categoryPictures");
@@ -846,8 +717,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Discounts");
 
                     b.Navigation("productPictures");
-
-                    b.Navigation("ProductSpecificationAttributes");
                 });
 #pragma warning restore 612, 618
         }

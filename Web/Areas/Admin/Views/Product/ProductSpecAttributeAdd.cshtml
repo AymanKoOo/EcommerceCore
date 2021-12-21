@@ -1,0 +1,44 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Web.Areas.Admin.ViewModels.Catalog.AProductSpecificationOption;
+
+<form asp-controller="Product" asp-action="ProductSpecAttributeAdd" method="post">
+
+    <div class="row">
+
+        <select asp-for="SpecificationAttributeId">
+
+            @foreach (var att in Model.specificationAttributes)
+            {
+                <option value="@att.Id">@att.Name</option>
+            }
+
+        </select>
+
+        <select asp-for="SpecificationAttributeOptionId">
+
+            @foreach (var op in Model.specificationAttributeOptions)
+            {
+                <option value="@op.Id">@op.Name</option>
+            }
+
+        </select>
+
+        <input type="hidden" asp-for="ProductID"  value="@Model.ProductID"/>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Display Order</label>
+                <input asp-for="DisplayOrder" type="number" class="form-control required" />
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Add
+        </button>
+
+    </div>
+</form>

@@ -142,5 +142,11 @@ namespace Infrastructure.Repo
         {
             return await _dbcontext.products.Include(d=>d.Discounts).Include(q=>q.Category).Include(x => x.productPictures).ThenInclude(e => e.picture).ToListAsync();
         }
+
+
+        public async Task AddProductSpecificationAttribute(ProductSpecificationAttribute model)
+        {
+            await _dbcontext.ProductSpecificationAttribute.AddAsync(model);
+        }
     }
 }

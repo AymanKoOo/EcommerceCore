@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entites;
+using Core.Entites.Catalog;
 using Core.Interfaces;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Areas.Admin.Factories;
 using Web.Areas.Admin.ViewModels;
+using Web.Areas.Admin.ViewModels.Catalog;
 using Web.Areas.Admin.ViewModels.Products;
 using Web.DTOs;
 
@@ -137,6 +139,25 @@ namespace Web.Areas.Admin.Controllers
             return Redirect("/");
         }
 
-      
+
+        //AddProductSpecificationAttribute
+        
+        [HttpGet("ProductSpecAttributeAdd")]
+        public async Task<IActionResult> ProductSpecAttributeAdd(int productID)
+        {
+            var model = await _productModelFactory.PrepareProductSpecifcationAttr();
+            model.ProductID = productID;
+            return View(model);
+        }
+
+        [HttpPost("ProductSpecAttributeAdd")]
+        public IActionResult ProductSpecAttributeAdd(AProductSpecificationOption model)
+        {
+
+            var productSpec = _mapper.Map<ProductSpecificationAttribute>(model);
+            _unitOfWork.Product.AddProductSpecificationAttribute(productSpec);
+            _unitOfWork.Save();
+            return Redirect("/");
+        }
     }
 }

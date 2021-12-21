@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entites;
+using Core.Entites.Catalog;
 using Infrastructure.Repo;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,16 @@ namespace Web.Mapper
             CreateMap<ACategoryModel, Category>();
             CreateMap<Category, ACategoryModel>();
 
+            CreateMap<SpecificationAttribute, ASpecificationAttributeModel>();
+            CreateMap<ASpecificationAttributeModel, SpecificationAttribute>();
+
+            CreateMap<SpecificationAttributeOption, ASpecificationAttributeOptionModel>();
+            CreateMap<ASpecificationAttributeOptionModel, SpecificationAttributeOption>();
+
+
+            CreateMap<ProductSpecificationAttribute, AProductSpecificationOption>();
+            CreateMap<AProductSpecificationOption, ProductSpecificationAttribute>();
+            
         }
     }
 }

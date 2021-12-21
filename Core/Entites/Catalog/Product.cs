@@ -27,5 +27,7 @@ namespace Core.Entites
         public virtual ICollection<DiscountProduct> Discounts { get; set; }
 
         public List<ProductPicture> productPictures { get; set; }
+
+        public virtual ICollection<ProductSpecificationAttribute> ProductSpecificationAttributes { get; set; }
     }
 }

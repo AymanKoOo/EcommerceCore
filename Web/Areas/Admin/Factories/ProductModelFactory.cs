@@ -120,5 +120,16 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
 
+        public async Task<AProductSpecificationOption> PrepareProductSpecifcationAttr()
+        {
+            var model = new AProductSpecificationOption();
+            var attrOptions = await unitOfWork.SpecificationAttributes.GetAllSpecificationAttributeOption();
+            var attr = await unitOfWork.SpecificationAttributes.GetAllSpecificationAttributes();
+
+            model.specificationAttributes = attr;
+            model.specificationAttributeOptions = attrOptions;
+
+            return model;
+        }
     }
 }
