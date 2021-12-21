@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Web.Areas.Admin.ViewModels.Products.ProductListModel
+
+
+<div class="block product-filters">
+    @*@if (Model.PriceRangeFilter.Enabled)
+    {
+        @await Html.PartialAsync("_FilterPriceBox", Model.PriceRangeFilter)
+    }*@
+
+    @*@if (Model.SpecificationFilter.Enabled)
+    {*@
+        @await Html.PartialAsync("_FilterSpecsBox")
+    @*}*@
+
+    @*@if (Model.ManufacturerFilter.Enabled)
+    {
+        @await Html.PartialAsync("_FilterManufacturerBox", Model.ManufacturerFilter)
+    }*@
+</div>

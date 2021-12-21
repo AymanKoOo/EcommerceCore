@@ -12,36 +12,41 @@
 
 <hr>
 <!---jUMPTron-->
-@foreach (var item in Model.AvailableCategories)
-{
-    <li class="list-group-item">
-        <a href="#">@item.Name</a>
-    </li>
-}
+@*@foreach (var item in Model.AvailableCategories)
+    {
+        <li class="list-group-item">
+            <a href="#">@item.Name</a>
+        </li>
+    }*@
+@await Component.InvokeAsync("HomeCategories")
 
-<div class="container mt-5 product-detail">
-    <div class="row justify-content-md-center">
+<div class="sort-btn d-flex flex-row-reverse">
+    <select>
+        <option value="0">Sort by: Featured</option>
+        <option value="1">Audi</option>
+        <option value="2">BMW</option>
+        <option value="3">Citroen</option>
+        <option value="4">Ford</option>
+    </select>
+</div>
+
+<div class="main-container grid-products mt-5 product-detail">
+    <div class="row ">
 
         <div class="col-lg-2 col-md-4 col-sm-4 col-12">
 
             <div class="right">
+
                 <div class="cat-list">
 
                     <div class="cat-header">
-                        CATEGORY
+                        @Model.Name
                     </div>
 
                     <hr>
-                    <ul class="list-group">
 
-                        @foreach (var item in Model.SubCategories)
-                        {
-                            <li class="list-group-item">
-                                <a href="#">@item.Name</a>
-                            </li>
-                        }
+                    @await Html.PartialAsync("_CatalogFilters", Model.ProductsList);
 
-                    </ul>
 
                 </div>
 
@@ -92,47 +97,27 @@
         <div class="col-lg-10 col-md-7 col-sm-7 col-12">
 
             <div class="left">
-                <div class="sort-btn d-flex flex-row-reverse">
-                    <select>
-                        <option value="0">Sort by: Featured</option>
-                        <option value="1">Audi</option>
-                        <option value="2">BMW</option>
-                        <option value="3">Citroen</option>
-                        <option value="4">Ford</option>
-                    </select>
-                </div>
-                <div class="catg">
+              
+                <div class="products grid-container ">
 
-                    <h1>Electronics</h1>
-                    <p>Shop home entertainment, TVs, home audio, headphones, cameras, accessories and more</p>
-                    <hr>
-
-                </div>
-                <div class="products">
-
-
-                    <div class="container">
-
-
-                        <div class="row justify-content-md-center  filterd-products">
-
+                    <div class="grid-item">
+                        <div class="row products-list">
                             @if (Model.SubCategories.Count > 0)
                             {
                                 @foreach (var item in Model.SubCategories)
                                 {
                                     <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-                                        <div id="productsClick">
-                                            <div class="pic">
-                                                <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
+                                        <a asp-controller="Category" asp-action="Index" asp-route-id="@item.Id">
 
-                                                <div class="product-content">
-                                                    <h3>@item.Name</h3>
-                                                    <a asp-controller="category" asp-action="Index" asp-route-id="@item.Id">@item.Description</a>
-                                                </div>
+                                            <img class="lazyautosizes lazyloaded " data-widths="[160, 240, 320]"
+                                                 data-aspectratio="" data-sizes="auto"
+                                                 alt="" style=""
+                                                 src="/uploads/@item.categoryPictures[0].picture.MimeType" />
+                                        </a>
+                                    </div>
 
-                                                <button onclick="">Details</button>
-                                            </div>
-                                        </div>
+                                    <div class="category-name">
+                                        <h3 class="cat-block-title">@item.Name</h3>
                                     </div>
                                 }
                             }
@@ -141,44 +126,73 @@
                             {
                                 @foreach (var product in Model.ProductsList.Data)
                                 {
-                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-                                        <div id="productsClick">
-                                            <div class="pic">
-                                                <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
+                                    <div class="col-lg-3 col-md-3 col-6">
 
-                                                <div class="product-content">
-                                                    <h3>@product.Name</h3>
-                                                    <a href="">@product.UnitPrice</a>
+                                        <div class="product item">
+
+                                            <div class="product-image">
+
+                                                <a href="#">
+
+                                                    <img class="pic-prduct" src="/uploads/@product.productPictures[0].picture.MimeType" />
+
+                                                </a>
+
+                                                <div class="product-button">
+                                                    <a href="Javascript:Void(0)" onclick="AddToCart(4);" class="tool-btn" data-mode="top" data-tip="Add to cart"><i class="fa fa-shopping-bag"></i></a>
+                                                    <a href="Javascript:Void(0)" onclick="AddToWish(4);" class="tool-btn" data-mode="top" data-tip="Add to wish"><i class="fa fa-heart"></i></a>
+                                                    <a href="Javascript:Void(0)" onclick="AddToCompare(4);" class="tool-btn" data-mode="top" data-tip="Add To Compare"><i class="fa fa-refresh"></i></a>
                                                 </div>
 
-                                                <button onclick="">Details</button>
+                                            </div>
 
+                                            <div class="category">
+                                                @product.Category.Name
+                                            </div>
+
+                                            <div class="name">
+
+                                                @product.Name
+
+                                            </div>
+
+                                            <div class="price">
+                                                @if (product.HasDiscountsApplied == true)
+                                                {
+                                                    <del class="old-price">@product.OldPrice</del>
+                                                }
+                                                <span class="product-price">@product.Price</span>
                                             </div>
                                         </div>
                                     </div>
-                                }
-                            }
-                        </div>
 
+                                }
+
+                            }
+
+                        </div>
                     </div>
 
-                    <div class="clearfix">
-                            <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
-                            <ul class="pagination">
-                                <li class="page-item"> <a asp-controller="Category" asp-action="Index" asp-route-pageNumber="@prevPage">Next</a></li>
-                                
-                                <li class="page-item"> <a asp-controller="Category" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a></li>
-                            </ul>
-                        </div>
+                </div>
 
                 </div>
+
+                <div class="clearfix">
+                    <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
+                    <ul class="pagination">
+                        <li class="page-item"> <a asp-controller="Category" asp-action="Index" asp-route-pageNumber="@prevPage">Next</a></li>
+
+                        <li class="page-item"> <a asp-controller="Category" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a></li>
+                    </ul>
+                </div>
+
+            </div>
             </div>
 
 
         </div>
-    </div>
+  
 
-</div>
 
 <script src="~/jquery/jquery.js"></script>
 <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>

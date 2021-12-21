@@ -34,7 +34,7 @@ namespace Web.Components
                 product.Price = pricingObj.finalPrice;
             }
 
-            var finalProducts = mapper.Map<List<ProductDTO>>(products).Take(10);
+             var finalProducts = mapper.Map<List<ProductDTO>>(products).Take(10);
              return View(finalProducts);
         }
     }

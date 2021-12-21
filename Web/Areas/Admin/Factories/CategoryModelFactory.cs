@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Entites;
 using Core.Interfaces;
+using Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,14 @@ namespace Web.Areas.Admin.Factories
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IPriceCalculationService priceCalculation;
         private readonly IProductModelFactory productModelFactory;
 
-        public CategoryModelFactory(IUnitOfWork unitOfWork, IMapper mapper, IProductModelFactory productModelFactory)
+        public CategoryModelFactory(IUnitOfWork unitOfWork, IMapper mapper, IPriceCalculationService priceCalculation, IProductModelFactory productModelFactory)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.priceCalculation = priceCalculation;
             this.productModelFactory = productModelFactory;
         }
 

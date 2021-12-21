@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Entites;
 using Core.Interfaces;
+using Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,13 @@ namespace Web.Areas.Admin.Factories
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
-        public ProductModelFactory(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IPriceCalculationService priceCalculation;
+
+        public ProductModelFactory(IUnitOfWork unitOfWork, IMapper mapper, IPriceCalculationService priceCalculation)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.priceCalculation = priceCalculation;
         }
 
         public virtual async Task<ProductListModel> PrepareProductListModelAsync(int pageSize, int pageNumber)
@@ -46,7 +50,13 @@ namespace Web.Areas.Admin.Factories
         public virtual async Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID,int pageSize, int pageNumber)
         {
             var products = unitOfWork.Product.GetProductsByCatgoryList(categoryID,pageSize, pageNumber);
-
+            
+            foreach (var product in products)
+            {
+                var pricingObj = await priceCalculation.GetFinalPriceAsync(product);
+                product.OldPrice = pricingObj.priceWithoutDiscounts;
+                product.Price = pricingObj.finalPrice;
+            }
             var model = new ProductListModel().PrepareToGrid(products, () =>
             {
                 //fill in model values from the entity

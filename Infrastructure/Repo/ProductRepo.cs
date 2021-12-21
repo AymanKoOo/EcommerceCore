@@ -69,9 +69,7 @@ namespace Infrastructure.Repo
 
         public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber)
         {
-            var products = from product in _dbcontext.products
-                           where product.CategoryId == catgoryID
-                           select product;
+            var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture);
 
             return PagedList<Product>.ToPagedList(products,
             pageNumber,
