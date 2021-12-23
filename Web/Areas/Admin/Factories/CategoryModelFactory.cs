@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entites;
+using Core.Entites.Catalog;
 using Core.Interfaces;
 using Infrastructure.Services;
 using System;
@@ -25,7 +26,7 @@ namespace Web.Areas.Admin.Factories
             this.productModelFactory = productModelFactory;
         }
 
-        public async Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model,Category category, int pageSize = 5, int pageNumber = 1)
+        public async Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category, SpecificationAttributeOption filterSearch=null, int pageSize = 5, int pageNumber = 1)
         {
             if (category != null)
             {
@@ -34,12 +35,24 @@ namespace Web.Areas.Admin.Factories
                 model.SubCategories = await unitOfWork.Category.GetSubCategory(category.Id);
 
                 //assign category products
-                model.ProductsList = await productModelFactory.PrepareProductByCategoryListModelAsync(category.Id,pageSize,pageNumber);
+                model.ProductsList = await productModelFactory.PrepareProductByCategoryListModelAsync(category.Id,pageSize,pageNumber, filterSearch);
+
+                model.CategoryAttributes = category.CategorySpecificationGroups;
             }
 
             var categories = await unitOfWork.Category.GetAllCategoriesAsync();
             //assign all categories
             model.AvailableCategories = categories;
+            return model;
+        }
+
+     
+
+        public async Task<ACategorySpecificationGroup> PrepareCategorySpecGroup()
+        {
+            var model = new ACategorySpecificationGroup();
+            var attrGr = await unitOfWork.SpecificationAttributes.GetAllSpecificationAttributeGroup();
+            model.specificationAttributeGroups = attrGr;
             return model;
         }
     }

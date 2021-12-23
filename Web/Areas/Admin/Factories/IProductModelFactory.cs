@@ -1,4 +1,5 @@
 ﻿using Core.Entites;
+using Core.Entites.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Web.Areas.Admin.Factories
         Task<ProductListModel> PrepareProductListModelAsync( int pageSize, int pageNumber);
         Task<ProductListModel> PrepareProductNODiscountListModelAsync(int pageSize, int pageNumber);
         Task<AProductModel> PrepareProductModelAsync(AProductModel model, Product product);
-        Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID, int pageSize, int pageNumber);
+        Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID, int pageSize, int pageNumber, SpecificationAttributeOption specificationAttributeOption);
         Task<AProductSpecificationOption> PrepareProductSpecifcationAttr();
     }
 }

@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Web.Areas.Admin.ViewModels.Catalog.ACategorySpecificationGroup;
+
+<form asp-controller="Category" asp-action="CategorySpecGroupAdd" method="post">
+
+    <div class="row">
+
+        <select asp-for="specificationAttributeGroupID">
+
+            @foreach (var att in Model.specificationAttributeGroups)
+            {
+                <option value="@att.Id">@att.Name</option>
+            }
+
+        </select>
+
+        <input type="hidden" asp-for="CategoryID" value="@Model.CategoryID" />
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Display Order</label>
+                <input asp-for="DisplayOrder" type="number" class="form-control required" />
+            </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Add
+        </button>
+
+    </div>
+</form>

@@ -24,5 +24,7 @@ namespace Core.Entites
         public DateTime UpdatedOnUtc { get; set; }
 
         public List<CategoryPicture> categoryPictures { get; set; }
+        
+        public virtual ICollection<CategorySpecificationGroup> CategorySpecificationGroups { get; set; }
     }
 }

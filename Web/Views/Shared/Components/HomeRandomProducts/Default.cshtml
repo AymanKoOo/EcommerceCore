@@ -34,18 +34,19 @@
                                 <a href="#">
 
                                     <img class="pic-prduct" src="/uploads/@product.productPictures[0].picture.MimeType" />
-                                  
+
                                 </a>
+                                @if (product.HasDiscountsApplied == true)
+                                {
+                                    <span class="discount">@product.Discounts[0].discounts.DiscountPercentage %</span>
 
-                                <span class="discount">@product.Discounts[0].discounts.DiscountPercentage %</span>
-
-                                <div class="product-button">
-                                    <a href="Javascript:Void(0)" onclick="AddToCart(4);" class="tool-btn" data-mode="top" data-tip="Add to cart"><i class="fa fa-shopping-bag"></i></a>
-                                    <a href="Javascript:Void(0)" onclick="AddToWish(4);" class="tool-btn" data-mode="top" data-tip="Add to wish"><i class="fa fa-heart"></i></a>
-                                    <a href="Javascript:Void(0)" onclick="AddToCompare(4);" class="tool-btn" data-mode="top" data-tip="Add To Compare"><i class="fa fa-refresh"></i></a>
-                                </div>
-
-                            </div>
+                                    <div class="product-button">
+                                        <a href="Javascript:Void(0)" onclick="AddToCart(4);" class="tool-btn" data-mode="top" data-tip="Add to cart"><i class="fa fa-shopping-bag"></i></a>
+                                        <a href="Javascript:Void(0)" onclick="AddToWish(4);" class="tool-btn" data-mode="top" data-tip="Add to wish"><i class="fa fa-heart"></i></a>
+                                        <a href="Javascript:Void(0)" onclick="AddToCompare(4);" class="tool-btn" data-mode="top" data-tip="Add To Compare"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                }
+                             </div>
 
                             <div class="category">
                                 @product.Category.Name

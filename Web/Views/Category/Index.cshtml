@@ -45,50 +45,7 @@
 
                     <hr>
 
-                    @await Html.PartialAsync("_CatalogFilters", Model.ProductsList);
-
-
-                </div>
-
-                <div class="brand-list mt-5">
-
-                    <div class="cat-header">
-
-                        SIZE
-
-                    </div>
-                    <hr>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <input type="checkbox" name="" id="">
-                            <label for="">
-                                <span>Shoes</span>
-                                <small>(10)</small>
-                            </label>
-                        </li>
-                        <li class="list-group-item">
-                            <input type="checkbox" name="" id="">
-                            <label for="">
-                                <span>Shoes</span>
-                                <small>(10)</small>
-                            </label>
-                        </li>
-                        <li class="list-group-item">
-                            <input type="checkbox" name="" id="">
-                            <label for="">
-                                <span>Shoes</span>
-                                <small>(10)</small>
-                            </label>
-                        </li>
-                        <li class="list-group-item">
-                            <input type="checkbox" name="" id="">
-                            <label for="">
-                                <span>Shoes</span>
-                                <small>(10)</small>
-                            </label>
-                        </li>
-
-                    </ul>
+                    @await Html.PartialAsync("_CatalogFilters", Model.CategoryAttributes);
 
                 </div>
             </div>

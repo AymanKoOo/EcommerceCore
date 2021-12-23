@@ -53,7 +53,8 @@ namespace Infrastructure.Repo
 
         public Category GetCategoryByID(int id)
         {
-            return _dbcontext.Categories.FirstOrDefault(m => m.Id == id);
+            return _dbcontext.Categories.Where(e=>e.Id==id).Include(x=>x.CategorySpecificationGroups).ThenInclude(r=>r.specificationAttributeGroup)
+                .ThenInclude(q=>q.SpecificationAttribute).ThenInclude(q => q.specificationAttributeOptions).FirstOrDefault();
         }
 
         public async Task<List<Category>> GetSubCategory(int CategoryId)
@@ -75,8 +76,11 @@ namespace Infrastructure.Repo
             };
              await  _dbcontext.categoryPictures.AddAsync(model);
         }
-      
 
+        public async Task AddCategorySpecGroup(CategorySpecificationGroup model)
+        {
+            await _dbcontext.categorySpecificationGroups.AddAsync(model);
+        }
         //public void AddCategoryPic(int categoryID,string picPath)
         //{
 

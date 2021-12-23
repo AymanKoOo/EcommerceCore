@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entites;
+using Core.Entites.Catalog;
 using Core.Interfaces;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
@@ -108,6 +109,23 @@ namespace Web.Areas.Admin.Controllers
         {
              var category = _unitOfWork.Category.GetCategoryByID(categoryID);
             _unitOfWork.Category.Delete(category);
+            _unitOfWork.Save();
+            return Redirect("/");
+        }
+
+        [HttpGet("CategorySpecGroupAdd")]
+        public async Task<IActionResult> CategorySpecGroupAdd(int categoryId)
+        {
+            var model = await categoryModelFactory.PrepareCategorySpecGroup();
+            model.CategoryID = categoryId;
+            return View(model);
+        }
+
+        [HttpPost("CategorySpecGroupAdd")]
+        public IActionResult CategorySpecGroupAdd(ACategorySpecificationGroup model)
+        {
+            var categorySpecificationGroup = _mapper.Map<CategorySpecificationGroup>(model);
+            _unitOfWork.Category.AddCategorySpecGroup(categorySpecificationGroup);
             _unitOfWork.Save();
             return Redirect("/");
         }

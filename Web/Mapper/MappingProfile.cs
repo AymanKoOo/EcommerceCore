@@ -23,14 +23,14 @@ namespace Web.Mapper
             CreateMap<ProductDTO, Product>();
             CreateMap<CategoryDTO, Category>();
             CreateMap<Category, CategoryDTO>();
-            
+
             CreateMap<ProductPageDTO, Product>();
             CreateMap<Product, ProductPageDTO>();
 
             CreateMap<ApplicationUser, CustomerDTO>();
             CreateMap<CustomerDTO, ApplicationUser>();
 
-            CreateMap<DiscountProductListModel, Product>(); 
+            CreateMap<DiscountProductListModel, Product>();
             CreateMap<DiscountProductModel, Product>();
             CreateMap<Product, DiscountProductModel>();
 
@@ -59,7 +59,11 @@ namespace Web.Mapper
 
             CreateMap<ProductSpecificationAttribute, AProductSpecificationOption>();
             CreateMap<AProductSpecificationOption, ProductSpecificationAttribute>();
-            
+
+
+            CreateMap<CategorySpecificationGroup, ACategorySpecificationGroup>();
+            CreateMap<ACategorySpecificationGroup, CategorySpecificationGroup>();
+
         }
     }
 }

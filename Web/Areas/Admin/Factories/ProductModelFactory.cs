@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entites;
+using Core.Entites.Catalog;
 using Core.Interfaces;
 using Infrastructure.Services;
 using System;
@@ -47,9 +48,9 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
 
-        public virtual async Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID,int pageSize, int pageNumber)
+        public virtual async Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID,int pageSize, int pageNumber, SpecificationAttributeOption filterSearch)
         {
-            var products = unitOfWork.Product.GetProductsByCatgoryList(categoryID,pageSize, pageNumber);
+            var products = unitOfWork.Product.GetProductsByCatgoryList(categoryID,pageSize, pageNumber, filterSearch);
             
             foreach (var product in products)
             {

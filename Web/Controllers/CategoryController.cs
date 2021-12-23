@@ -45,7 +45,7 @@ namespace Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Index(int id,int pageSize = 1, int pageNumber = 1)
+        public async Task<IActionResult> Index(int id, int pageSize = 5, int pageNumber = 1, int FilterID = 0)
         {
             //var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetAllProducts());
             //var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetAllCategories());
@@ -55,12 +55,15 @@ namespace Web.Controllers
             //    productDTOs = products,
             //    categoryDTOs = categories
             //};
-            var category = _unitOfWork.Category.GetCategoryByID(id);
-
+             var category = _unitOfWork.Category.GetCategoryByID(id);
+            //var attrOption = await _unitOfWork.SpecificationAttributes.GetAttrOptionByName(filterSearch);
+          
+             var attrOption = await _unitOfWork.SpecificationAttributes.GetAttrOptionByID(FilterID);
+             
             //prepare model
-            var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(),category,pageSize,pageNumber);
+             var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(),category, attrOption, pageSize,pageNumber);
 
-            return View(categoryModel);
+             return View(categoryModel);
         }
 
         //[HttpPost]

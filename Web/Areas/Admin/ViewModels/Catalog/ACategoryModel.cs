@@ -1,4 +1,5 @@
 ﻿using Core.Entites;
+using Core.Entites.Catalog;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,6 @@ namespace Web.Areas.Admin.ViewModels.Catalog
         public IList<Category> SubCategories { get; set; }
         public IList<Category> AvailableCategories { get; set; }
         public ProductListModel ProductsList { get; set; }
-        //discounts
+        public ICollection<CategorySpecificationGroup> CategoryAttributes { get; set; }
     }
 }

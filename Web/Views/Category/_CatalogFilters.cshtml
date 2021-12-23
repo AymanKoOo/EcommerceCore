@@ -3,22 +3,22 @@
 *@
 @{
 }
-@model Web.Areas.Admin.ViewModels.Products.ProductListModel
+@model ICollection<Core.Entites.Catalog.CategorySpecificationGroup>
 
 
 <div class="block product-filters">
     @*@if (Model.PriceRangeFilter.Enabled)
-    {
-        @await Html.PartialAsync("_FilterPriceBox", Model.PriceRangeFilter)
-    }*@
+        {
+            @await Html.PartialAsync("_FilterPriceBox", Model.PriceRangeFilter)
+        }*@
 
     @*@if (Model.SpecificationFilter.Enabled)
-    {*@
-        @await Html.PartialAsync("_FilterSpecsBox")
+        {*@
+    @await Html.PartialAsync("_FilterSpecsBox", Model)
     @*}*@
 
     @*@if (Model.ManufacturerFilter.Enabled)
-    {
-        @await Html.PartialAsync("_FilterManufacturerBox", Model.ManufacturerFilter)
-    }*@
+        {
+            @await Html.PartialAsync("_FilterManufacturerBox", Model.ManufacturerFilter)
+        }*@
 </div>

@@ -1,4 +1,5 @@
 ﻿using Core.Entites;
+using Core.Entites.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Web.Areas.Admin.Factories
 {
     public interface ICategoryModelFactory
     {
-        public Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category, int pageSize = 5, int pageNumber = 1);
+        public Task<ACategorySpecificationGroup> PrepareCategorySpecGroup();
+
+        public Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category,SpecificationAttributeOption filterSearch= null, int pageSize = 5, int pageNumber = 1);
     }
 }

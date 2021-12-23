@@ -1,5 +1,6 @@
 ﻿using AyyBlog.ViewModel;
 using Core.Entites;
+using Core.Entites.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,8 +12,10 @@ namespace Core.Interfaces
     {
         List<Category> GetAllCategories();
         Task<IEnumerable<Category>> GetAllCategoriesHome();
+        
+        Task AddCategorySpecGroup(CategorySpecificationGroup model);
 
-         Task<Category> GetCategory(string categoryName);
+        Task<Category> GetCategory(string categoryName);
         Category GetCategoryByID(int categoryID);
         Task AddPicture(int categoryID,int picID);
         Task<List<Category>> GetAllCategoriesAsync();

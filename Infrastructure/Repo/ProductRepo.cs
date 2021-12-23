@@ -67,13 +67,33 @@ namespace Infrastructure.Repo
                    select products;
         }
 
-        public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber)
+        public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber, SpecificationAttributeOption filterSearch)
         {
-            var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture);
+            if (filterSearch != null)
+            {
+                //  var products = _dbcontext.products.Include(x=>x.ProductSpecificationAttributes).ThenInclude(e=>e.specificationAttributeOption);
+                var filterProducts =
+                _dbcontext.products.Where(x=>x.CategoryId==catgoryID)
 
-            return PagedList<Product>.ToPagedList(products,
+.Include(x => x.ProductSpecificationAttributes).ThenInclude(x => x.specificationAttributeOption)
+.Include(d => d.Discounts)
+.Include(p => p.productPictures).ThenInclude(e => e.picture).Where(x =>
+                    x.ProductSpecificationAttributes.Any(e =>
+                       e.specificationAttributeOption == filterSearch));
+            
+                return PagedList<Product>.ToPagedList(filterProducts,
             pageNumber,
             pageSize);
+            }
+            else
+            {
+                var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture);
+
+                return PagedList<Product>.ToPagedList(products,
+                pageNumber,
+                pageSize);
+            }
+            
         }
 
         public IQueryable<Product> FindAll()

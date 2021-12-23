@@ -3,7 +3,23 @@
 *@
 @{
 }
+@model ICollection<Core.Entites.Catalog.CategorySpecificationGroup>
 
 
-<input value="Color" type="checkbox" />
+
+@foreach (var c in Model)
+{
+    @foreach (var s in @c.specificationAttributeGroup.SpecificationAttribute)
+    {
+        <label>@s.Name</label>
+
+        @foreach (var e in s.specificationAttributeOptions)
+        {
+                <a asp-controller="Category" asp-action="Index" asp-route-FilterID="@e.Id">@e.Name</a>
+        }
+    }
+
+}
+
+
 

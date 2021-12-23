@@ -44,5 +44,14 @@ namespace Infrastructure.Repo.Catalog
         {
             await _dbcontext.SpecificationAttributeOptions.AddAsync(model);
         }
+        public async Task<SpecificationAttributeOption> GetAttrOptionByName(string name)
+        {
+           return await _dbcontext.SpecificationAttributeOptions.FirstOrDefaultAsync(x=>x.Name==name);
+        }
+        public async Task<SpecificationAttributeOption> GetAttrOptionByID(int id)
+        {
+            if (id < 0) return null;
+            return await _dbcontext.SpecificationAttributeOptions.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }
