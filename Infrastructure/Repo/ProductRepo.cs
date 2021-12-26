@@ -67,9 +67,9 @@ namespace Infrastructure.Repo
                    select products;
         }
 
-        public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber, SpecificationAttributeOption filterSearch)
+        public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber, SpecificationAttributeOption filterSpec, int OrderFilter)
         {
-            if (filterSearch != null)
+            if (filterSpec != null)
             {
                 //  var products = _dbcontext.products.Include(x=>x.ProductSpecificationAttributes).ThenInclude(e=>e.specificationAttributeOption);
                 var filterProducts =
@@ -79,21 +79,41 @@ namespace Infrastructure.Repo
 .Include(d => d.Discounts)
 .Include(p => p.productPictures).ThenInclude(e => e.picture).Where(x =>
                     x.ProductSpecificationAttributes.Any(e =>
-                       e.specificationAttributeOption == filterSearch));
-            
+                       e.specificationAttributeOption == filterSpec));
+
                 return PagedList<Product>.ToPagedList(filterProducts,
             pageNumber,
             pageSize);
             }
+            else if((int)OrderByFilterOptions.HightToLow==OrderFilter)
+            {
+
+              
+                    var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture).OrderByDescending(x=>x.Price);
+                    return PagedList<Product>.ToPagedList(products,
+             pageNumber,
+             pageSize);
+           
+
+             
+            }
+
+            else if ((int)OrderByFilterOptions.LowToHigh==OrderFilter)
+            {
+                var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture)
+                .OrderBy(x => x.Price);
+                return PagedList<Product>.ToPagedList(products,
+                 pageNumber,
+                 pageSize);
+            }
             else
             {
                 var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture);
-
                 return PagedList<Product>.ToPagedList(products,
-                pageNumber,
-                pageSize);
+                 pageNumber,
+                 pageSize);
             }
-            
+
         }
 
         public IQueryable<Product> FindAll()

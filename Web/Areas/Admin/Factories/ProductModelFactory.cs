@@ -48,9 +48,9 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
 
-        public virtual async Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID,int pageSize, int pageNumber, SpecificationAttributeOption filterSearch)
+        public virtual async Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID,int pageSize, int pageNumber, SpecificationAttributeOption filterSpec,int OrderFilter)
         {
-            var products = unitOfWork.Product.GetProductsByCatgoryList(categoryID,pageSize, pageNumber, filterSearch);
+            var products = unitOfWork.Product.GetProductsByCatgoryList(categoryID,pageSize, pageNumber, filterSpec, OrderFilter);
             
             foreach (var product in products)
             {

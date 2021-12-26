@@ -17,6 +17,9 @@ namespace Core.Interfaces
 
         Task<Category> GetCategory(string categoryName);
         Category GetCategoryByID(int categoryID);
+        
+                    Category GetCategoryByName(string name);
+
         Task AddPicture(int categoryID,int picID);
         Task<List<Category>> GetAllCategoriesAsync();
         Task<List<Category>> GetSubCategory(int CategoryId);

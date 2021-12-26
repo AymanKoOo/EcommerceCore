@@ -1,16 +1,39 @@
 ﻿@model Web.Areas.Admin.ViewModels.Catalog.ACategoryModel
 
+@using Core.Entites.Catalog
 @{
     int nextPage = @Model.ProductsList.CurrentPage + 1;
     int prevPage = @Model.ProductsList.CurrentPage - 1;
+
+    if (nextPage > Model.ProductsList.TotalPages)
+    {
+        nextPage = Model.ProductsList.TotalPages;
+    }
+
 }
 
-<ul class="breadcrumb">
-    <li><a href="#">HOME</a></li>
-    <li><a href="#">PRODUCT</a></li>
-</ul>
 
-<hr>
+<div class="nav-progressive-content">
+
+    <div class="trending">
+        <i class="fas fa-angle-double-right"></i>
+    </div>
+
+    @foreach (var catt in Model.AvailableCategories)
+    {
+<div class="navTrend-item">
+    <a asp-controller="Category" asp-action="Index" asp-route-cat="@catt.Name">
+        @catt.Name
+    </a>
+</div>
+    }
+
+    <div class="sale-pic">
+        <img src="">
+    </div>
+
+</div>
+
 <!---jUMPTron-->
 @*@foreach (var item in Model.AvailableCategories)
     {
@@ -20,14 +43,17 @@
     }*@
 @await Component.InvokeAsync("HomeCategories")
 
-<div class="sort-btn d-flex flex-row-reverse">
-    <select>
-        <option value="0">Sort by: Featured</option>
-        <option value="1">Audi</option>
-        <option value="2">BMW</option>
-        <option value="3">Citroen</option>
-        <option value="4">Ford</option>
-    </select>
+<div class="sort-btn">
+
+    <div class="count-results">
+        <span class="count">
+            @Model.ProductsList.Data.Count()  results
+        </span>
+    </div>
+
+
+ 
+
 </div>
 
 <div class="main-container grid-products mt-5 product-detail">
@@ -37,124 +63,144 @@
 
             <div class="right">
 
-                <div class="cat-list">
+                <div class="filter-section">
 
-                    <div class="cat-header">
-                        @Model.Name
+                    <div class="filter-category">
+
+                        @await Html.PartialAsync("_CatalogFilters", Model.CategoryAttributes)
+
                     </div>
-
-                    <hr>
-
-                    @await Html.PartialAsync("_CatalogFilters", Model.CategoryAttributes);
-
                 </div>
+
             </div>
         </div>
 
         <div class="col-lg-10 col-md-7 col-sm-7 col-12">
 
             <div class="left">
-              
-                <div class="products grid-container ">
 
-                    <div class="grid-item">
-                        <div class="row products-list">
-                            @if (Model.SubCategories.Count > 0)
+                <div class="products Container">
+
+                    <div class="row">
+
+
+                        @if (Model.SubCategories.Count > 0)
+                        {
+                            @foreach (var item in Model.SubCategories)
                             {
-                                @foreach (var item in Model.SubCategories)
-                                {
-                                    <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-                                        <a asp-controller="Category" asp-action="Index" asp-route-id="@item.Id">
+                                <div class="product-item col-lg-3">
 
-                                            <img class="lazyautosizes lazyloaded " data-widths="[160, 240, 320]"
-                                                 data-aspectratio="" data-sizes="auto"
-                                                 alt="" style=""
-                                                 src="/uploads/@item.categoryPictures[0].picture.MimeType" />
-                                        </a>
-                                    </div>
+                                    <a asp-controller="Category" asp-action="Index" asp-route-id="@item.Id">
+
+                                        <img class="lazyautosizes lazyloaded " data-widths="[160, 240, 320]"
+                                             data-aspectratio="" data-sizes="auto"
+                                             alt="" style=""
+                                             src="/uploads/@item.categoryPictures[0].picture.MimeType" />
+                                    </a>
+
 
                                     <div class="category-name">
                                         <h3 class="cat-block-title">@item.Name</h3>
                                     </div>
-                                }
+                                </div>
                             }
+                        }
 
-                            else
+                        else
+                        {
+                            @foreach (var product in Model.ProductsList.Data)
                             {
-                                @foreach (var product in Model.ProductsList.Data)
-                                {
-                                    <div class="col-lg-3 col-md-3 col-6">
+                                <div class="product-item col-lg-4 col-md-6 col-sm-12">
 
-                                        <div class="product item">
-
-                                            <div class="product-image">
-
-                                                <a href="#">
-
-                                                    <img class="pic-prduct" src="/uploads/@product.productPictures[0].picture.MimeType" />
-
-                                                </a>
-
-                                                <div class="product-button">
-                                                    <a href="Javascript:Void(0)" onclick="AddToCart(4);" class="tool-btn" data-mode="top" data-tip="Add to cart"><i class="fa fa-shopping-bag"></i></a>
-                                                    <a href="Javascript:Void(0)" onclick="AddToWish(4);" class="tool-btn" data-mode="top" data-tip="Add to wish"><i class="fa fa-heart"></i></a>
-                                                    <a href="Javascript:Void(0)" onclick="AddToCompare(4);" class="tool-btn" data-mode="top" data-tip="Add To Compare"><i class="fa fa-refresh"></i></a>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="category">
-                                                @product.Category.Name
-                                            </div>
-
-                                            <div class="name">
-
-                                                @product.Name
-
-                                            </div>
-
-                                            <div class="price">
-                                                @if (product.HasDiscountsApplied == true)
-                                                {
-                                                    <del class="old-price">@product.OldPrice</del>
-                                                }
-                                                <span class="product-price">@product.Price</span>
-                                            </div>
-                                        </div>
+                                    <div class="Product-Img">
+                                        <a href="#">
+                                            <img class="img-fluid" src="/uploads/@product.productPictures[0].picture.MimeType">
+                                        </a>
                                     </div>
 
-                                }
+                                    <div class="product-name">
+                                        @product.Name
+                                    </div>
 
+                                    <div class="rating">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="product-price">
+
+                                        <span class="a-price-symbol">EGP</span>
+                                        <span class="a-price-whole">@product.Price</span>
+                                        @if (product.HasDiscountsApplied == true)
+                                        {
+                                            <span class="a-price-discount">@product.OldPrice</span>
+                                        }
+                                    </div>
+
+                                </div>
                             }
+                        }
 
-                        </div>
                     </div>
-
                 </div>
 
-                </div>
 
-                <div class="clearfix">
-                    <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
-                    <ul class="pagination">
-                        <li class="page-item"> <a asp-controller="Category" asp-action="Index" asp-route-pageNumber="@prevPage">Next</a></li>
 
-                        <li class="page-item"> <a asp-controller="Category" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a></li>
+                <div class="pagination">
+                    <ul>
+
+                        @if (Model.ProductsList.HasPrevious == true)
+                        {
+                            <li> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
+
+                        }
+                        else
+                        {
+                            <li class="disabled"> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
+                        }
+
+                        @for (int i = 1; i <= Model.ProductsList.TotalPages; i++)
+                        {
+                            if (i == Model.ProductsList.CurrentPage)
+                            {
+                                <li class="disabled"> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                            }
+                            else
+                            {
+                                <li> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                            }
+                        }
+
+
+                        @if (Model.ProductsList.HasNext == true)
+                        {
+                            <li>
+                                <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="disabled">
+                                <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a>
+                            </li>
+                        }
                     </ul>
+
                 </div>
 
             </div>
-            </div>
-
-
         </div>
-  
 
 
-<script src="~/jquery/jquery.js"></script>
-<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    </div>
 
-<script>
+
+
+    <script src="~/jquery/jquery.js"></script>
+    <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+    <script>
 
     $("input:checkbox").on('click', function() {
   // in the handler, 'this' refers to the box clicked on
@@ -219,4 +265,4 @@
 
 
 
-</script>
+    </script>

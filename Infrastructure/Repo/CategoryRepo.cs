@@ -81,6 +81,13 @@ namespace Infrastructure.Repo
         {
             await _dbcontext.categorySpecificationGroups.AddAsync(model);
         }
+
+        public Category GetCategoryByName(string name)
+        {
+            return _dbcontext.Categories.Where(e => e.Name == name).Include(x => x.CategorySpecificationGroups).ThenInclude(r => r.specificationAttributeGroup)
+               .ThenInclude(q => q.SpecificationAttribute).ThenInclude(q => q.specificationAttributeOptions).FirstOrDefault();
+
+        }
         //public void AddCategoryPic(int categoryID,string picPath)
         //{
 

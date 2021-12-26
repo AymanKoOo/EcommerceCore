@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Core.Entites;
+using Core.Entites.Catalog;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Web.Areas.Admin.Factories;
@@ -44,9 +45,10 @@ namespace Web.Controllers
             return View();
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Index(int id, int pageSize = 5, int pageNumber = 1, int FilterID = 0)
+        [HttpGet("{cat}")]
+        public async Task<IActionResult> Index(string cat, int pageSize = 5, int pageNumber = 1, int spec = 0,int orderBy=0)
         {
+        
             //var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetAllProducts());
             //var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetAllCategories());
 
@@ -55,13 +57,15 @@ namespace Web.Controllers
             //    productDTOs = products,
             //    categoryDTOs = categories
             //};
-             var category = _unitOfWork.Category.GetCategoryByID(id);
+            //var category = _unitOfWork.Category.GetCategoryByID(id);
+            var category = _unitOfWork.Category.GetCategoryByName(cat);
+
             //var attrOption = await _unitOfWork.SpecificationAttributes.GetAttrOptionByName(filterSearch);
-          
-             var attrOption = await _unitOfWork.SpecificationAttributes.GetAttrOptionByID(FilterID);
+
+            var attrOption = await _unitOfWork.SpecificationAttributes.GetAttrOptionByID(spec);
              
             //prepare model
-             var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(),category, attrOption, pageSize,pageNumber);
+             var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(),category, attrOption,  orderBy, pageSize, pageNumber);
 
              return View(categoryModel);
         }

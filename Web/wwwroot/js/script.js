@@ -361,3 +361,9 @@ window.addEventListener('scroll', (e) => {
         nav.classList.remove("add-shadow");
     }
 });
+
+
+$(".filter-header").click(function () {
+    $($(this).next()
+    ).toggleClass("hide-option");
+});

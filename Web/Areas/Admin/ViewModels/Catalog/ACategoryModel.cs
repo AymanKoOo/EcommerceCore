@@ -29,5 +29,9 @@ namespace Web.Areas.Admin.ViewModels.Catalog
         public IList<Category> AvailableCategories { get; set; }
         public ProductListModel ProductsList { get; set; }
         public ICollection<CategorySpecificationGroup> CategoryAttributes { get; set; }
+
+        //                 //
+        public OrderByFilterOptions OrderFilter { get; set; }
+
     }
 }

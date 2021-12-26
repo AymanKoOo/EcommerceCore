@@ -3,22 +3,51 @@
 *@
 @{
 }
+@using Core.Entites.Catalog
+
 @model ICollection<Core.Entites.Catalog.CategorySpecificationGroup>
 
+@{
+    var order = Html.GetEnumSelectList<OrderByFilterOptions>();
+}
+
+
+<a class="filter-header">
+    Order Filtering
+</a>
+@foreach (var o in order)
+{
+    
+    <div class="filter-options">
+        <a  class="option" asp-controller="Category" asp-action="Index" asp-route-orderBy="@o.Value">
+            <div class="a-section">
+                <span class="a-size-base a-color-base" dir="auto">  @o.Text</span>
+            </div>
+        </a>
+    </div>
+    
+}
 
 
 @foreach (var c in Model)
 {
     @foreach (var s in @c.specificationAttributeGroup.SpecificationAttribute)
     {
-        <label>@s.Name</label>
-
+        <a class="filter-header">
+            @s.Name
+        </a>
         @foreach (var e in s.specificationAttributeOptions)
         {
-                <a asp-controller="Category" asp-action="Index" asp-route-FilterID="@e.Id">@e.Name</a>
+            <div class="filter-options">
+
+                <a class="option" asp-controller="Category" asp-action="Index" asp-route-spec="@e.Id">
+                    <div class="a-section">
+                        <span class="a-size-base a-color-base" dir="auto">@e.Name</span>
+                    </div>
+                </a>
+            </div>
         }
     }
-
 }
 
 

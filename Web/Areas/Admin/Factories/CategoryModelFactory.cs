@@ -26,7 +26,7 @@ namespace Web.Areas.Admin.Factories
             this.productModelFactory = productModelFactory;
         }
 
-        public async Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category, SpecificationAttributeOption filterSearch=null, int pageSize = 5, int pageNumber = 1)
+        public async Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category, SpecificationAttributeOption filterSpec = null, int OrderFilter=0, int pageSize = 5, int pageNumber = 1)
         {
             if (category != null)
             {
@@ -35,7 +35,7 @@ namespace Web.Areas.Admin.Factories
                 model.SubCategories = await unitOfWork.Category.GetSubCategory(category.Id);
 
                 //assign category products
-                model.ProductsList = await productModelFactory.PrepareProductByCategoryListModelAsync(category.Id,pageSize,pageNumber, filterSearch);
+                model.ProductsList = await productModelFactory.PrepareProductByCategoryListModelAsync(category.Id,pageSize,pageNumber, filterSpec, OrderFilter);
 
                 model.CategoryAttributes = category.CategorySpecificationGroups;
             }

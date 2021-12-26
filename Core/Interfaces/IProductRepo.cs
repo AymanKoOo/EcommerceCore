@@ -17,7 +17,7 @@ namespace Core.Interfaces
        
         Task<IEnumerable<Product>> GetAllProducts();
 
-        PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber, SpecificationAttributeOption filterSearch);
+        PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber, SpecificationAttributeOption filterSpec,int orderFilter);
 
         public PagedList<Product> GetAllProductsList(int pageSize, int pageNumber);
         public PagedList<Product> GetAllProductsWithoutDiscountList(int pageSize, int pageNumber);
