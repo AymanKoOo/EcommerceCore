@@ -48,13 +48,20 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
 
-        public virtual async Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID,int pageSize, int pageNumber, SpecificationAttributeOption filterSpec,int OrderFilter)
+        public virtual async Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID,int pageSize, int pageNumber,List<SpecificationAttributeOption> filterSpec,int OrderFilter)
         {
             var products = unitOfWork.Product.GetProductsByCatgoryList(categoryID,pageSize, pageNumber, filterSpec, OrderFilter);
             
             foreach (var product in products)
             {
                 var pricingObj = await priceCalculation.GetFinalPriceAsync(product);
+                string picture=null;
+                foreach (var k in product.productPictures)
+                {
+                    picture = k.picture.MimeType;
+                }
+
+                product.Picture = picture;
                 product.OldPrice = pricingObj.priceWithoutDiscounts;
                 product.Price = pricingObj.finalPrice;
             }

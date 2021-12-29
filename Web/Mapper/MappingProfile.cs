@@ -12,6 +12,7 @@ using Web.Areas.Admin.ViewModels.Categories;
 using Web.Areas.Admin.ViewModels.Discounts;
 using Web.Areas.Admin.ViewModels.Products;
 using Web.DTOs;
+using Web.ViewModels.Product;
 
 namespace Web.Mapper
 {
@@ -64,6 +65,25 @@ namespace Web.Mapper
             CreateMap<CategorySpecificationGroup, ACategorySpecificationGroup>();
             CreateMap<ACategorySpecificationGroup, CategorySpecificationGroup>();
 
-        }
+            CreateMap<ProductModel, ProductsVM>();
+            CreateMap<ProductsVM, ProductModel>();
+
+            CreateMap<ProductModel, ProductsVM>()
+              .ForMember
+               (x => x.name,
+               map => map.MapFrom(source => source.Name))
+
+               .ForMember
+               (x => x.OldPrice,
+               map => map.MapFrom(source => source.OldPrice))
+               .ForMember
+
+               (x => x.picture,
+               map => map.MapFrom(source => source.Picture))
+
+             .ForMember
+               (e => e.Price,
+               map => map.MapFrom(source => source.Price));
+            }
     }
 }

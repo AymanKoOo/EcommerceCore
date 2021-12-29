@@ -1645,6 +1645,8 @@ nav .fa {
     .filter-options .option {
         display: inline-block;
         font-weight: 500;
+        background-color: white;
+        border: 0;
     }
 
     .filter-options a {

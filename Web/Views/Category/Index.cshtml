@@ -21,11 +21,11 @@
 
     @foreach (var catt in Model.AvailableCategories)
     {
-<div class="navTrend-item">
-    <a asp-controller="Category" asp-action="Index" asp-route-cat="@catt.Name">
-        @catt.Name
-    </a>
-</div>
+        <div class="navTrend-item">
+            <a asp-controller="Category" asp-action="Index" asp-route-cat="@catt.Name">
+                @catt.Name
+            </a>
+        </div>
     }
 
     <div class="sale-pic">
@@ -67,7 +67,7 @@
 
                     <div class="filter-category">
 
-                        @await Html.PartialAsync("_CatalogFilters", Model.CategoryAttributes)
+                        @await Html.PartialAsync("_CatalogFilters", Model)
 
                     </div>
                 </div>
@@ -144,8 +144,6 @@
 
                     </div>
                 </div>
-
-
 
                 <div class="pagination">
                     <ul>

@@ -26,7 +26,7 @@ namespace Web.Areas.Admin.Factories
             this.productModelFactory = productModelFactory;
         }
 
-        public async Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category, SpecificationAttributeOption filterSpec = null, int OrderFilter=0, int pageSize = 5, int pageNumber = 1)
+        public async Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category,List<SpecificationAttributeOption> filterSpec = null, int OrderFilter=0, int pageSize = 5, int pageNumber = 1)
         {
             if (category != null)
             {

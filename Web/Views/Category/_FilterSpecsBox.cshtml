@@ -5,31 +5,30 @@
 }
 @using Core.Entites.Catalog
 
-@model ICollection<Core.Entites.Catalog.CategorySpecificationGroup>
+@model Web.Areas.Admin.ViewModels.Catalog.ACategoryModel
 
 @{
     var order = Html.GetEnumSelectList<OrderByFilterOptions>();
 }
-
 
 <a class="filter-header">
     Order Filtering
 </a>
 @foreach (var o in order)
 {
-    
+
     <div class="filter-options">
-        <a  class="option" asp-controller="Category" asp-action="Index" asp-route-orderBy="@o.Value">
+        <button class="option" onclick="optionFilter('@Model.Name',@o.Value)">
             <div class="a-section">
                 <span class="a-size-base a-color-base" dir="auto">  @o.Text</span>
             </div>
-        </a>
+        </button>
     </div>
-    
+
 }
 
 
-@foreach (var c in Model)
+@foreach (var c in Model.CategoryAttributes)
 {
     @foreach (var s in @c.specificationAttributeGroup.SpecificationAttribute)
     {
@@ -39,16 +38,95 @@
         @foreach (var e in s.specificationAttributeOptions)
         {
             <div class="filter-options">
-
-                <a class="option" asp-controller="Category" asp-action="Index" asp-route-spec="@e.Id">
+                <button class="option" onclick="specFilter('@Model.Name',@e.Id)">
                     <div class="a-section">
                         <span class="a-size-base a-color-base" dir="auto">@e.Name</span>
                     </div>
-                </a>
+                </button>
             </div>
         }
     }
 }
 
 
+<script>
 
+    var spec = [];
+    var option;
+
+    function specFilter(cat, specID) {
+
+        if (spec.includes(specID)) {
+
+            const index = spec.indexOf(specID);
+            if (index > -1) {
+                spec.splice(index);
+            }
+        }
+        else {
+            spec.push(specID);
+        }
+
+        filter(cat, spec, option);
+    }
+
+    function optionFilter(cat, optionID) {
+        option = optionID;
+        filter(cat, spec, option);
+    }
+
+    function filter(cat, spec, option) {
+
+        $.ajax({
+            type: "GET",
+            url: `https://localhost:5001/category/` + cat + ``,
+            data: { 'specs': spec, 'orderBy': option },
+            datatype: "json",
+            traditional: true,
+            success: function (response) {
+                $(".Product").empty();
+                console.log(response);
+                @*var html = `
+
+                     <div class="product-item col-lg-4 col-md-6 col-sm-12">
+
+                           <div class="Product-Img">
+                                        <a href="#">
+                                            <img class="img-fluid" src="/uploads/@product.productPictures[0].picture.MimeType">
+                                        </a>
+                                    </div>
+
+                                    <div class="product-name">
+                                        @product.Name
+                                    </div>
+
+                                    <div class="rating">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="product-price">
+
+                                        <span class="a-price-symbol">EGP</span>
+                                        <span class="a-price-whole">@product.Price</span>
+                                        @if (product.HasDiscountsApplied == true)
+                                        {
+                                            <span class="a-price-discount">@product.OldPrice</span>
+                                        }
+                                    </div>
+
+                   </div>
+                `*@
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+
+    }
+</script>

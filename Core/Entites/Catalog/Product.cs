@@ -3,6 +3,7 @@ using Core.Entites.Catalog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Core.Entites
@@ -16,6 +17,10 @@ namespace Core.Entites
         public string Description { get; set; }
         public string ImageFile { get; set; }
         public decimal OldPrice { get; set; }
+
+        [NotMapped]
+        public string Picture { get; set; }
+
         public decimal Price { get; set; }
         public int? UnitsInStock { get; set; }
         public bool HasDiscountsApplied { get; set; }

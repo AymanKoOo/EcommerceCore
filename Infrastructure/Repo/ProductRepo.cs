@@ -38,7 +38,7 @@ namespace Infrastructure.Repo
 
         public Product GetProduct(int productId)
         {
-            return _dbcontext.products.Include(x=>x.Category).FirstOrDefault(m => m.Id == productId);
+            return _dbcontext.products.Include(x => x.Category).FirstOrDefault(m => m.Id == productId);
         }
 
         //public Product GetProduct(int productId)
@@ -46,7 +46,7 @@ namespace Infrastructure.Repo
         //    return _dbcontext.products.FirstOrDefaultAsync(m => m.Id = productId);
         //}
 
-      
+
         public async Task<Product> GetProductByName(string name)
         {
             return await _dbcontext.products.FirstOrDefaultAsync(x => x.Name == name);
@@ -67,38 +67,46 @@ namespace Infrastructure.Repo
                    select products;
         }
 
-        public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber, SpecificationAttributeOption filterSpec, int OrderFilter)
+        public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber, List<SpecificationAttributeOption> filterSpec, int OrderFilter)
         {
-            if (filterSpec != null)
+            if (filterSpec.Count > 0)
             {
+                var options = new List<int>();
+                foreach(var i in filterSpec)
+                {
+                    options.Add(i.Id);
+                }
+
+                //  var products = _dbcontext.products.Include(x=>x.ProductSpecificationAttributes).ThenInclude(e=>e.specificationAttributeOption);
                 //  var products = _dbcontext.products.Include(x=>x.ProductSpecificationAttributes).ThenInclude(e=>e.specificationAttributeOption);
                 var filterProducts =
-                _dbcontext.products.Where(x=>x.CategoryId==catgoryID)
-
-.Include(x => x.ProductSpecificationAttributes).ThenInclude(x => x.specificationAttributeOption)
-.Include(d => d.Discounts)
-.Include(p => p.productPictures).ThenInclude(e => e.picture).Where(x =>
+             _dbcontext.products.Where(x => x.CategoryId == catgoryID)
+             .Include(x => x.ProductSpecificationAttributes).ThenInclude(x => x.specificationAttributeOption)
+             .Include(d => d.Discounts).Include(p => p.productPictures).ThenInclude(e => e.picture)
+             .Where(x =>
                     x.ProductSpecificationAttributes.Any(e =>
-                       e.specificationAttributeOption == filterSpec));
+                                            options.Contains(e.SpecificationAttributeOptionId)));
+
+               
 
                 return PagedList<Product>.ToPagedList(filterProducts,
             pageNumber,
             pageSize);
             }
-            else if((int)OrderByFilterOptions.HightToLow==OrderFilter)
+            else if ((int)OrderByFilterOptions.HightToLow == OrderFilter)
             {
 
-              
-                    var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture).OrderByDescending(x=>x.Price);
-                    return PagedList<Product>.ToPagedList(products,
-             pageNumber,
-             pageSize);
-           
 
-             
+                var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture).OrderByDescending(x => x.Price);
+                return PagedList<Product>.ToPagedList(products,
+         pageNumber,
+         pageSize);
+
+
+
             }
 
-            else if ((int)OrderByFilterOptions.LowToHigh==OrderFilter)
+            else if ((int)OrderByFilterOptions.LowToHigh == OrderFilter)
             {
                 var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture)
                 .OrderBy(x => x.Price);
@@ -113,14 +121,13 @@ namespace Infrastructure.Repo
                  pageNumber,
                  pageSize);
             }
-
         }
 
         public IQueryable<Product> FindAll()
         {
             //  dataContext.post.Include(a => a.applicationUser);
 
-            return _dbcontext.products;               ;
+            return _dbcontext.products; ;
         }
 
         public PagedList<Product> GetProducts(int pageSize, int pageNumber)
@@ -132,21 +139,21 @@ namespace Infrastructure.Repo
 
         public PagedList<Product> GetAllProductsList(int pageSize, int pageNumber)
         {
-            var products =  _dbcontext.products.Include(x => x.Category);
-           
+            var products = _dbcontext.products.Include(x => x.Category);
+
             return PagedList<Product>.ToPagedList(products,
             pageNumber,
             pageSize);
         }
         public PagedList<Product> GetAllProductsWithoutDiscountList(int pageSize, int pageNumber)
         {
-            var products = _dbcontext.products.Include(x => x.Category).Where(x=>x.HasDiscountsApplied==false);
+            var products = _dbcontext.products.Include(x => x.Category).Where(x => x.HasDiscountsApplied == false);
 
             return PagedList<Product>.ToPagedList(products,
             pageNumber,
             pageSize);
         }
-        
+
         public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, int pageSize, int pageNumber)
         {
             var products = _dbcontext.products.Where(x => x.HasDiscountsApplied);
@@ -166,7 +173,7 @@ namespace Infrastructure.Repo
 
         public async Task AddProductTODiscount(Product product, int discountID)
         {
-            var checkProduct = _dbcontext.discountProducts.FirstOrDefault(x=>x.ProductsId==product.Id);
+            var checkProduct = _dbcontext.discountProducts.FirstOrDefault(x => x.ProductsId == product.Id);
             if (checkProduct == null)
             {
                 var dp = new DiscountProduct
@@ -176,11 +183,11 @@ namespace Infrastructure.Repo
                 };
                 _dbcontext.discountProducts.Add(dp);
             }
-           
+
         }
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            return await _dbcontext.products.Include(d=>d.Discounts).Include(q=>q.Category).Include(x => x.productPictures).ThenInclude(e => e.picture).ToListAsync();
+            return await _dbcontext.products.Include(d => d.Discounts).Include(q => q.Category).Include(x => x.productPictures).ThenInclude(e => e.picture).ToListAsync();
         }
 
 

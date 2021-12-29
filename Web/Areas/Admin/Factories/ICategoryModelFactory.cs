@@ -11,6 +11,6 @@ namespace Web.Areas.Admin.Factories
     public interface ICategoryModelFactory
     {
         public Task<ACategorySpecificationGroup> PrepareCategorySpecGroup();
-        public Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category, SpecificationAttributeOption filterSearch = null, int OrderFilter = 0, int pageSize = 5, int pageNumber = 1);
+        public Task<ACategoryModel> PrepareCategoryModelAsync(ACategoryModel model, Category category, List<SpecificationAttributeOption> filterSearch = null, int OrderFilter = 0, int pageSize = 5, int pageNumber = 1);
     }
 }
