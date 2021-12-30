@@ -47,10 +47,10 @@ namespace Web.Controllers
             return View();
         }
 
-        [HttpGet("{cat}")]
-        public async Task<IActionResult> Index(string cat, int pageSize = 5, int pageNumber = 1, int orderBy = 0, int[] specs = null)
+        [HttpGet]
+        public async Task<IActionResult> Index(string cat, int pageSize = 2, int pageNumber = 1, int orderBy = 0, int[] specs = null)
         {
-
+           
             //var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetAllProducts());
             //var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetAllCategories());
 
@@ -61,7 +61,10 @@ namespace Web.Controllers
             //};
             //var category = _unitOfWork.Category.GetCategoryByID(id);
             var category = _unitOfWork.Category.GetCategoryByName(cat);
-
+            if (category == null)
+            {
+                return View("choose Cat");
+            }
             //var attrOption = await _unitOfWork.SpecificationAttributes.GetAttrOptionByName(filterSearch);
             var attrOption = new List<SpecificationAttributeOption>();
 
@@ -76,17 +79,43 @@ namespace Web.Controllers
 
             //prepare model
             var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(), category, attrOption, orderBy, pageSize, pageNumber);
-            if (specs.Length == 0)
+
+         
+            return View(categoryModel);
+          
+        }
+
+
+        [HttpGet("cat")]
+        public async Task<IActionResult> FilterProducts(string cat, int pageSize = 2, int pageNumber = 1, int orderBy = 0, int[] specs = null)
+        {
+            if (pageNumber < 0)
             {
-                return View(categoryModel);
+                pageNumber = 1;
             }
-            else
+            var category = _unitOfWork.Category.GetCategoryByName(cat);
+            var attrOption = new List<SpecificationAttributeOption>();
+
+            foreach (var i in specs)
             {
-                var postsValues = _mapper.Map<List<ProductsVM>>(categoryModel.ProductsList.Data);
-             
-                var metadata = new
+                var option = await _unitOfWork.SpecificationAttributes.GetAttrOptionByID(i);
+                if (option != null)
                 {
-                    postsValues,
+                    attrOption.Add(option);
+                }
+            }
+
+            //prepare model
+            var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(), category, attrOption, orderBy, pageSize, pageNumber);
+           
+            var products = _mapper.Map<List<ProductsVM>>(categoryModel.ProductsList.Data);
+
+            var metadata = new
+            {      
+                    products,
+                    orderBy,
+                    cat
+                    ,specs,
                     categoryModel.ProductsList.TotalCount,
                     categoryModel.ProductsList.PageSize,
                     categoryModel.ProductsList.CurrentPage,
@@ -95,10 +124,9 @@ namespace Web.Controllers
                     categoryModel.ProductsList.HasPrevious
                 };
                 return Ok(metadata);
-            }
         }
 
-     
+
         //[HttpPost]
         //[Route("index")]
         //public IActionResult Index(int categoryID,int s)

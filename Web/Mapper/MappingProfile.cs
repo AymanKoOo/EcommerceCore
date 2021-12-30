@@ -83,7 +83,11 @@ namespace Web.Mapper
 
              .ForMember
                (e => e.Price,
-               map => map.MapFrom(source => source.Price));
-            }
+               map => map.MapFrom(source => source.Price))
+
+             .ForMember
+               (e => e.HasDiscountsApplied,
+               map => map.MapFrom(source => source.HasDiscountsApplied));
+        }
     }
 }

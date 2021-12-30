@@ -81,7 +81,7 @@
 
                 <div class="products Container">
 
-                    <div class="row">
+                    <div id="posts" class="row">
 
 
                         @if (Model.SubCategories.Count > 0)
@@ -125,7 +125,6 @@
                                     <div class="rating">
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
-
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                     </div>
                                     <div class="product-price">
@@ -145,28 +144,28 @@
                     </div>
                 </div>
 
-                <div class="pagination">
+                <div id="pag" class="pagination">
                     <ul>
 
                         @if (Model.ProductsList.HasPrevious == true)
                         {
-                            <li> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
+                            <li> <a class="page-link prev" asp-controller="Category" asp-action="Index"  asp-route-cat="@Model.Name" asp-route-pageNumber="@prevPage">Prev</a></li>
 
                         }
                         else
                         {
-                            <li class="disabled"> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
+                            <li class="disabled prev"> <a class="page-link" asp-controller="Category"  asp-route-cat="@Model.Name" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
                         }
 
                         @for (int i = 1; i <= Model.ProductsList.TotalPages; i++)
                         {
                             if (i == Model.ProductsList.CurrentPage)
                             {
-                                <li class="disabled"> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                                <li class="disabled"> <a class="page-link" asp-controller="Category"  asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@i">@i</a></li>
                             }
                             else
                             {
-                                <li> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@i">@i</a></li>
+                                <li> <a class="page-link" asp-controller="Category" asp-action="Index"  asp-route-cat="@Model.Name" asp-route-pageNumber="@i">@i</a></li>
                             }
                         }
 
@@ -174,13 +173,13 @@
                         @if (Model.ProductsList.HasNext == true)
                         {
                             <li>
-                                <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a>
+                                <a class="page-link next" asp-controller="Category" asp-action="Index"  asp-route-cat="@Model.Name" asp-route-pageNumber="@nextPage">Next</a>
                             </li>
                         }
                         else
                         {
                             <li class="disabled">
-                                <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a>
+                                <a class="page-link next" asp-controller="Category" asp-action="Index"  asp-route-cat="@Model.Name" asp-route-pageNumber="@nextPage">Next</a>
                             </li>
                         }
                     </ul>

@@ -12,5 +12,7 @@ namespace Web.ViewModels.Product
         public string picture { get; set; }
         public decimal OldPrice { get; set; }
         public decimal Price { get; set; }
+        public bool HasDiscountsApplied { get; set; }
+ 
     }
 }

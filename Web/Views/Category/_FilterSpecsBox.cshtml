@@ -14,18 +14,21 @@
 <a class="filter-header">
     Order Filtering
 </a>
+<input type="hidden" id="category-name" value="@Model.Name" />
 @foreach (var o in order)
 {
 
     <div class="filter-options">
-        <button class="option" onclick="optionFilter('@Model.Name',@o.Value)">
+
+        <a  id="@o.Value" class="option order-option">
             <div class="a-section">
-                <span class="a-size-base a-color-base" dir="auto">  @o.Text</span>
+
+                <span class="a-size-base a-color-base" dir="auto">@o.Text</span>
             </div>
-        </button>
+        </a>
     </div>
 
-}
+    }
 
 
 @foreach (var c in Model.CategoryAttributes)
@@ -37,12 +40,14 @@
         </a>
         @foreach (var e in s.specificationAttributeOptions)
         {
-            <div class="filter-options">
-                <button class="option" onclick="specFilter('@Model.Name',@e.Id)">
-                    <div class="a-section">
-                        <span class="a-size-base a-color-base" dir="auto">@e.Name</span>
-                    </div>
-                </button>
+                <div class="filter-options">
+
+                    <a  id="@e.Id" class="option spec-option">
+                        <div class="a-section">
+
+                            <span class="a-size-base a-color-base" dir="auto">@e.Name</span>
+                        </div>
+                    </a>
             </div>
         }
     }
@@ -51,74 +56,219 @@
 
 <script>
 
-    var spec = [];
-    var option;
+    $(function () {
 
-    function specFilter(cat, specID) {
+        var spec = [];
+        var option;
+        var currentCat;
+        var CurrentPage,
+            HasNext,
+            HasPrev,
+            TotalPages = 0,
+            pageSize = 4,
+            pageNumber = 1;
 
-        if (spec.includes(specID)) {
+        currentCat = $('#category-name').val();
 
-            const index = spec.indexOf(specID);
-            if (index > -1) {
-                spec.splice(index);
+        console.log($('#next-btn'));
+        $('.spec-option').click(function () {
+            var specID = $(this).attr('id');
+
+            if (spec.includes(specID)) {
+
+                const index = spec.indexOf(specID);
+                if (index > -1) {
+                    spec.splice(index);
+                }
             }
+            else {
+                spec.push(specID);
+            }
+
+            filter(currentCat, spec, option, 1);
+        });
+
+        $('.order-option').click(function () {
+             option = $(this).attr('id');
+            filter(currentCat, spec, option, 1);
+        });
+
+        $('.page-number').click(function () {
+            var number = $(this).attr('id');
+            filter(currentCat, spec, option, number);
+        });
+
+        $('#pag').on("click", '.prev', function () {
+            console.log(pageNumber)
+            if (pageNumber <= 0) {
+                pageNumber = 1;
+            }
+            else {
+                pageNumber = pageNumber - 1;
+            }
+            filter(currentCat, spec, option, pageNumber);
+        });
+
+        $('#pag').on("click", '.next', function () {
+            console.log(pageNumber)
+            if (pageNumber > TotalPages) {
+                pageNumber = TotalPages;
+            }
+            else {
+                pageNumber = pageNumber + 1;
+            }
+            filter(currentCat, spec, option, pageNumber);
+        });
+
+
+    function filter(cat, spec, option, pageNumber) {
+        console.log(pageNumber);
+        if (pageNumber > TotalPages) {
+            pageNumber = TotalPages;
         }
-        else {
-            spec.push(specID);
+        if (pageNumber == 0) {
+            pageNumber = 1;
         }
-
-        filter(cat, spec, option);
-    }
-
-    function optionFilter(cat, optionID) {
-        option = optionID;
-        filter(cat, spec, option);
-    }
-
-    function filter(cat, spec, option) {
-
         $.ajax({
             type: "GET",
-            url: `https://localhost:5001/category/` + cat + ``,
-            data: { 'specs': spec, 'orderBy': option },
+            url: "@Url.Action("cat")",
+            data: { 'cat': cat, 'specs': spec, 'orderBy': option, 'pageNumber': pageNumber },
             datatype: "json",
             traditional: true,
             success: function (response) {
-                $(".Product").empty();
+                //Assign vars
+                CurrentPage = parseInt(response.currentPage);
+                HasNext = response.hasNext;
+                HasPrev = response.hasPrevious;
+                TotalPages = parseInt(response.totalPages);
+
+                html = ``;
+                pig = ``;
+                $("#posts").empty();
+                $("#pag").empty();
+
                 console.log(response);
-                @*var html = `
 
-                     <div class="product-item col-lg-4 col-md-6 col-sm-12">
 
-                           <div class="Product-Img">
-                                        <a href="#">
-                                            <img class="img-fluid" src="/uploads/@product.productPictures[0].picture.MimeType">
-                                        </a>
-                                    </div>
+                for (var i = 0; i < response.products.length; i++) {
+                    html += `
+                            <div class="product-item col-lg-4 col-md-6 col-sm-12">
 
-                                    <div class="product-name">
-                                        @product.Name
-                                    </div>
+                                        <div class="Product-Img">
+                                            <a href="#">
+                                                <img class="img-fluid" src="/uploads/`+ response.products[i].picture + `">
+                                            </a>
+                                        </div>
 
-                                    <div class="rating">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <div class="product-name">
+                                            `+ response.products[i].name + `
+                                        </div>
 
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="product-price">
+                                        <div class="rating">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
 
-                                        <span class="a-price-symbol">EGP</span>
-                                        <span class="a-price-whole">@product.Price</span>
-                                        @if (product.HasDiscountsApplied == true)
-                                        {
-                                            <span class="a-price-discount">@product.OldPrice</span>
-                                        }
-                                    </div>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="product-price">
 
-                   </div>
-                `*@
+                                            <span class="a-price-symbol">EGP</span>
+                                            <span class="a-price-whole">
+                                            `+ response.products[i].price + `
+                                            </span>
+                                            `;
+                    if (response.products[i].hasDiscountsApplied == true) {
+                        html += `<span class="a-price-discount">` + response.products[i].oldPrice + `</span>`;
+                    }
 
+                    html += `
+
+                                        </div>
+                             </div>
+                    `
+                    console.log(html);
+
+                }
+
+
+                $("#posts").html(html);
+
+
+                //Add Pag
+                pag = `
+                    <ul>
+                `
+                if (response.HasPrevious == true) {
+                    pag += `
+                   <li>
+
+                         <a id="prev-btn" class="page-link prev">prev</a>
+
+                   </li>
+                `
+                }
+                else {
+                    pag += `
+                        <li class="disabled prev">
+                         <a id="prev-btn" class="page-link prev">prev</a>
+                        </li>
+                `
+                }
+                for (var i = 1; i <= response.totalPages; i++) {
+                    if (i == response.CurrentPage) {
+                        pag += `
+                                   <li class="disabled ">
+                                        
+                                         <a id=`+ i + ` class="page-link page-number">` + i + `</a>
+
+                                   </li>
+                                `
+                    }
+                    else {
+                        pag += `
+                                    <li>
+
+                                         <a id=`+ i + ` class="page-link page-number">` + i + `</a>
+
+                                   </li>
+                                `
+                    }
+                }
+                if (response.HasNext == true) {
+                    pag += `
+                   <li>
+                        <a id="next-btn" class="page-link next">Next</a>
+                   </li>
+                `
+                }
+                else {
+                    pag += `
+                   <li class="disabled next">
+                        <a  id="next-btn" class="page-link next">Next</a>
+                   </li>
+                `
+                }
+
+                pag += `
+                    </ul>
+                `
+                $("#pag").html(pag);
+
+                const url = new URL(window.location);
+                if (spec.length > 0) {
+                    url.searchParams.set('spec', spec);
+                }
+                else {
+                    url.searchParams.delete('spec');
+
+                }
+                if (option > 0) {
+                    url.searchParams.set('orderBy', option);
+                }
+                else {
+                    url.searchParams.delete('orderBy');
+                }
+                window.history.pushState({}, '', url);
             },
             failure: function (response) {
                 alert(response.responseText);
@@ -129,4 +279,7 @@
         });
 
     }
+
+    })
+
 </script>

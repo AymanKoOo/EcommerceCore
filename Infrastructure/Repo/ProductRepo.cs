@@ -69,44 +69,86 @@ namespace Infrastructure.Repo
 
         public PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber, List<SpecificationAttributeOption> filterSpec, int OrderFilter)
         {
-            if (filterSpec.Count > 0)
+            if (filterSpec.Count > 0 && OrderFilter > 0)
             {
-                var options = new List<int>();
-                foreach(var i in filterSpec)
+
+                if ((int)OrderByFilterOptions.HightToLow == OrderFilter)
                 {
-                    options.Add(i.Id);
+                    var options = new List<int>();
+                    foreach (var i in filterSpec)
+                    {
+                        options.Add(i.Id);
+                    }
+
+                    var filterProducts =
+                 _dbcontext.products.Where(x => x.CategoryId == catgoryID)
+                 .Include(x => x.ProductSpecificationAttributes).ThenInclude(x => x.specificationAttributeOption)
+                 .Include(d => d.Discounts).Include(p => p.productPictures).ThenInclude(e => e.picture)
+                 .Where(x =>
+                        x.ProductSpecificationAttributes.Any(e =>
+                                                options.Contains(e.SpecificationAttributeOptionId))).OrderByDescending(x => x.Price);
+
+                    return PagedList<Product>.ToPagedList(filterProducts,
+                    pageNumber,
+                    pageSize);
+
                 }
 
-                //  var products = _dbcontext.products.Include(x=>x.ProductSpecificationAttributes).ThenInclude(e=>e.specificationAttributeOption);
-                //  var products = _dbcontext.products.Include(x=>x.ProductSpecificationAttributes).ThenInclude(e=>e.specificationAttributeOption);
-                var filterProducts =
-             _dbcontext.products.Where(x => x.CategoryId == catgoryID)
-             .Include(x => x.ProductSpecificationAttributes).ThenInclude(x => x.specificationAttributeOption)
-             .Include(d => d.Discounts).Include(p => p.productPictures).ThenInclude(e => e.picture)
-             .Where(x =>
-                    x.ProductSpecificationAttributes.Any(e =>
-                                            options.Contains(e.SpecificationAttributeOptionId)));
+                else if ((int)OrderByFilterOptions.LowToHigh == OrderFilter)
+                {
+                  
+                    var options = new List<int>();
+                    foreach (var i in filterSpec)
+                    {
+                        options.Add(i.Id);
+                    }
 
-               
+                    var filterProducts =
+                 _dbcontext.products.Where(x => x.CategoryId == catgoryID)
+                 .Include(x => x.ProductSpecificationAttributes).ThenInclude(x => x.specificationAttributeOption)
+                 .Include(d => d.Discounts).Include(p => p.productPictures).ThenInclude(e => e.picture)
+                 .Where(x =>
+                        x.ProductSpecificationAttributes.Any(e =>
+                                                options.Contains(e.SpecificationAttributeOptionId))).OrderBy(x => x.Price);
 
-                return PagedList<Product>.ToPagedList(filterProducts,
-            pageNumber,
-            pageSize);
+                    return PagedList<Product>.ToPagedList(filterProducts,
+                    pageNumber,
+                    pageSize);
+                }
+           
             }
-            else if ((int)OrderByFilterOptions.HightToLow == OrderFilter)
+            if (filterSpec.Count > 0 && OrderFilter ==0)
             {
 
+                    var options = new List<int>();
+                    foreach (var i in filterSpec)
+                    {
+                        options.Add(i.Id);
+                    }
 
-                var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture).OrderByDescending(x => x.Price);
-                return PagedList<Product>.ToPagedList(products,
-         pageNumber,
-         pageSize);
+                    var filterProducts =
+                 _dbcontext.products.Where(x => x.CategoryId == catgoryID)
+                 .Include(x => x.ProductSpecificationAttributes).ThenInclude(x => x.specificationAttributeOption)
+                 .Include(d => d.Discounts).Include(p => p.productPictures).ThenInclude(e => e.picture)
+                 .Where(x =>
+                        x.ProductSpecificationAttributes.Any(e =>
+                                                options.Contains(e.SpecificationAttributeOptionId)));
 
-
+                    return PagedList<Product>.ToPagedList(filterProducts,
+                    pageNumber,
+                    pageSize);
+             
 
             }
+            if (filterSpec.Count ==0  && (int)OrderByFilterOptions.HightToLow == OrderFilter)
+            {
+                var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture).OrderByDescending(x => x.Price);
+                return PagedList<Product>.ToPagedList(products,
+                 pageNumber,
+                 pageSize);
+            }
 
-            else if ((int)OrderByFilterOptions.LowToHigh == OrderFilter)
+            if (filterSpec.Count == 0 && (int)OrderByFilterOptions.LowToHigh == OrderFilter)
             {
                 var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture)
                 .OrderBy(x => x.Price);
