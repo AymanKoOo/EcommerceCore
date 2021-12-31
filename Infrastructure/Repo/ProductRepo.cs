@@ -237,5 +237,10 @@ namespace Infrastructure.Repo
         {
             await _dbcontext.ProductSpecificationAttribute.AddAsync(model);
         }
+        public async Task AddProductAttribute(ProductAttributeMapping model)
+        {
+            await _dbcontext.productAttributeMappings.AddAsync(model);
+        }
+        
     }
 }

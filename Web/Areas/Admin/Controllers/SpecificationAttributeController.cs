@@ -77,6 +77,8 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost("CreateAttributeOption")]
         public IActionResult CreateAttributeOption(ASpecificationAttributeOptionModel model)
         {
+            var specAttribute =   _unitOfWork.SpecificationAttributes.GetSpecAttrByID(model.specificationAttributeId);
+            model.specificationAttribute = specAttribute.Result;
             var modelSp = _mapper.Map<SpecificationAttributeOption>(model);
             _unitOfWork.SpecificationAttributes.CreateSpecificationAttributeOption(modelSp);
             _unitOfWork.Save();

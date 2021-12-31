@@ -128,16 +128,17 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
 
-        public async Task<AProductSpecificationOption> PrepareProductSpecifcationAttr()
+        public async Task<AProductAttributeCreate> PrepareProductSpecifcationAttr()
         {
-            var model = new AProductSpecificationOption();
-            var attrOptions = await unitOfWork.SpecificationAttributes.GetAllSpecificationAttributeOption();
-            var attr = await unitOfWork.SpecificationAttributes.GetAllSpecificationAttributes();
+            var model = new AProductAttributeCreate();
+            var attrOptions = await unitOfWork.productAttributes.GetAllProductAttributeOption();
+            var attr = await unitOfWork.productAttributes.GetAllProductAttributes();
 
-            model.specificationAttributes = attr;
-            model.specificationAttributeOptions = attrOptions;
+            model.productAttributes = attr;
+            model.productAttributeOptions = attrOptions;
 
             return model;
         }
+
     }
 }

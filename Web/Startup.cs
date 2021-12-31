@@ -76,6 +76,7 @@ namespace Web
             services.AddScoped(typeof(IDiscount), typeof(DiscountRepo));
             services.AddScoped(typeof(IPictureRepo), typeof(PictureRepo));
             services.AddScoped(typeof(ISpecificationAttributesRepo), typeof(SpecificationAttributesRepo));
+            services.AddScoped(typeof(IProductAttributesRepo), typeof(ProductAttributesRepo));
 
 
             services.AddScoped(typeof(IPictureService), typeof(PictureService));
@@ -84,6 +85,8 @@ namespace Web
             services.AddScoped(typeof(IProductModelFactory), typeof(ProductModelFactory));
             services.AddScoped(typeof(ICategoryModelFactory), typeof(CategoryModelFactory));
             services.AddScoped(typeof(ISpecificationAttributeModelFactory), typeof(SpecificationAttributeModelFactory));
+            services.AddScoped(typeof(IProductAttributeModelFactory), typeof(ProductAttributeModelFactory));
+
 
             //Static FIles//
             services.AddCors(c => {

@@ -13,5 +13,7 @@ namespace Web.Areas.Admin.ViewModels.Catalog
         public int DisplayOrder { get; set; }
         public int specificationAttributeId { get; set; }
         public IEnumerable<SpecificationAttribute> specificationAttributes { get; set; }
+        public SpecificationAttribute specificationAttribute { get; set; }
+
     }
 }

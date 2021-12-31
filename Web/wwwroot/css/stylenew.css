@@ -1639,7 +1639,8 @@ nav .fa {
 .filter-options {
     margin-top: 15px;
     font-weight: 500;
-    display:block;
+    display: inline-block;
+    cursor:pointer;
 }
 
     .filter-options .option {
@@ -1682,8 +1683,9 @@ nav .fa {
 .filter-header {
     font-size: 20px;
     color: black;
-    margin-bottom: 20px;
-    font-weight:500;
+    font-weight: 500;
+    display: block;
+    margin-top: 30px;
 }
 
     .filter-header:hover {
@@ -1828,4 +1830,8 @@ nav .fa {
 
 .pagination .current {
     background-color: red;
+}
+
+.selected {
+    border: 1px solid black !important;
 }

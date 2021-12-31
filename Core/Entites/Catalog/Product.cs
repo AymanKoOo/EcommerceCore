@@ -34,5 +34,8 @@ namespace Core.Entites
         public List<ProductPicture> productPictures { get; set; }
         
         public virtual ICollection<ProductSpecificationAttribute> ProductSpecificationAttributes { get; set; }
+
+        public virtual ICollection<ProductAttributeMapping> ProductAttributeMappings { get; set; }
+
     }
 }

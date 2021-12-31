@@ -9,9 +9,8 @@ namespace Core.Entites.Catalog
     public class SpecificationAttributeOption: EntityBase
     {
         public string Name { get; set; }
-
         public int DisplayOrder { get; set; }
-
+        
         [NotMapped]
         public int specificationAttributeId { get; set; }
 

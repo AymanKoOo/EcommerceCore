@@ -364,6 +364,7 @@ window.addEventListener('scroll', (e) => {
 
 
 $(".filter-header").click(function () {
+    console.log($(this));
     $($(this).next()
     ).toggleClass("hide-option");
 });

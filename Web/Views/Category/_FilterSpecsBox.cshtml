@@ -72,7 +72,10 @@
 
         console.log($('#next-btn'));
         $('.spec-option').click(function () {
+            $($(this)
+            ).toggleClass("selected");
             var specID = $(this).attr('id');
+        
 
             if (spec.includes(specID)) {
 
@@ -89,11 +92,13 @@
         });
 
         $('.order-option').click(function () {
+            $($(this)
+                ).toggleClass("selected");
              option = $(this).attr('id');
             filter(currentCat, spec, option, 1);
         });
-
-        $('.page-number').click(function () {
+    
+        $('#pag').on("click", '.page-number', function () {
             var number = $(this).attr('id');
             filter(currentCat, spec, option, number);
         });
@@ -198,7 +203,7 @@
                 pag = `
                     <ul>
                 `
-                if (response.HasPrevious == true) {
+                if (HasPrev == true) {
                     pag += `
                    <li>
 
@@ -215,7 +220,7 @@
                 `
                 }
                 for (var i = 1; i <= response.totalPages; i++) {
-                    if (i == response.CurrentPage) {
+                    if (i == CurrentPage) {
                         pag += `
                                    <li class="disabled ">
                                         
@@ -234,7 +239,7 @@
                                 `
                     }
                 }
-                if (response.HasNext == true) {
+                if (HasNext == true) {
                     pag += `
                    <li>
                         <a id="next-btn" class="page-link next">Next</a>
@@ -243,7 +248,7 @@
                 }
                 else {
                     pag += `
-                   <li class="disabled next">
+                   <li class="disabled ">
                         <a  id="next-btn" class="page-link next">Next</a>
                    </li>
                 `

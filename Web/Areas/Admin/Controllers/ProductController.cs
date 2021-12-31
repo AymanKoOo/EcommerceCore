@@ -26,15 +26,17 @@ namespace Web.Areas.Admin.Controllers
 
         readonly private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IProductAttributeModelFactory _productAttributeModelFactory;
         private readonly IPictureService picture;
         private readonly IWebHostEnvironment environment;
 
         public IProductModelFactory _productModelFactory { get; }
 
-        public ProductController(IUnitOfWork unitOfWork, IMapper mapper, IProductModelFactory ProductModelFactory, IPictureService picture, IWebHostEnvironment environment)
+        public ProductController(IUnitOfWork unitOfWork, IMapper mapper, IProductAttributeModelFactory productAttributeModelFactory , IProductModelFactory ProductModelFactory, IPictureService picture, IWebHostEnvironment environment)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            this._productAttributeModelFactory = productAttributeModelFactory;
             this._productModelFactory = ProductModelFactory;
             this.picture = picture;
             this.environment = environment;
@@ -158,6 +160,25 @@ namespace Web.Areas.Admin.Controllers
             _unitOfWork.Product.AddProductSpecificationAttribute(productSpec);
             _unitOfWork.Save();
             return Redirect("/");
+        }
+
+        //AddProductAttribute
+
+        [HttpGet("ProductAttributeAdd")]
+        public async Task<IActionResult> ProductAttributeAdd(int productID)
+        {
+            var model = await _productAttributeModelFactory.PrepareProductAttributeAdd();
+            model.ProductID = productID;
+            return View(model);
+        }
+
+        [HttpPost("ProductAttributeAdd")]
+        public IActionResult ProductAttributeAdd(AProductAttributeCreate model)
+        {
+            var productatt = _mapper.Map<ProductAttributeMapping>(model);
+            _unitOfWork.Product.AddProductAttribute(productatt);
+            _unitOfWork.Save();
+            return View("");
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Infrastructure.Repo
         }
         public async Task<IEnumerable<Category>> GetAllCategoriesHome()
         {
-            return await _dbcontext.Categories.Include(x => x.categoryPictures).ThenInclude(e => e.picture).ToListAsync();
+            return await _dbcontext.Categories.Where(q=>q.ParentCategoryId==0).Include(x => x.categoryPictures).ThenInclude(e => e.picture).ToListAsync();
         }
 
         public Category GetCategoryByID(int id)

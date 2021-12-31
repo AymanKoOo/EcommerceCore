@@ -17,5 +17,7 @@ namespace Core.Interfaces.Catalog
         //Task<IEnumerable<ASpecificationFilterModel>> GetAttributesByCategory(int categoryId);
         Task<SpecificationAttributeOption> GetAttrOptionByName(string name);
         Task<SpecificationAttributeOption> GetAttrOptionByID(int id);
+        Task<SpecificationAttribute> GetSpecAttrByID(int id);
+
     }
 }

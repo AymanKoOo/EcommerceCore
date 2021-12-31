@@ -41,5 +41,7 @@ namespace Core.Interfaces
 
 
         public Task AddProductSpecificationAttribute(ProductSpecificationAttribute model);
+
+        public Task AddProductAttribute(ProductAttributeMapping model);
     }
 }

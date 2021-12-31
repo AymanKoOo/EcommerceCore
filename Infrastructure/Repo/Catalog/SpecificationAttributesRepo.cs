@@ -53,5 +53,11 @@ namespace Infrastructure.Repo.Catalog
             if (id < 0) return null;
             return await _dbcontext.SpecificationAttributeOptions.FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<SpecificationAttribute> GetSpecAttrByID(int id)
+        {
+            if (id < 0) return null;
+            return await _dbcontext.specificationAttributes.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

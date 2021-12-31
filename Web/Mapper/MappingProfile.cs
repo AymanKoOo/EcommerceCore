@@ -57,7 +57,16 @@ namespace Web.Mapper
             CreateMap<SpecificationAttributeOption, ASpecificationAttributeOptionModel>();
             CreateMap<ASpecificationAttributeOptionModel, SpecificationAttributeOption>();
 
+            CreateMap<AProductAttributeModel, ProductAttribute>();
+            CreateMap<ProductAttribute, AProductAttributeModel>();
 
+            CreateMap<ProductAttributeOption, AProductAttributeOptionModel>();
+            CreateMap<AProductAttributeOptionModel, ProductAttributeOption>();
+
+
+            CreateMap<ASpecificationAttributeOptionModel, SpecificationAttributeOption>();
+
+            
             CreateMap<ProductSpecificationAttribute, AProductSpecificationOption>();
             CreateMap<AProductSpecificationOption, ProductSpecificationAttribute>();
 
@@ -88,6 +97,15 @@ namespace Web.Mapper
              .ForMember
                (e => e.HasDiscountsApplied,
                map => map.MapFrom(source => source.HasDiscountsApplied));
+
+            CreateMap<ProductAttributeMapping, ProductAttributeOption>();
+            CreateMap<ProductAttributeOption, ProductAttributeMapping>();
+
+           
+            CreateMap<AProductAttributeCreate, ProductAttributeMapping>();
+            CreateMap<ProductAttributeMapping, AProductAttributeCreate>();
+
+
         }
     }
 }

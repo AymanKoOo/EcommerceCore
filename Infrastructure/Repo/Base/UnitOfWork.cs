@@ -32,6 +32,8 @@ namespace Infrastructure.Repo.Base
 
         public ISpecificationAttributesRepo SpecificationAttributes { get; }
 
+        public IProductAttributesRepo productAttributes { get; }
+
         public UnitOfWork(DataContext context)
         {
             this._dbContext = context;
@@ -43,6 +45,7 @@ namespace Infrastructure.Repo.Base
             this.discount = new DiscountRepo(_dbContext);
             this.picture = new PictureRepo(_dbContext);
             this.SpecificationAttributes = new SpecificationAttributesRepo(_dbContext);
+            this.productAttributes = new ProductAttributesRepo(_dbContext);
         }
 
         public void Save()

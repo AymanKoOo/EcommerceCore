@@ -23,7 +23,7 @@ namespace Infrastructure.Data
 
             new ProductTypeConfig().Configure(builder.Entity<Product>());
             base.OnModelCreating(builder);
-           
+
 
             builder.Entity<DiscountProduct>().HasKey(sc => new { sc.ProductsId, sc.DiscountsId });
 
@@ -41,7 +41,7 @@ namespace Infrastructure.Data
 
 
             builder.Entity<ProductPicture>().HasKey(sc => new { sc.ProductId, sc.PictureId });
-         
+
             builder.Entity<ProductPicture>()
                .HasOne(pt => pt.product)
                .WithMany(p => p.productPictures)
@@ -77,6 +77,21 @@ namespace Infrastructure.Data
                 .HasOne(pt => pt.specificationAttributeGroup)
                 .WithMany(t => t.CategorySpecificationGroups)
                 .HasForeignKey(pt => pt.SpecificationAttributeGroupId);
+
+
+
+            builder.Entity<ProductAttributeMapping>().HasKey(sc => new { sc.ProductId, sc.ProductAttributeOptionId });
+
+            builder.Entity<ProductAttributeMapping>()
+                .HasOne(x => x.product)
+                .WithMany(x => x.ProductAttributeMappings)
+                .HasForeignKey(x => x.ProductId);
+
+
+            builder.Entity<ProductAttributeMapping>()
+                .HasOne(x => x.productAttributeOption)
+                .WithMany(x => x.ProductAttributeMappings)
+                .HasForeignKey(x => x.ProductAttributeOptionId);
         }
 
         public DbSet<Product> products { get; set; }
@@ -93,11 +108,17 @@ namespace Infrastructure.Data
         public DbSet<CategoryPicture> categoryPictures { get; set; }
         public DbSet<Picture> pictures { get; set; }
 
+
         public DbSet<SpecificationAttribute> specificationAttributes { get; set; }
         public DbSet<SpecificationAttributeGroup> specificationAttributeGroups { get; set; }
         public DbSet<SpecificationAttributeOption> SpecificationAttributeOptions { get; set; }
         public DbSet<ProductSpecificationAttribute> ProductSpecificationAttribute { get; set; }
-
         public DbSet<CategorySpecificationGroup> categorySpecificationGroups { get; set; }
+
+
+
+        public DbSet<ProductAttribute> productAttributes { get; set; }
+        public DbSet<ProductAttributeOption> productAttributeOptions { get; set; }
+        public DbSet<ProductAttributeMapping> productAttributeMappings { get; set; }
     }
 }
