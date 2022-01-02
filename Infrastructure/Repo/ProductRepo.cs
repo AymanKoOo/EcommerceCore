@@ -38,7 +38,7 @@ namespace Infrastructure.Repo
 
         public Product GetProduct(int productId)
         {
-            return _dbcontext.products.Include(x => x.Category).FirstOrDefault(m => m.Id == productId);
+            return _dbcontext.products.Include(x => x.Category).Include(x=>x.productPictures).ThenInclude(x=>x.picture).Include(x=>x.ProductAttributeMappings).ThenInclude(x=>x.productAttributeOption).ThenInclude(x=>x.productAttribute).FirstOrDefault(m => m.Id == productId);
         }
 
         //public Product GetProduct(int productId)

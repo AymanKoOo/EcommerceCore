@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels.Catalog;
 using Web.Areas.Admin.ViewModels.Products;
 using Web.Services;
+using Web.ViewModels.Product;
 
 namespace Web.Areas.Admin.Factories
 {
@@ -139,6 +140,32 @@ namespace Web.Areas.Admin.Factories
 
             return model;
         }
+       
+        public async Task<ProductDeatilsVM> PrepareProductDetailModelAsync(ProductDeatilsVM model, Product product)
+        {
+            if (product == null)
+            {
+                return null;
+            }
 
+            var pricingObj = await priceCalculation.GetFinalPriceAsync(product);
+            var pictures = new List<string>();
+            foreach (var k in product.productPictures)
+            {
+                pictures.Add(k.picture.MimeType);
+            }
+            model.Id = product.Id;
+            model.productPictures = pictures;
+            model.OldPrice = pricingObj.priceWithoutDiscounts;
+            model.Price = pricingObj.finalPrice;
+            model.Name = product.Name;
+            model.Description = product.Description;
+            model.HasDiscountsApplied = product.HasDiscountsApplied;
+            model.ProductAttributeMappings = product.ProductAttributeMappings;
+
+            return model;
+        }
+
+        
     }
 }

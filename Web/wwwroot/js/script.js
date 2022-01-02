@@ -129,7 +129,7 @@ $(document).ready(function () {
         current_fs = $(".active");
 
         next_fs = $(this).attr('id');
-        next_fs = "#" + next_fs + "1";
+        next_fs = "#" + next_fs + "-1";
 
         $("fieldset").removeClass("active");
         $(next_fs).addClass("active");

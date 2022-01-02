@@ -114,7 +114,7 @@
                                     <div class="product-item col-lg-4 col-md-6 col-sm-12">
 
                                         <div class="Product-Img">
-                                            <a href="#">
+                                            <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.Id">
                                                 <img class="img-fluid" src="/uploads/@product.productPictures[0].picture.MimeType">
                                             </a>
                                         </div>

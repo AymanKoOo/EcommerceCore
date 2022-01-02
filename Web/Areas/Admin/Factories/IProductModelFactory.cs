@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels.Catalog;
 using Web.Areas.Admin.ViewModels.Products;
+using Web.ViewModels.Product;
 
 namespace Web.Areas.Admin.Factories
 {
@@ -16,5 +17,6 @@ namespace Web.Areas.Admin.Factories
         Task<AProductModel> PrepareProductModelAsync(AProductModel model, Product product);
         Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID, int pageSize, int pageNumber,List<SpecificationAttributeOption> specificationAttributeOption,int OrderFilter);
         Task<AProductAttributeCreate> PrepareProductSpecifcationAttr();
+        Task<ProductDeatilsVM> PrepareProductDetailModelAsync(ProductDeatilsVM model, Product product);
     }
 }
