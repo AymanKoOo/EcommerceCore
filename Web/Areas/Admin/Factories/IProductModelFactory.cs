@@ -16,7 +16,7 @@ namespace Web.Areas.Admin.Factories
         Task<ProductListModel> PrepareProductNODiscountListModelAsync(int pageSize, int pageNumber);
         Task<AProductModel> PrepareProductModelAsync(AProductModel model, Product product);
         Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID, int pageSize, int pageNumber,List<SpecificationAttributeOption> specificationAttributeOption,int OrderFilter);
-        Task<AProductAttributeCreate> PrepareProductSpecifcationAttr();
+        Task<AProductSpecificationOption> PrepareProductSpecifcationAttr();
         Task<ProductDeatilsVM> PrepareProductDetailModelAsync(ProductDeatilsVM model, Product product);
     }
 }

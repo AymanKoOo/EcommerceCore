@@ -15,5 +15,6 @@ namespace Core.Interfaces.Catalog
         Task<IEnumerable<ProductAttribute>> GetAllProductAttributes();
         Task<ProductAttributeOption> GetProductAttrOptionByName(string name);
         Task<ProductAttributeOption> GetProductAttrOptionByID(int id);
+        IEnumerable<int>  GetProductAttributeOptionUsedByProduct(int productID);
     }
 }

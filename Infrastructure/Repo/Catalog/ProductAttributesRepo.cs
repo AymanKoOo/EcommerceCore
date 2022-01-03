@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Linq;
 namespace Infrastructure.Repo.Catalog
 {
     public class ProductAttributesRepo : GenericRepo<ProductAttribute>, IProductAttributesRepo
@@ -25,8 +25,12 @@ namespace Infrastructure.Repo.Catalog
         public async Task<IEnumerable<ProductAttributeOption>> GetAllProductAttributeOption()
         {
             return await _dbcontext.productAttributeOptions.ToListAsync();
+          
         }
-
+        public  IEnumerable<int> GetProductAttributeOptionUsedByProduct(int productID)
+        {
+           return  _dbcontext.productAttributeMappings.Where(x => x.ProductId == productID).Select(x => x.ProductAttributeOptionId);
+        }
         public async Task<IEnumerable<ProductAttribute>> GetAllProductAttributes()
         {
             return await _dbcontext.productAttributes.ToListAsync();

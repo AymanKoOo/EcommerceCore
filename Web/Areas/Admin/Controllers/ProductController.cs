@@ -167,7 +167,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet("ProductAttributeAdd")]
         public async Task<IActionResult> ProductAttributeAdd(int productID)
         {
-            var model = await _productAttributeModelFactory.PrepareProductAttributeAdd();
+            var model = await _productAttributeModelFactory.PrepareProductAttributeAdd(productID);
             model.ProductID = productID;
             return View(model);
         }
@@ -177,6 +177,30 @@ namespace Web.Areas.Admin.Controllers
         {
             var productatt = _mapper.Map<ProductAttributeMapping>(model);
             _unitOfWork.Product.AddProductAttribute(productatt);
+            _unitOfWork.Save();
+            return View("");
+        }
+
+
+        //Edit ProductAttribute
+
+        [HttpGet("ProductAttributeEdit")]
+        public async Task<IActionResult> ProductAttributeEdit(int productID)
+        {
+            var Attrmodel =  await _unitOfWork.Product.GetProductAttrByID(productID);
+            var model = await _productAttributeModelFactory.PrepareProductAttributeAdd(productID);
+            model.ProductID = productID;
+            model.PictureURL = Attrmodel.PictureURL;
+            model.ProductAttributeOptionId = Attrmodel.ProductAttributeOptionId;
+            model.ProductID = productID;
+            return View(model);
+        }
+
+        [HttpPost("ProductAttributeEdit")]
+        public IActionResult ProductAttributeEdit(AProductAttributeCreate model)
+        {
+            var productatt = _mapper.Map<ProductAttributeMapping>(model);
+            _unitOfWork.Product.UpdateProductAttribute(productatt);
             _unitOfWork.Save();
             return View("");
         }

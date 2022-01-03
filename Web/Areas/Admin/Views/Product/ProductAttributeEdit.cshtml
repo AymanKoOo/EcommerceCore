@@ -5,7 +5,7 @@
 }
 @model Web.Areas.Admin.ViewModels.Catalog.AProductAttributeCreate;
 
-<form asp-controller="Product" asp-action="ProductAttributeAdd" method="post">
+<form asp-controller="Product" asp-action="ProductAttributeEdit" method="post">
 
     <div class="row">
 
@@ -22,7 +22,7 @@
 
             @foreach (var op in Model.productAttributeOptions)
             {
-                if (op != null && !Model.UsedproductAttributeOptions.Contains(op.Id))
+                if (op != null)
                 {
                     <option value="@op.Id">@op.Name</option>
                 }
@@ -34,8 +34,9 @@
 
             @foreach (var img in Model.productPictures)
             {
+                
                 <input type="radio" asp-for="PictureURL" value="@img.MimeType" />
-                <img style=" width: 140px; height: 200px;" src="/uploads/@img.MimeType" />
+                <img src="/uploads/@img.MimeType" />
             }
 
         </div>
@@ -45,20 +46,6 @@
             <div class="form-group">
                 <label>Display Order</label>
                 <input asp-for="DisplayOrder" type="number" class="form-control required" />
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>Display Order</label>
-                <input asp-for="PriceAdjustment" type="number" class="form-control required" />
-            </div>
-        </div>
-  
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>Display Order</label>
-                <input asp-for="WeightAdjustment" type="number" class="form-control required" />
             </div>
         </div>
 

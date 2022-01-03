@@ -11,5 +11,12 @@ namespace Core.Entites.Catalog
 
         public int ProductAttributeOptionId { get; set; }
         public ProductAttributeOption productAttributeOption { get; set; }
+
+        //Picture//
+        public string PictureURL { get; set; }
+        
+        //Price//
+        public decimal PriceAdjustment { get; set; }
+        public decimal WeightAdjustment { get; set; }
     }
 }

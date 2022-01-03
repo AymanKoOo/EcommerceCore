@@ -45,7 +45,7 @@ namespace Web.Areas.Admin.Controllers
             return View("");
         }
 
-        //  Option ATTRIBUTE   //
+        //  Option ATTRIBUTE  //
         [HttpGet("CreateAttributeOption")]
         public async Task<IActionResult> CreateAttributeOption()
         {

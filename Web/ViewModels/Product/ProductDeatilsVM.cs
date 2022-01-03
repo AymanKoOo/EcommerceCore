@@ -16,5 +16,8 @@ namespace Web.ViewModels.Product
         public List<string> productPictures { get; set; }
         public bool HasDiscountsApplied { get; set; }
         public  ICollection<ProductAttributeMapping> ProductAttributeMappings { get; set; }
+
+        public List<ProductAttribute> productAttributes { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Core.Entites.Catalog;
+﻿using Core.Entites;
+using Core.Entites.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -129,15 +129,11 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
 
-        public async Task<AProductAttributeCreate> PrepareProductSpecifcationAttr()
+        public async Task<AProductSpecificationOption> PrepareProductSpecifcationAttr()
         {
-            var model = new AProductAttributeCreate();
-            var attrOptions = await unitOfWork.productAttributes.GetAllProductAttributeOption();
-            var attr = await unitOfWork.productAttributes.GetAllProductAttributes();
-
-            model.productAttributes = attr;
-            model.productAttributeOptions = attrOptions;
-
+            var model = new AProductSpecificationOption();
+            var attrOptions = await unitOfWork.SpecificationAttributes.GetAllSpecificationAttributeOption();
+            model.specificationAttributeOptions = attrOptions;
             return model;
         }
        
@@ -162,10 +158,19 @@ namespace Web.Areas.Admin.Factories
             model.Description = product.Description;
             model.HasDiscountsApplied = product.HasDiscountsApplied;
             model.ProductAttributeMappings = product.ProductAttributeMappings;
-
+            int oldAtrr = -1;
+            model.productAttributes = new List<ProductAttribute>();
+            int i = 0;
+            foreach(var m in product.ProductAttributeMappings)
+            {
+                if(oldAtrr!= m.productAttributeOption.productAttribute.Id)
+                {
+                    m.productAttributeOption.PictureURL = m.PictureURL;
+                    model.productAttributes.Add(m.productAttributeOption.productAttribute);
+                }
+                oldAtrr = m.productAttributeOption.productAttribute.Id;
+            }
             return model;
         }
-
-        
     }
 }

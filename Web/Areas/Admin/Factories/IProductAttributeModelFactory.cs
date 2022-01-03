@@ -10,8 +10,6 @@ namespace Web.Areas.Admin.Factories
     {
         public Task<AProductAttributeModel> PrepareProductAttributeModel();
         public Task<AProductAttributeOptionModel> PrepareProductAttributeOptionModel();
-
-        public Task<AProductAttributeCreate> PrepareProductAttributeAdd();
-
+        public Task<AProductAttributeCreate> PrepareProductAttributeAdd(int productID);
     }
 }

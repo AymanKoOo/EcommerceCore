@@ -2030,3 +2030,30 @@ nav .fa {
     width: 300px;
     height: 400px;
 }
+
+.img-box img {
+    width: 140px;
+    height: 200px;
+}
+
+.img-box .attr-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.img-box .att-values .value {
+    margin-bottom: 10px;
+}
+
+.img-box .pic {
+    margin: 0;
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    border: 1px solid #e0e0e0;
+}
+
+
+.img-box .prod-attr {
+    margin-top: 30px;
+}

@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220102152551_add-pic")]
+    partial class addpic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,12 +226,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("PictureURL")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("PriceAdjustment")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("WeightAdjustment")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ProductId", "ProductAttributeOptionId");
 

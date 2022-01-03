@@ -70,44 +70,67 @@
                         @Model.Description
                     </div>
 
-
-                    @foreach (var attr in Model.ProductAttributeMappings)
+                <div class="img-box">
+                    @foreach (var attr in Model.productAttributes)
                     {
-                        <span>
-                            @attr.productAttributeOption.productAttribute.Name
-                        </span>
 
 
-                        @attr.productAttributeOption.Name
-                    }
+                    <div class="prod-attr">
 
-              
+                        <div class="attr-header">
+                            @attr.Name :
+                        </div>
 
-                   <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                <label for="" class="Size "></label>
+                        <div class="att-values">
+                            <div class="container">
+                                <div class="row">
+
+                                    @foreach (var o in attr.productAttributeOptions)
+                                    {
+                                        <div class="col-lg-2">
+                                            <div class="value">
+                                                <input type="radio" name="@attr.Name">
+                                                @o.Name
+                                            </div>
+                                            <img class="pic" src="/uploads/@o.PictureURL" />
+                                        </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        }
 
-                            <button type="button" class="btnn">ADD TO CART</button>
+                                </div>
 
-                            <p class="mt-5">
-                                Designed and produced locally in Los Angeles.
+                                    <!--Size-->
 
-                                100% Cotton.
 
-                                6.0 oz.
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <label for="" class="Size "></label>
+                                        </div>
 
-                                Screen print on front.
+                                        <button type="button" class="btnn">ADD TO CART</button>
 
-                                True to size standard fit.
+                                        <p class="mt-5">
+                                            Designed and produced locally in Los Angeles.
 
-                                *Ships in 3-4 weeks
-                                Next »
-                                Write a review
-                            </p>
-     
-                </div>
+                                            100% Cotton.
 
-            </div>
+                                            6.0 oz.
+
+                                            Screen print on front.
+
+                                            True to size standard fit.
+
+                                            *Ships in 3-4 weeks
+                                            Next »
+                                            Write a review
+                                        </p>
+
+                                    </div>
+
+                                </div>
         </div>
     </div>

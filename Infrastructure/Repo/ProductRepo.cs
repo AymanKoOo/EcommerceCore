@@ -241,6 +241,25 @@ namespace Infrastructure.Repo
         {
             await _dbcontext.productAttributeMappings.AddAsync(model);
         }
+        public void UpdateProductAttribute(ProductAttributeMapping model)
+        {
+             _dbcontext.productAttributeMappings.Update(model);
+        }
+        public async Task<ProductAttributeMapping> GetProductAttrByID(int productID)
+        {
+           return  await _dbcontext.productAttributeMappings.Include(x=>x.productAttributeOption).FirstOrDefaultAsync(x=>x.ProductId==productID);
+        }
         
+        public List<Picture> GetProductPictures(int productId)
+        {
+            var pics = new List<Picture>();
+            var q =  _dbcontext.products.Where(x => x.Id == productId).Include(x => x.productPictures).ThenInclude(x => x.picture).FirstOrDefault();
+            foreach(var pic in q.productPictures)
+            {
+                pics.Add(pic.picture);
+            }
+            return pics;
+        }
+
     }
 }
