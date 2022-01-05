@@ -3,68 +3,31 @@
 *@
 @{
 }
-@model Web.Areas.Admin.ViewModels.Catalog.AProductAttributeCreate;
+@model Web.Areas.Admin.ViewModels.Catalog.AProductAttributeAdd;
 
 <form asp-controller="Product" asp-action="ProductAttributeAdd" method="post">
 
+    <input type="hidden" asp-for="ProductId" />
+
     <div class="row">
-
-        @*<select asp-for="ProductAttributeId">
-
-            @foreach (var att in Model.productAttributes)
-            {
-                <option value="@att.Id">@att.Name</option>
-            }
-
-        </select>*@
-
-        <select asp-for="ProductAttributeOptionId">
-
-            @foreach (var op in Model.productAttributeOptions)
-            {
-                if (op != null && !Model.UsedproductAttributeOptions.Contains(op.Id))
-                {
-                    <option value="@op.Id">@op.Name</option>
-                }
-            }
-
-        </select>
-
-        <div class="img-box">
-
-            @foreach (var img in Model.productPictures)
-            {
-                <input type="radio" asp-for="PictureURL" value="@img.MimeType" />
-                <img style=" width: 140px; height: 200px;" src="/uploads/@img.MimeType" />
-            }
-
-        </div>
-        <input type="hidden" asp-for="ProductID" value="@Model.ProductID" />
-
+    
         <div class="col-md-12">
             <div class="form-group">
-                <label>Display Order</label>
-                <input asp-for="DisplayOrder" type="number" class="form-control required" />
-            </div>
-        </div>
+                <label>Choose Attribute</label>
+               
+                <select asp-for="ProductAttributeId">
 
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>Display Order</label>
-                <input asp-for="PriceAdjustment" type="number" class="form-control required" />
+                    @foreach (var attr in Model.productAttributes)
+                    {
+                        <option value="@attr.Id">@attr.Name</option>
+                    }
+                </select>
             </div>
         </div>
-  
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>Display Order</label>
-                <input asp-for="WeightAdjustment" type="number" class="form-control required" />
-            </div>
-        </div>
-
         <button class="btn btn-primary" type="submit">
             Add
         </button>
 
+        <h3> You need to save the product attribute before you can add values for this product attribute page. </h3>
     </div>
 </form>

@@ -36,6 +36,5 @@ namespace Core.Entites
         public virtual ICollection<ProductSpecificationAttribute> ProductSpecificationAttributes { get; set; }
 
         public virtual ICollection<ProductAttributeMapping> ProductAttributeMappings { get; set; }
-
     }
 }

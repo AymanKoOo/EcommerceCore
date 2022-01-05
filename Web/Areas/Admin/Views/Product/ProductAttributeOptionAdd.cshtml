@@ -1,0 +1,79 @@
+﻿
+@model Web.Areas.Admin.ViewModels.Catalog.AProductAttrMappingOption
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Option</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var att in Model.mapped.productAttributeOptions)
+        {
+            <tr>
+                <td>@att.Name</td>
+
+                <td>
+                    <a asp-controller="Product" asp-action="ProductAttributeOptionDelete" asp-route-optionId="@att.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form asp-controller="Product" asp-action="ProductAttributeOptionAdd" method="post">
+
+    <input type="hidden" asp-for="ProductMappingId" value="@Model.mapped.Id" />
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>@Model.mapped.productAttribute.Name</label>
+                <a asp-controller="Product" asp-action="ProductAttributeDelete" asp-route-mapID="@Model.mapped.Id">Delete</a>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Name</label>
+                <input asp-for="Name" type="text" class="form-control required" />
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Display Order</label>
+                <input asp-for="DisplayOrder" type="number" class="form-control required" />
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Price Adjustment</label>
+                <input asp-for="PriceAdjustment" type="number" class="form-control required" />
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Weight Adjustment</label>
+                <input asp-for="WeightAdjustment" type="number" class="form-control required" />
+            </div>
+        </div>
+
+        <div class="img-box">
+
+            @foreach (var img in Model.mapped.product.productPictures)
+            {
+                <input type="radio" asp-for="PicturePath" value="@img.picture.MimeType" />
+                <img style=" width: 140px; height: 200px;" src="/uploads/@img.picture.MimeType" />
+            }
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Add
+        </button>
+    </div>
+</form>

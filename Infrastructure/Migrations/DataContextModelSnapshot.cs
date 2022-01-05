@@ -216,24 +216,22 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeMapping", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductAttributeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductAttributeOptionId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.Property<string>("PictureURL")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("ProductAttributeId");
 
-                    b.Property<decimal>("PriceAdjustment")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("WeightAdjustment")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ProductId", "ProductAttributeOptionId");
-
-                    b.HasIndex("ProductAttributeOptionId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("productAttributeMappings");
                 });
@@ -257,18 +255,21 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PicturePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("PriceAdjustment")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("WeightAdjustment")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("productAttributeId")
+                    b.Property<int?>("productAttributeMappingId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("productAttributeId");
+                    b.HasIndex("productAttributeMappingId");
 
                     b.ToTable("productAttributeOptions");
                 });
@@ -760,9 +761,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeMapping", b =>
                 {
-                    b.HasOne("Core.Entites.Catalog.ProductAttributeOption", "productAttributeOption")
+                    b.HasOne("Core.Entites.Catalog.ProductAttribute", "productAttribute")
                         .WithMany("ProductAttributeMappings")
-                        .HasForeignKey("ProductAttributeOptionId")
+                        .HasForeignKey("ProductAttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -774,16 +775,16 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("product");
 
-                    b.Navigation("productAttributeOption");
+                    b.Navigation("productAttribute");
                 });
 
             modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeOption", b =>
                 {
-                    b.HasOne("Core.Entites.Catalog.ProductAttribute", "productAttribute")
+                    b.HasOne("Core.Entites.Catalog.ProductAttributeMapping", "productAttributeMapping")
                         .WithMany("productAttributeOptions")
-                        .HasForeignKey("productAttributeId");
+                        .HasForeignKey("productAttributeMappingId");
 
-                    b.Navigation("productAttribute");
+                    b.Navigation("productAttributeMapping");
                 });
 
             modelBuilder.Entity("Core.Entites.Catalog.ProductPicture", b =>
@@ -945,12 +946,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entites.Catalog.ProductAttribute", b =>
                 {
-                    b.Navigation("productAttributeOptions");
+                    b.Navigation("ProductAttributeMappings");
                 });
 
-            modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeOption", b =>
+            modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeMapping", b =>
                 {
-                    b.Navigation("ProductAttributeMappings");
+                    b.Navigation("productAttributeOptions");
                 });
 
             modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttribute", b =>

@@ -16,5 +16,7 @@ namespace Core.Interfaces.Catalog
         Task<ProductAttributeOption> GetProductAttrOptionByName(string name);
         Task<ProductAttributeOption> GetProductAttrOptionByID(int id);
         IEnumerable<int>  GetProductAttributeOptionUsedByProduct(int productID);
+        Task<ProductAttribute> GetProductAttrByOptionID(int id);
+        void DeleteProductOptionById(int optionId);
     }
 }

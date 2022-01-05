@@ -1,4 +1,5 @@
 ﻿using Core.Entites;
+using Core.Entites.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace Web.Areas.Admin.ViewModels.Catalog
         public int CategoryId { get; set; }
         public Category category { get; set; }
         public List<Category> categories { get; set; }
+
+        public IEnumerable<ProductAttributeMapping> productAttributes { get; set; }
     }
 }

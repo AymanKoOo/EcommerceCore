@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Core.Entites;
+
 namespace Infrastructure.Repo.Catalog
 {
     public class ProductAttributesRepo : GenericRepo<ProductAttribute>, IProductAttributesRepo
@@ -29,7 +31,7 @@ namespace Infrastructure.Repo.Catalog
         }
         public  IEnumerable<int> GetProductAttributeOptionUsedByProduct(int productID)
         {
-           return  _dbcontext.productAttributeMappings.Where(x => x.ProductId == productID).Select(x => x.ProductAttributeOptionId);
+           return  _dbcontext.productAttributeMappings.Where(x => x.ProductId == productID).Select(x => x.ProductAttributeId);
         }
         public async Task<IEnumerable<ProductAttribute>> GetAllProductAttributes()
         {
@@ -47,11 +49,35 @@ namespace Infrastructure.Repo.Catalog
             if (id < 0) return null;
             return await _dbcontext.productAttributeOptions.FirstOrDefaultAsync(x => x.Id == id);
         }
+        //public  async Task<ProductAttribute> GetProductAttrByOptionID(int id)
+        //{
+        //    //if (id < 0) return null;
+        //    //return await _dbcontext.productAttributes.FirstOrDefaultAsync(x => x.productAttributeOptions.Any(x => x.Id == id));
+        //}
 
         public async Task<ProductAttributeOption> GetProductAttrOptionByName(string name)
         {
             if (name==null) return null;
             return await _dbcontext.productAttributeOptions.FirstOrDefaultAsync(x => x.Name == name);
         }
+
+        public void DeleteProductOptionById(int optionId)
+        {
+            var option = _dbcontext.productAttributeOptions.FirstOrDefault(x =>x.Id==optionId);
+            if (option != null)
+            {
+                _dbcontext.productAttributeOptions.Remove(option);
+            }
+        }
+
+        public Task<ProductAttribute> GetProductAttrByOptionID(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public  async  Task<ProductAttribute> GetProductAttrByOptionID(int id)
+        //{
+        //    return await _dbcontext.productAttributeOptions.FirstOrDefaultAsync(x => x.Id == id);
+        //}
     }
 }

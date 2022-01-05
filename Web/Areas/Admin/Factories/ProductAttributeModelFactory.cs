@@ -45,19 +45,31 @@ namespace Web.Areas.Admin.Factories
             model.productAttributes = Attr;
             return model;
         }
-        public async Task<AProductAttributeCreate> PrepareProductAttributeAdd(int productID)
+        public async Task<AProductAttributeAdd> PrepareProductAttributeAdd(int productID)
         {
-            var model = new AProductAttributeCreate();
-            var attrOptions = await unitOfWork.productAttributes.GetAllProductAttributeOption();
-            var usedAtrrOptions = unitOfWork.productAttributes.GetProductAttributeOptionUsedByProduct(productID);
-            
+            var model = new AProductAttributeAdd();
             var attr = await unitOfWork.productAttributes.GetAllProductAttributes();
-            var productPictures = unitOfWork.Product.GetProductPictures(productID);
-            model.productAttributes = attr;
-            model.productPictures = productPictures;
-            model.productAttributeOptions = attrOptions;
-            model.UsedproductAttributeOptions = usedAtrrOptions;
+            model.productAttributes = attr.ToList();
             return model;
         }
+
+        public Task<AProductAttrMappingOption> ProductAttributeMappingOptionModel(AProductAttrMappingOption model, int PAMappingID)
+        {
+            throw new NotImplementedException();
+        }
+        //public async Task<AProductAttributeCreate> PrepareProductAttributeAdd(int productID)
+        //{
+        //    var model = new AProductAttributeCreate();
+        //    var attrOptions = await unitOfWork.productAttributes.GetAllProductAttributeOption();
+        //    var usedAtrrOptions = unitOfWork.productAttributes.GetProductAttributeOptionUsedByProduct(productID);
+
+        //    var attr = await unitOfWork.productAttributes.GetAllProductAttributes();
+        //    var productPictures = unitOfWork.Product.GetProductPictures(productID);
+        //    model.productAttributes = attr;
+        //    model.productPictures = productPictures;
+        //    model.productAttributeOptions = attrOptions;
+        //    model.UsedproductAttributeOptions = usedAtrrOptions;
+        //    return model;
+        //}
     }
 }

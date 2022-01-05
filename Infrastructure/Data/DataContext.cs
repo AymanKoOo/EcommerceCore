@@ -80,18 +80,20 @@ namespace Infrastructure.Data
 
 
 
-            builder.Entity<ProductAttributeMapping>().HasKey(sc => new { sc.ProductId, sc.ProductAttributeOptionId });
 
-            builder.Entity<ProductAttributeMapping>()
-                .HasOne(x => x.product)
-                .WithMany(x => x.ProductAttributeMappings)
-                .HasForeignKey(x => x.ProductId);
+            //builder.Entity<ProductAttributeMapping>().HasKey(sc => new { sc.ProductId, sc.ProductAttributeId });
 
+            //builder.Entity<ProductAttributeMapping>()
+            //    .HasOne(x => x.product)
+            //    .WithMany(x => x.ProductAttributeMappings)
+            //    .HasForeignKey(x => x.ProductId);
 
-            builder.Entity<ProductAttributeMapping>()
-                .HasOne(x => x.productAttributeOption)
-                .WithMany(x => x.ProductAttributeMappings)
-                .HasForeignKey(x => x.ProductAttributeOptionId);
+          
+            //builder.Entity<ProductAttributeMapping>()
+            //    .HasOne(x => x.productAttribute)
+            //    .WithMany(x => x.ProductAttributeMappings)
+            //    .HasForeignKey(x => x.ProductAttributeId);
+
         }
 
         public DbSet<Product> products { get; set; }

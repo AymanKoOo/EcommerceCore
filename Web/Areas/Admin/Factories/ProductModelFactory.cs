@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels.Catalog;
 using Web.Areas.Admin.ViewModels.Products;
 using Web.Services;
-using Web.ViewModels.Product;
+using Web.ViewModels.Products;
 
 namespace Web.Areas.Admin.Factories
 {
@@ -99,7 +99,8 @@ namespace Web.Areas.Admin.Factories
             {
                 
             }
-            
+            var attr =  unitOfWork.Product.GetProductAttrMappingByProductID(product.Id);
+            model.productAttributes = attr;
             //prepare model select categories
             var categories = await unitOfWork.Category.GetAllCategoriesAsync();
             model.categories = categories;
@@ -137,40 +138,36 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
        
-        public async Task<ProductDeatilsVM> PrepareProductDetailModelAsync(ProductDeatilsVM model, Product product)
+        public async Task<ProductDeatilsVM> PrepareProductDetailModelAsync(ProductDeatilsVM model, int productId)
         {
+            if (productId < 0) return null;
+
+            var product = unitOfWork.Product.GetProduct(productId);
             if (product == null)
             {
                 return null;
             }
 
             var pricingObj = await priceCalculation.GetFinalPriceAsync(product);
-            var pictures = new List<string>();
-            foreach (var k in product.productPictures)
-            {
-                pictures.Add(k.picture.MimeType);
-            }
-            model.Id = product.Id;
-            model.productPictures = pictures;
-            model.OldPrice = pricingObj.priceWithoutDiscounts;
-            model.Price = pricingObj.finalPrice;
-            model.Name = product.Name;
-            model.Description = product.Description;
-            model.HasDiscountsApplied = product.HasDiscountsApplied;
-            model.ProductAttributeMappings = product.ProductAttributeMappings;
-            int oldAtrr = -1;
-            model.productAttributes = new List<ProductAttribute>();
-            int i = 0;
-            foreach(var m in product.ProductAttributeMappings)
-            {
-                if(oldAtrr!= m.productAttributeOption.productAttribute.Id)
-                {
-                    m.productAttributeOption.PictureURL = m.PictureURL;
-                    model.productAttributes.Add(m.productAttributeOption.productAttribute);
-                }
-                oldAtrr = m.productAttributeOption.productAttribute.Id;
-            }
+            
+            product.OldPrice = pricingObj.priceWithoutDiscounts;
+            product.Price = pricingObj.finalPrice;
+
+            model.productAttributeMappings = unitOfWork.Product.GetProductAttrMappingByProductID(product.Id);
+            model.product = product;
+            
             return model;
+        }
+
+        public async Task<AProductAttrMappingOption> ProductAttributeMappingOptionModel(AProductAttrMappingOption model, int PAMappingID)
+        {
+            model.mapped = await unitOfWork.Product.GetProductAttrMappingByID(PAMappingID);
+            return model;
+        }
+
+        public Task<ProductDeatilsVM> PrepareProductDetailModelAsync(ProductDeatilsVM model, Product product)
+        {
+            throw new NotImplementedException();
         }
     }
 }

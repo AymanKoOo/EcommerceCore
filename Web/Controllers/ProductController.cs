@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Areas.Admin.Factories;
-using Web.ViewModels.Product;
+using Web.ViewModels.Products;
 
 namespace Web.Controllers
 {
@@ -31,10 +31,7 @@ namespace Web.Controllers
         [HttpGet("prod")]
         public virtual async Task<IActionResult> ProductDetails(int productId, int updatecartitemid = 0)
         {
-            var product = _unitOfWork.Product.GetProduct(productId);
-
-            var productDetailVM = await _productModelFactory.PrepareProductDetailModelAsync(new ProductDeatilsVM(), product);
-
+            var productDetailVM = await _productModelFactory.PrepareProductDetailModelAsync(new ProductDeatilsVM(), productId);
             return View(productDetailVM);
         }
 

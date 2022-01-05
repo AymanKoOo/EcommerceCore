@@ -45,23 +45,23 @@ namespace Web.Areas.Admin.Controllers
             return View("");
         }
 
-        //  Option ATTRIBUTE  //
-        [HttpGet("CreateAttributeOption")]
-        public async Task<IActionResult> CreateAttributeOption()
-        {
-            var model = await productAttributeModelFactory.PrepareProductAttributeOptionModel();
-            return View(model);
-        }
+        ////  Option ATTRIBUTE  //
+        //[HttpGet("CreateAttributeOption")]
+        //public async Task<IActionResult> CreateAttributeOption()
+        //{
+        //    var model = await productAttributeModelFactory.PrepareProductAttributeOptionModel();
+        //    return View(model);
+        //}
 
-        [HttpPost("CreateAttributeOption")]
-        public IActionResult CreateAttributeOption(AProductAttributeOptionModel model)
-        {
-            var ProductAttribute = _unitOfWork.productAttributes.GetProductAttrByID(model.ProductAttributeId);
-            model.productAttribute = ProductAttribute.Result;
-            var modelAttr = _mapper.Map<ProductAttributeOption>(model);
-            _unitOfWork.productAttributes.CreateProductAttributeOption(modelAttr);
-            _unitOfWork.Save();
-            return View("");
-        }
+        //[HttpPost("CreateAttributeOption")]
+        //public IActionResult CreateAttributeOption(AProductAttributeOptionModel model)
+        //{
+        //    var ProductAttribute = _unitOfWork.productAttributes.GetProductAttrByID(model.ProductAttributeId);
+        //    model.productAttribute = ProductAttribute.Result;
+        //    var modelAttr = _mapper.Map<ProductAttributeOption>(model);
+        //    _unitOfWork.productAttributes.CreateProductAttributeOption(modelAttr);
+        //    _unitOfWork.Save();
+        //    return View("");
+        //}
     }
 }

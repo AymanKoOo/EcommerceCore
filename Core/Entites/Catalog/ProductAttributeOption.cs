@@ -14,15 +14,11 @@ namespace Core.Entites.Catalog
         //Price//
         public decimal PriceAdjustment { get; set; }
         public decimal WeightAdjustment { get; set; }
-
         //Picture//
         public string ImageSquaresPictureId { get; set; } // from product Pictures
 
-      
-        public ProductAttribute productAttribute { get; set; }
-
-        public virtual ICollection<ProductAttributeMapping> ProductAttributeMappings { get; set; }
-        [NotMapped]
-        public string PictureURL { get; set; }
+        public string PicturePath { get; set; }
+        public int ProductAttributeMappingId { get; set; }
+        public ProductAttributeMapping productAttributeMapping { get; set; }
     }
 }

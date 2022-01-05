@@ -11,7 +11,7 @@ using Web.Areas.Admin.Factories;
 using Web.Areas.Admin.ViewModels.Catalog;
 using Web.Areas.Admin.ViewModels.Products;
 using Web.DTOs;
-using Web.ViewModels.Product;
+using Web.ViewModels.Products;
 
 namespace Web.Controllers
 {

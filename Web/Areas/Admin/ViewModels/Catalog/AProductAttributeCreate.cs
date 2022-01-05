@@ -12,6 +12,8 @@ namespace Web.Areas.Admin.ViewModels.Catalog
         public int ProductID { get; set; }
         public int ProductAttributeId { get; set; }
         public IEnumerable<ProductAttribute> productAttributes { get; set; }
+        public string ProductAttribute { get; set; }
+        public ProductAttribute productAttribute { get; set; }
 
         public int ProductAttributeOptionId { get; set; }
         public IEnumerable<ProductAttributeOption> productAttributeOptions { get; set; }

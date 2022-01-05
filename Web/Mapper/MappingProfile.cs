@@ -12,7 +12,7 @@ using Web.Areas.Admin.ViewModels.Categories;
 using Web.Areas.Admin.ViewModels.Discounts;
 using Web.Areas.Admin.ViewModels.Products;
 using Web.DTOs;
-using Web.ViewModels.Product;
+using Web.ViewModels.Products;
 
 namespace Web.Mapper
 {
@@ -98,14 +98,31 @@ namespace Web.Mapper
                (e => e.HasDiscountsApplied,
                map => map.MapFrom(source => source.HasDiscountsApplied));
 
-            CreateMap<ProductAttributeMapping, ProductAttributeOption>();
-            CreateMap<ProductAttributeOption, ProductAttributeMapping>();
+            ////CreateMap<ProductAttributeOptionsMapping, ProductAttributeOption>();
+            //CreateMap<ProductAttributeOption, ProductAttributeOptionsMapping>();
 
            
+            //CreateMap<AProductAttributeCreate, ProductAttributeOptionsMapping>();
+            //CreateMap<ProductAttributeOptionsMapping, AProductAttributeCreate>();
+
             CreateMap<AProductAttributeCreate, ProductAttributeMapping>();
             CreateMap<ProductAttributeMapping, AProductAttributeCreate>();
 
+            CreateMap<ProductAttributeMapping, ProductAttributeOption>();
+            CreateMap<ProductAttributeOption, ProductAttributeMapping>();
 
+            CreateMap<ProductAttributeOption, AProductAttrMappingOption>()
+                .ForMember
+               (x => x.ProductMappingId,
+               map => map.MapFrom(source => source.ProductAttributeMappingId));
+
+            CreateMap<AProductAttrMappingOption, ProductAttributeOption>()
+                   .ForMember
+               (x => x.ProductAttributeMappingId,
+               map => map.MapFrom(source => source.ProductMappingId));
+
+            CreateMap<ProductAttributeMapping, AProductAttributeAdd>();
+            CreateMap<AProductAttributeAdd, ProductAttributeMapping>();
         }
     }
 }

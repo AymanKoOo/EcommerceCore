@@ -54,14 +54,39 @@
                     }
 
                 </select>
+
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var att in Model.productAttributes)
+                        {
+                            <tr>
+                                <td>@att.productAttribute.Name</td>
+
+                                <td>
+                                    <a asp-controller="Product" asp-action="ProductAttributeOptionAdd" asp-route-ProductAttributeMappingEdit="@att.Id">Add Product Atrribute Options</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
                 <a asp-controller="Product" asp-action="ProductAttributeAdd" asp-route-productID="@Model.Id">Add Product Atrribute</a>
-                
+
                 <a asp-controller="Product" asp-action="ProductAttributeEdit" asp-route-productID="@Model.Id">Edit Product Atrribute</a>
 
                 <a asp-controller="Product" asp-action="ProductSpecAttributeAdd" asp-route-productID="@Model.Id">Add Specifaction Atrribute</a>
                 
+                <a asp-controller="Product" asp-action="ProductAttributeDelete" asp-route-productID="@Model.Id">Delete  Product Atrribute</a>
+
                 <button class="btn btn-primary" type="submit">
-                    Add
+                    Edit
                 </button>
 
             </div>

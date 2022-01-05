@@ -42,12 +42,21 @@ namespace Core.Interfaces
 
         public Task AddProductSpecificationAttribute(ProductSpecificationAttribute model);
 
-        public Task AddProductAttribute(ProductAttributeMapping model);
+        //public Task AddProductAttribute(ProductAttributeOptionsMapping model);
 
         public List<Picture> GetProductPictures(int productId);
 
-        public Task<ProductAttributeMapping> GetProductAttrByID(int productID);
-        public void UpdateProductAttribute(ProductAttributeMapping model);
+        //public Task<ProductAttributeOptionsMapping> GetProductAttrByID(int productID);
+        //public void UpdateProductAttribute(ProductAttributeOptionsMapping model);
+
+        //public Task AddProductAttributeOptionMapping(ProductAttributeOptionsMapping model);
+        public Task AddProductAttributeMapping(ProductAttributeMapping model);
+        public IEnumerable<ProductAttributeMapping> GetProductAttrMappingByProductID(int id);
+        public Task<ProductAttributeMapping> GetProductAttrMappingByID(int id);
+
+        public void deleteProductAttrMapping(int mapID);
 
     }
 }
+
+    

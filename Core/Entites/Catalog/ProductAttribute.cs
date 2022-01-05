@@ -9,9 +9,7 @@ namespace Core.Entites.Catalog
     public class ProductAttribute : EntityBase
     {
         public string Name { get; set; }
-
         public string Description { get; set; }
-
-        public IEnumerable<ProductAttributeOption> productAttributeOptions { get; set; }
+        public virtual ICollection<ProductAttributeMapping> ProductAttributeMappings { get; set; }
     }
 }

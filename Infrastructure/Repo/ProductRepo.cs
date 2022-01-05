@@ -36,10 +36,10 @@ namespace Infrastructure.Repo
         //    _dbcontext.Update(product);
         //}
 
-        public Product GetProduct(int productId)
-        {
-            return _dbcontext.products.Include(x => x.Category).Include(x=>x.productPictures).ThenInclude(x=>x.picture).Include(x=>x.ProductAttributeMappings).ThenInclude(x=>x.productAttributeOption).ThenInclude(x=>x.productAttribute).FirstOrDefault(m => m.Id == productId);
-        }
+        //public Product GetProduct(int productId)
+        //{
+        //    return _dbcontext.products.Include(x => x.Category).Include(x => x.productPictures).ThenInclude(x => x.picture).Include(x => x.ProductAttributeOptionsMappings).ThenInclude(x => x.productAttributeOption).ThenInclude(x => x.productAttribute).FirstOrDefault(m => m.Id == productId);
+        //}
 
         //public Product GetProduct(int productId)
         //{
@@ -96,7 +96,7 @@ namespace Infrastructure.Repo
 
                 else if ((int)OrderByFilterOptions.LowToHigh == OrderFilter)
                 {
-                  
+
                     var options = new List<int>();
                     foreach (var i in filterSpec)
                     {
@@ -115,32 +115,32 @@ namespace Infrastructure.Repo
                     pageNumber,
                     pageSize);
                 }
-           
+
             }
-            if (filterSpec.Count > 0 && OrderFilter ==0)
+            if (filterSpec.Count > 0 && OrderFilter == 0)
             {
 
-                    var options = new List<int>();
-                    foreach (var i in filterSpec)
-                    {
-                        options.Add(i.Id);
-                    }
+                var options = new List<int>();
+                foreach (var i in filterSpec)
+                {
+                    options.Add(i.Id);
+                }
 
-                    var filterProducts =
-                 _dbcontext.products.Where(x => x.CategoryId == catgoryID)
-                 .Include(x => x.ProductSpecificationAttributes).ThenInclude(x => x.specificationAttributeOption)
-                 .Include(d => d.Discounts).Include(p => p.productPictures).ThenInclude(e => e.picture)
-                 .Where(x =>
-                        x.ProductSpecificationAttributes.Any(e =>
-                                                options.Contains(e.SpecificationAttributeOptionId)));
+                var filterProducts =
+             _dbcontext.products.Where(x => x.CategoryId == catgoryID)
+             .Include(x => x.ProductSpecificationAttributes).ThenInclude(x => x.specificationAttributeOption)
+             .Include(d => d.Discounts).Include(p => p.productPictures).ThenInclude(e => e.picture)
+             .Where(x =>
+                    x.ProductSpecificationAttributes.Any(e =>
+                                            options.Contains(e.SpecificationAttributeOptionId)));
 
-                    return PagedList<Product>.ToPagedList(filterProducts,
-                    pageNumber,
-                    pageSize);
-             
+                return PagedList<Product>.ToPagedList(filterProducts,
+                pageNumber,
+                pageSize);
+
 
             }
-            if (filterSpec.Count ==0  && (int)OrderByFilterOptions.HightToLow == OrderFilter)
+            if (filterSpec.Count == 0 && (int)OrderByFilterOptions.HightToLow == OrderFilter)
             {
                 var products = _dbcontext.products.Include(d => d.Discounts).Where(x => x.CategoryId == catgoryID).Include(p => p.productPictures).ThenInclude(e => e.picture).OrderByDescending(x => x.Price);
                 return PagedList<Product>.ToPagedList(products,
@@ -237,29 +237,86 @@ namespace Infrastructure.Repo
         {
             await _dbcontext.ProductSpecificationAttribute.AddAsync(model);
         }
-        public async Task AddProductAttribute(ProductAttributeMapping model)
-        {
-            await _dbcontext.productAttributeMappings.AddAsync(model);
-        }
-        public void UpdateProductAttribute(ProductAttributeMapping model)
-        {
-             _dbcontext.productAttributeMappings.Update(model);
-        }
-        public async Task<ProductAttributeMapping> GetProductAttrByID(int productID)
-        {
-           return  await _dbcontext.productAttributeMappings.Include(x=>x.productAttributeOption).FirstOrDefaultAsync(x=>x.ProductId==productID);
-        }
-        
+
+        //public async Task<ProductAttributeOptionsMapping> GetProductAttrByID(int productID)
+        //{
+        //    return await _dbcontext.productAttributeOptionsMappings.Include(x => x.productAttributeOption).FirstOrDefaultAsync(x => x.ProductId == productID);
+        //}
+
         public List<Picture> GetProductPictures(int productId)
         {
             var pics = new List<Picture>();
-            var q =  _dbcontext.products.Where(x => x.Id == productId).Include(x => x.productPictures).ThenInclude(x => x.picture).FirstOrDefault();
-            foreach(var pic in q.productPictures)
+            var q = _dbcontext.products.Where(x => x.Id == productId).Include(x => x.productPictures).ThenInclude(x => x.picture).FirstOrDefault();
+            foreach (var pic in q.productPictures)
             {
                 pics.Add(pic.picture);
             }
             return pics;
         }
 
+        //public Task AddProductAttribute(ProductAttributeOptionsMapping model)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+
+
+        //public async Task AddProductAttributeOptionMapping(ProductAttributeOptionsMapping model)
+        //{
+        //    await _dbcontext.productAttributeOptionsMappings.AddAsync(model);
+        //}
+        //public async Task AddProductAttributeMapping(ProductAttributeMapping model)
+        //{
+        //    await _dbcontext.productAttributeMappings.AddAsync(model);
+        //}
+        //public void UpdateProductAttribute(ProductAttributeOptionsMapping model)
+        //{
+        //    //_dbcontext.productAttributeOptionsMappings.Update(model);
+        //}
+
+
+        //public async Task<Product> GetProductAttrMappingByProductID(int id)
+        //{
+        //    if (id< 0) return null;
+        //    return await _dbcontext.products.Include(x=>x.ProductAttributeMappings).ThenInclude(x=>x.productAttribute).ThenInclude(x => x.productAttributeOptions).ThenInclude(x => x.ProductAttributeOptionsMappings).FirstOrDefaultAsync(x => x.Id == id);
+        //}
+
+        public async Task AddProductAttributeMapping(ProductAttributeMapping model)
+        {
+            await _dbcontext.productAttributeMappings.AddAsync(model);
+        }
+        public void deleteProductAttrMapping(int mapID)
+        {
+            var model = _dbcontext.productAttributeMappings.Include(x=>x.productAttributeOptions).FirstOrDefault(x => x.Id == mapID);
+            foreach(var options in model.productAttributeOptions)
+            {
+                _dbcontext.productAttributeOptions.Remove(options);
+            }
+            _dbcontext.productAttributeMappings.Remove(model);
+        }
+
+        public Product GetProduct(int productId)
+        {
+            return _dbcontext.products.Include(x=>x.productPictures).ThenInclude(x=>x.picture)
+                .FirstOrDefault(x => x.Id == productId);
+        }
+
+
+        /// <summary>
+        /// ////////
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IEnumerable<ProductAttributeMapping> GetProductAttrMappingByProductID(int id)
+        {
+            return _dbcontext.productAttributeMappings.Where(x => x.ProductId == id)
+                  .Include(x => x.productAttribute).Include(x=>x.productAttributeOptions);
+        }
+
+        public async Task<ProductAttributeMapping> GetProductAttrMappingByID(int id)
+        {
+            return await _dbcontext.productAttributeMappings.Include(x=>x.product).ThenInclude(x=>x.productPictures).ThenInclude(x=>x.picture)
+                .Include(x=>x.productAttributeOptions).Include(x=>x.productAttribute).FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211121220252_aaskvkfaf")]
-    partial class aaskvkfaf
+    [Migration("20220104192929_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -168,7 +168,37 @@ namespace Infrastructure.Migrations
                     b.ToTable("CartItems");
                 });
 
-            modelBuilder.Entity("Core.Entites.Category", b =>
+            modelBuilder.Entity("Core.Entites.Catalog.CategoryPicture", b =>
+                {
+                    b.Property<int>("categoryID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.HasKey("categoryID", "PictureId");
+
+                    b.HasIndex("PictureId");
+
+                    b.ToTable("categoryPictures");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.CategorySpecificationGroup", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpecificationAttributeGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryId", "SpecificationAttributeGroupId");
+
+                    b.HasIndex("SpecificationAttributeGroupId");
+
+                    b.ToTable("categorySpecificationGroups");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductAttribute", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -178,13 +208,207 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageName")
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("productAttributes");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeMapping", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductAttributeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductAttributeId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("productAttributeMappings");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ColorSquaresRgb")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageSquaresPictureId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PicturePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PriceAdjustment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("WeightAdjustment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("productAttributeMappingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("productAttributeMappingId");
+
+                    b.ToTable("productAttributeOptions");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductPicture", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "PictureId");
+
+                    b.HasIndex("PictureId");
+
+                    b.ToTable("productPictures");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductSpecificationAttribute", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpecificationAttributeOptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "SpecificationAttributeOptionId");
+
+                    b.HasIndex("SpecificationAttributeOptionId");
+
+                    b.ToTable("ProductSpecificationAttribute");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SpecificationAttributeGroupId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SpecificationAttributeGroupId1");
+
+                    b.ToTable("specificationAttributes");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("specificationAttributeGroups");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("specificationAttributeId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("specificationAttributeId1");
+
+                    b.ToTable("SpecificationAttributeOptions");
+                });
+
+            modelBuilder.Entity("Core.Entites.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IncludeInTopMenu")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MetaDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MetaTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ParentCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Published")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShowOnHomepage")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedOnUtc")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -220,6 +444,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("RequiresCouponCode")
@@ -303,6 +530,33 @@ namespace Infrastructure.Migrations
                     b.ToTable("orderItems");
                 });
 
+            modelBuilder.Entity("Core.Entites.Picture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AltAttribute")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsNew")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MimeType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SeoFilename")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleAttribute")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("pictures");
+                });
+
             modelBuilder.Entity("Core.Entites.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -328,14 +582,17 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 
+                    b.Property<decimal>("OldPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<double>("Star")
                         .HasColumnType("float");
 
                     b.Property<string>("Summary")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("UnitsInStock")
                         .HasColumnType("int");
@@ -345,21 +602,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("products");
-                });
-
-            modelBuilder.Entity("DiscountProduct", b =>
-                {
-                    b.Property<int>("DiscountsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DiscountsId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("DiscountProduct");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -481,16 +723,138 @@ namespace Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Core.Entites.Catalog.CategoryPicture", b =>
+                {
+                    b.HasOne("Core.Entites.Picture", "picture")
+                        .WithMany("categoryPictures")
+                        .HasForeignKey("PictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entites.Category", "category")
+                        .WithMany("categoryPictures")
+                        .HasForeignKey("categoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("category");
+
+                    b.Navigation("picture");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.CategorySpecificationGroup", b =>
+                {
+                    b.HasOne("Core.Entites.Category", "category")
+                        .WithMany("CategorySpecificationGroups")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entites.Catalog.SpecificationAttributeGroup", "specificationAttributeGroup")
+                        .WithMany("CategorySpecificationGroups")
+                        .HasForeignKey("SpecificationAttributeGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("category");
+
+                    b.Navigation("specificationAttributeGroup");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeMapping", b =>
+                {
+                    b.HasOne("Core.Entites.Catalog.ProductAttribute", "productAttribute")
+                        .WithMany("ProductAttributeMappings")
+                        .HasForeignKey("ProductAttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entites.Product", "product")
+                        .WithMany("ProductAttributeMappings")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
+
+                    b.Navigation("productAttribute");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeOption", b =>
+                {
+                    b.HasOne("Core.Entites.Catalog.ProductAttributeMapping", "productAttributeMapping")
+                        .WithMany("productAttributeOptions")
+                        .HasForeignKey("productAttributeMappingId");
+
+                    b.Navigation("productAttributeMapping");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductPicture", b =>
+                {
+                    b.HasOne("Core.Entites.Picture", "picture")
+                        .WithMany("productPictures")
+                        .HasForeignKey("PictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entites.Product", "product")
+                        .WithMany("productPictures")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("picture");
+
+                    b.Navigation("product");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductSpecificationAttribute", b =>
+                {
+                    b.HasOne("Core.Entites.Product", "product")
+                        .WithMany("ProductSpecificationAttributes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entites.Catalog.SpecificationAttributeOption", "specificationAttributeOption")
+                        .WithMany("ProductSpecificationAttributes")
+                        .HasForeignKey("SpecificationAttributeOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
+
+                    b.Navigation("specificationAttributeOption");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttribute", b =>
+                {
+                    b.HasOne("Core.Entites.Catalog.SpecificationAttributeGroup", "SpecificationAttributeGroup")
+                        .WithMany("SpecificationAttribute")
+                        .HasForeignKey("SpecificationAttributeGroupId1");
+
+                    b.Navigation("SpecificationAttributeGroup");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeOption", b =>
+                {
+                    b.HasOne("Core.Entites.Catalog.SpecificationAttribute", "specificationAttribute")
+                        .WithMany("specificationAttributeOptions")
+                        .HasForeignKey("specificationAttributeId1");
+
+                    b.Navigation("specificationAttribute");
+                });
+
             modelBuilder.Entity("Core.Entites.DiscountProduct", b =>
                 {
                     b.HasOne("Core.Entites.Discount", "discounts")
-                        .WithMany()
+                        .WithMany("Discounts")
                         .HasForeignKey("DiscountsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Entites.Product", "products")
-                        .WithMany()
+                        .WithMany("Discounts")
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -524,21 +888,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("DiscountProduct", b =>
-                {
-                    b.HasOne("Core.Entites.Discount", null)
-                        .WithMany()
-                        .HasForeignKey("DiscountsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entites.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -597,9 +946,66 @@ namespace Infrastructure.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("Core.Entites.Catalog.ProductAttribute", b =>
+                {
+                    b.Navigation("ProductAttributeMappings");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeMapping", b =>
+                {
+                    b.Navigation("productAttributeOptions");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttribute", b =>
+                {
+                    b.Navigation("specificationAttributeOptions");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeGroup", b =>
+                {
+                    b.Navigation("CategorySpecificationGroups");
+
+                    b.Navigation("SpecificationAttribute");
+                });
+
+            modelBuilder.Entity("Core.Entites.Catalog.SpecificationAttributeOption", b =>
+                {
+                    b.Navigation("ProductSpecificationAttributes");
+                });
+
+            modelBuilder.Entity("Core.Entites.Category", b =>
+                {
+                    b.Navigation("categoryPictures");
+
+                    b.Navigation("CategorySpecificationGroups");
+                });
+
+            modelBuilder.Entity("Core.Entites.Discount", b =>
+                {
+                    b.Navigation("Discounts");
+                });
+
             modelBuilder.Entity("Core.Entites.Order", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Core.Entites.Picture", b =>
+                {
+                    b.Navigation("categoryPictures");
+
+                    b.Navigation("productPictures");
+                });
+
+            modelBuilder.Entity("Core.Entites.Product", b =>
+                {
+                    b.Navigation("Discounts");
+
+                    b.Navigation("ProductAttributeMappings");
+
+                    b.Navigation("productPictures");
+
+                    b.Navigation("ProductSpecificationAttributes");
                 });
 #pragma warning restore 612, 618
         }

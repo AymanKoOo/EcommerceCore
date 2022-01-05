@@ -1,0 +1,67 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Web.Areas.Admin.ViewModels.Catalog.AProductAttributeDelete;
+
+
+@*<form asp-controller="Product" asp-action="ProductAttributeDelete" method="post">
+    <input type="hidden" asp-for="ProductID" value="@Model.ProductID" />
+
+    <div class="img-box">
+        @foreach (var attr in Model.productAttributes)
+        {
+
+            <div class="prod-attr">
+
+                <div class="attr-header">
+                    @attr.Name :
+                </div>
+
+                <div class="att-values">
+                    <div class="container">
+                        <div class="row">
+                            @{
+                                var i = 0;
+                            }
+                            @foreach (var option in attr.productAttributeOptions)
+                            {
+                                <div class="col-lg-2">
+
+                                    <div class="value">
+                                        <input asp-for="ProductOptionID" type="radio" value="4" name="@attr.Id-Option">
+                                        <input type="radio" asp-for="ProductOptionID" value="@option.Id" />
+
+                                        @option.Name
+                                    </div>
+                                    @{
+                                        var pic = "";
+                                        foreach (var oo in option.ProductAttributeOptionsMappings)
+                                        {
+                                            if (oo.ProductAttributeOptionId == option.Id && oo.ProductId == Model.ProductID)
+                                            {
+                                                pic = oo.PictureURL;
+                                            }
+                                        }
+                                    }
+                                    @{
+                                        i++;
+                                    }
+                                    <img class="pic" src="/uploads/@pic" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+    </div>
+
+    <button class="btn btn-primary" type="submit">
+        Remove
+    </button>
+</form>*@

@@ -142,8 +142,11 @@ namespace Web.Areas.Admin.Controllers
         }
 
 
+
+        #region Product Specfication
+
         //AddProductSpecificationAttribute
-        
+
         [HttpGet("ProductSpecAttributeAdd")]
         public async Task<IActionResult> ProductSpecAttributeAdd(int productID)
         {
@@ -162,47 +165,66 @@ namespace Web.Areas.Admin.Controllers
             return Redirect("/");
         }
 
-        //AddProductAttribute
+        #endregion
+
+
+        ////////////////////////////AddProductAttribute//////////////////////////
 
         [HttpGet("ProductAttributeAdd")]
         public async Task<IActionResult> ProductAttributeAdd(int productID)
         {
             var model = await _productAttributeModelFactory.PrepareProductAttributeAdd(productID);
-            model.ProductID = productID;
+            model.ProductId = productID;
             return View(model);
         }
 
         [HttpPost("ProductAttributeAdd")]
-        public IActionResult ProductAttributeAdd(AProductAttributeCreate model)
+        public async Task<IActionResult> ProductAttributeAdd(AProductAttributeAdd model)
         {
-            var productatt = _mapper.Map<ProductAttributeMapping>(model);
-            _unitOfWork.Product.AddProductAttribute(productatt);
+            var mappedModel = _mapper.Map<ProductAttributeMapping>(model);
+            //add to product-attrMaping
+            await _unitOfWork.Product.AddProductAttributeMapping(mappedModel);
             _unitOfWork.Save();
             return View("");
         }
 
-
-        //Edit ProductAttribute
-
-        [HttpGet("ProductAttributeEdit")]
-        public async Task<IActionResult> ProductAttributeEdit(int productID)
+        [HttpGet("ProductAttributeDelete")]
+        public  IActionResult ProductAttributeDelete(int mapID)
         {
-            var Attrmodel =  await _unitOfWork.Product.GetProductAttrByID(productID);
-            var model = await _productAttributeModelFactory.PrepareProductAttributeAdd(productID);
-            model.ProductID = productID;
-            model.PictureURL = Attrmodel.PictureURL;
-            model.ProductAttributeOptionId = Attrmodel.ProductAttributeOptionId;
-            model.ProductID = productID;
+             _unitOfWork.Product.deleteProductAttrMapping(mapID);
+
+                _unitOfWork.Save();
+                return View("");
+        }
+        //////////////////////////ProductAttributeOptionAdd//////////////////////
+
+
+        [HttpGet("ProductAttributeOptionAdd")]
+        public async Task<IActionResult> ProductAttributeOptionAdd(int ProductAttributeMappingEdit)
+        {
+            var model = await _productModelFactory.ProductAttributeMappingOptionModel(new AProductAttrMappingOption(), ProductAttributeMappingEdit);
             return View(model);
         }
 
-        [HttpPost("ProductAttributeEdit")]
-        public IActionResult ProductAttributeEdit(AProductAttributeCreate model)
+        [HttpPost("ProductAttributeOptionAdd")]
+        public async Task<IActionResult> ProductAttributeOptionAdd(AProductAttrMappingOption model)
         {
-            var productatt = _mapper.Map<ProductAttributeMapping>(model);
-            _unitOfWork.Product.UpdateProductAttribute(productatt);
+            var optionMapper = _mapper.Map<ProductAttributeOption>(model);
+            await _unitOfWork.productAttributes.CreateProductAttributeOption(optionMapper);
+
             _unitOfWork.Save();
+
             return View("");
+        }
+
+
+        [HttpGet("ProductAttributeOptionDelete")]
+        public async Task<IActionResult> ProductAttributeOptionDelete(int optionId)
+        {
+            _unitOfWork.productAttributes.DeleteProductOptionById(optionId);
+            _unitOfWork.Save();
+
+            return View("/");
         }
     }
 }

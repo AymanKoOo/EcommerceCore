@@ -1,136 +1,135 @@
-﻿@model Web.ViewModels.Product.ProductDeatilsVM
-@{ 
+﻿@model Web.ViewModels.Products.ProductDeatilsVM
+@{
 }
 
-    <div class="container mt-5 product-detail">
-        <div class="row justify-content-md-center">
-            <div class="col-lg-5 col-md-6 col-sm-12 col-12">
-                <div class="d-flex ">
-                    <div class="card">
+<div class="container mt-5 product-detail">
+    <div class="row justify-content-md-center">
+        <div class="col-lg-5 col-md-6 col-sm-12 col-12">
+            <div class="d-flex ">
+                <div class="card">
 
-                        @for (int i = 0; i < Model.productPictures.Count; i++)
-                        {
-                            if (i == 0)
-                            {<fieldset id="@i-1"   class="active">
+                    @for (int i = 0; i < Model.product.productPictures.Count; i++)
+                    {
+                        if (i == 0)
+                        {<fieldset id="@i-1" class="active">
                                 <div class="product-pic">
                                     <div class="product-pic">
-                                        <img id="picc" class="pic0" src="/uploads/@Model.productPictures[i]" />
+                                        <img id="picc" class="pic0" src="/uploads/@Model.product.productPictures[i].picture.MimeType" />
                                     </div>
                                 </div>
                             </fieldset>
 
-                            }
-                             else { 
+                        }
+                        else
+                        {
                             <fieldset id="@i-1">
                                 <div class="product-pic">
                                     <div class="product-pic">
-                                        <img id="picc" class="pic0" src="/uploads/@Model.productPictures[i]" />
+                                        <img id="picc" class="pic0" src="/uploads/@Model.product.productPictures[i].picture.MimeType" />
                                     </div>
                                 </div>
                             </fieldset>
-                            }
                         }
-                        <div class="d-flex flex-row thumbnails">
+                    }
+                    <div class="d-flex flex-row thumbnails">
 
-                            @for (int k = 0; k < Model.productPictures.Count; k++)
-{
+                        @for (int k = 0; k < Model.product.productPictures.Count; k++)
+                        {
 
-                                <div id="@k" class="tb"> <img class="thumbnail-img fit-image" src="/uploads/@Model.productPictures[k]" /> </div>
-}
-                        </div>
-
+                            <div id="@k" class="tb"> <img class="thumbnail-img fit-image" src="/uploads/@Model.product.productPictures[k].picture.MimeType" /> </div>
+                        }
                     </div>
+
                 </div>
             </div>
+        </div>
 
-            <div class="col-lg-7 col-md-6 col-sm-12 col-12">
+        <div class="col-lg-7 col-md-6 col-sm-12 col-12">
 
-                <div class="container">
+            <div class="container">
 
+                <div class="product-name">
+                    @Model.product.Name
+                </div>
 
+                <div class="rating">
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                </div>
 
-                    <div class="product-name">
-                        @Model.Name
-                    </div>
-
-                    <div class="rating">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                    </div>
-
-                    <div class="product-price">
-                        <span class="a-price-symbol">EGP</span>
-                        <span class="a-price-whole">@Model.Price</span>
-                        <span class="a-price-discount">EGP @Model.OldPrice</span>
-                    </div>
-                    <div class="product-desc">
-                        @Model.Description
-                    </div>
+                <div class="product-price">
+                    <span class="a-price-symbol">EGP</span>
+                    <span class="a-price-whole">@Model.product.Price</span>
+                    <span class="a-price-discount">EGP @Model.product.OldPrice</span>
+                </div>
+                <div class="product-desc">
+                    @Model.product.Description
+                </div>
 
                 <div class="img-box">
-                    @foreach (var attr in Model.productAttributes)
+                    @foreach (var map in Model.productAttributeMappings)
                     {
 
 
-                    <div class="prod-attr">
+                        <div class="prod-attr">
 
-                        <div class="attr-header">
-                            @attr.Name :
-                        </div>
+                            <div class="attr-header">
+                                @map.productAttribute.Name:
+                            </div>
 
-                        <div class="att-values">
-                            <div class="container">
-                                <div class="row">
+                            <div class="att-values">
+                                <div class="container">
+                                    <div class="row">
 
-                                    @foreach (var o in attr.productAttributeOptions)
-                                    {
-                                        <div class="col-lg-2">
-                                            <div class="value">
-                                                <input type="radio" name="@attr.Name">
-                                                @o.Name
+                                        @foreach (var option in map.productAttributeOptions)
+                                        {
+                                            <div class="col-lg-2">
+                                                <div class="value">
+                                                    <input type="radio" value="@option.Id" name="@map.productAttribute.Name">
+                                                    @option.Name
+                                                </div>
+                                                <img class="pic" src="/uploads/@option.PicturePath" />
                                             </div>
-                                            <img class="pic" src="/uploads/@o.PictureURL" />
-                                        </div>
-                                            }
-                                        </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
-                        }
+                        </div>
+                    }
 
-                                </div>
-
-                                    <!--Size-->
+                </div>
 
 
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <label for="" class="Size "></label>
-                                        </div>
 
-                                        <button type="button" class="btnn">ADD TO CART</button>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <label for="" class="Size "></label>
+                    </div>
 
-                                        <p class="mt-5">
-                                            Designed and produced locally in Los Angeles.
+                    <button type="button" class="btnn">ADD TO CART</button>
 
-                                            100% Cotton.
+                    <p class="mt-5">
+                        Designed and produced locally in Los Angeles.
 
-                                            6.0 oz.
+                        100% Cotton.
 
-                                            Screen print on front.
+                        6.0 oz.
 
-                                            True to size standard fit.
+                        Screen print on front.
 
-                                            *Ships in 3-4 weeks
-                                            Next »
-                                            Write a review
-                                        </p>
+                        True to size standard fit.
 
-                                    </div>
+                        *Ships in 3-4 weeks
+                        Next »
+                        Write a review
+                    </p>
 
-                                </div>
+                </div>
+
+            </div>
         </div>
     </div>
+</div>
