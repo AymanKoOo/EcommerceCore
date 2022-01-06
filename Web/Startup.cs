@@ -26,6 +26,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Web.Areas.Admin.Factories;
+using Web.Services;
 
 namespace Web
 {
@@ -86,8 +87,8 @@ namespace Web
             services.AddScoped(typeof(ICategoryModelFactory), typeof(CategoryModelFactory));
             services.AddScoped(typeof(ISpecificationAttributeModelFactory), typeof(SpecificationAttributeModelFactory));
             services.AddScoped(typeof(IProductAttributeModelFactory), typeof(ProductAttributeModelFactory));
-
-
+            services.AddScoped(typeof(IShoppingCartService), typeof(ShoppingCartService));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //Static FIles//
             services.AddCors(c => {
                 c.AddPolicy("policyName", p => {
@@ -95,7 +96,12 @@ namespace Web
                 });
             });
 
-          
+            //Add Session Cart//
+            services.AddSession(option=>
+            {
+                option.Cookie.Name = "Cart";
+                option.Cookie.MaxAge = TimeSpan.FromDays(14);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,6 +124,8 @@ namespace Web
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

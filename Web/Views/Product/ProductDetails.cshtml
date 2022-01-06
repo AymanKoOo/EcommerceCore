@@ -45,91 +45,97 @@
         </div>
 
         <div class="col-lg-7 col-md-6 col-sm-12 col-12">
-
+          
             <div class="container">
+                <form asp-controller="ShoppingCart" asp-action="AddCart" method="post">
 
-                <div class="product-name">
-                    @Model.product.Name
-                </div>
+                    <input type="hidden" asp-for="productID" value="@Model.product.Id" />
 
-                <div class="rating">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                </div>
+                    <div class="product-name">
+                        @Model.product.Name
+                    </div>
 
-                <div class="product-price">
-                    <span class="a-price-symbol">EGP</span>
-                    <span class="a-price-whole">@Model.product.Price</span>
-                    <span class="a-price-discount">EGP @Model.product.OldPrice</span>
-                </div>
-                <div class="product-desc">
-                    @Model.product.Description
-                </div>
+                    <div class="rating">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                    </div>
 
-                <div class="img-box">
-                    @foreach (var map in Model.productAttributeMappings)
-                    {
+                    <div class="product-price">
+                        <span class="a-price-symbol">EGP</span>
+                        <span class="a-price-whole">@Model.product.Price</span>
+                        <span class="a-price-discount">EGP @Model.product.OldPrice</span>
+                    </div>
 
+                    <div class="product-desc">
+                        @Model.product.Description
+                    </div>
 
-                        <div class="prod-attr">
+                    <div class="img-box">
+                        @{ int w = 0;}
+                        @foreach (var map in Model.productAttributeMappings)
+                        {
+                            <div class="prod-attr">
 
-                            <div class="attr-header">
-                                @map.productAttribute.Name:
-                            </div>
+                                <div class="attr-header">
+                                    @map.productAttribute.Name:
+                                </div>
 
-                            <div class="att-values">
-                                <div class="container">
-                                    <div class="row">
+                                <div class="att-values">
+                                    <div class="container">
+                                        <div class="row">
 
-                                        @foreach (var option in map.productAttributeOptions)
-                                        {
-                                            <div class="col-lg-2">
-                                                <div class="value">
-                                                    <input type="radio" value="@option.Id" name="@map.productAttribute.Name">
-                                                    @option.Name
+                                            @foreach (var option in map.productAttributeOptions)
+                                            {
+                                                <div class="col-lg-2">
+                                                    <div class="value">
+                                                        <input type="radio" asp-for="SelectedAttributes[w]" value="@option.Id" name="@map.productAttribute.Name">
+                                                        @option.Name
+                                                    </div>
+                                                    <img class="pic" src="/uploads/@option.PicturePath" />
                                                 </div>
-                                                <img class="pic" src="/uploads/@option.PicturePath" />
-                                            </div>
-                                        }
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-
-                </div>
-
-
-
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                        <label for="" class="Size "></label>
+                        }
+                        @{w++;}
                     </div>
 
-                    <button type="button" class="btnn">ADD TO CART</button>
 
-                    <p class="mt-5">
-                        Designed and produced locally in Los Angeles.
 
-                        100% Cotton.
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <label for="" class="Size "></label>
+                        </div>
 
-                        6.0 oz.
+                        <button type="submit" class="btnn">ADD TO CART</button>
 
-                        Screen print on front.
+                        <p class="mt-5">
+                            Designed and produced locally in Los Angeles.
 
-                        True to size standard fit.
+                            100% Cotton.
 
-                        *Ships in 3-4 weeks
-                        Next »
-                        Write a review
-                    </p>
+                            6.0 oz.
 
-                </div>
+                            Screen print on front.
 
+                            True to size standard fit.
+
+                            *Ships in 3-4 weeks
+                            Next »
+                            Write a review
+                        </p>
+
+                    </div>
+                </form>
             </div>
-        </div>
+           
+</div>
     </div>
 </div>
+
+

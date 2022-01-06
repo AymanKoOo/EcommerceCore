@@ -1,0 +1,94 @@
+﻿
+@model Web.ViewModels.ShopCart.ShopCart
+
+
+
+<div class="container checkout-cart">
+
+    <div class="row">
+        <div class="col-lg-12 col-md-6 col-sm-12 col-12">
+
+            <div class="cart-header">
+
+                Shopping Cart
+
+            </div>
+
+            <div class="container ">
+                <div class="row cart-product">
+                    @foreach (var item in Model.products)
+                    {
+
+                        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                            <div class="prod-img">
+                                <img src="/uploads/@item.product.productPictures[0].picture.MimeType" alt="Card Back" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="prod-name">
+                                @item.product.Name
+                            </div>
+                            <div class="stock">
+                                <span>
+                                    In Stock
+                                </span>
+                            </div>
+                            <div class="prod-attr">
+                                <div class="attr">
+                                    Colour:
+                                </div>
+                                <div class="value">
+                                    Granite Grey
+                                </div>
+                            </div>
+                            <div class="prod-attr">
+                                <div class="attr">
+                                    Size:
+                                </div>
+                                <div class="value">
+                                    32 GB
+                                </div>
+                            </div>
+
+                            <select>
+                                @item.Qty
+                            </select>
+
+                            <div class="remove">
+                                <a href="#">
+                                    Remove
+                                </a>
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                            <div class="prod-price">
+                                @item.product.Price
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+                <div class="sub-total">
+                    <span class="number-of-items">
+                        Subtotal (@Model.totalItems item):
+                    </span>
+                    <span class="total-price">
+                        EGP @Model.totalPrice
+                    </span>
+                </div>
+                <div class="procced">
+                    <button type="submit">
+                        Procced to Buy
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Core.Entites
 {
-    public class Product:EntityBase
+    public class Product : EntityBase
     {
 
         [Required, StringLength(80)]

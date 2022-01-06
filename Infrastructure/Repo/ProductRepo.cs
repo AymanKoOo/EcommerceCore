@@ -318,5 +318,10 @@ namespace Infrastructure.Repo
             return await _dbcontext.productAttributeMappings.Include(x=>x.product).ThenInclude(x=>x.productPictures).ThenInclude(x=>x.picture)
                 .Include(x=>x.productAttributeOptions).Include(x=>x.productAttribute).FirstOrDefaultAsync(x => x.Id == id);
         }
+        public  List<Product> GetProductByCartList(List<int> IDs)
+        {
+          return  _dbcontext.products.Where(x => IDs.Any(e => e.Equals(x.Id))).Include(x=>x.productPictures).ThenInclude(
+              x=>x.picture).ToList();
+        }
     }
 }

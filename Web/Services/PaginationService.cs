@@ -10,7 +10,7 @@ namespace Web.Services
 {
     public static class PaginationService
     {
-        public static  TListModel PrepareToGrid<TListModel, TModel, TObject>(this TListModel listModel,PagedList<TObject> objectList,
+        public static TListModel PrepareToGrid<TListModel, TModel, TObject>(this TListModel listModel,PagedList<TObject> objectList,
             Func<IEnumerable<TModel>> dataFillFunction)
 
             where TListModel : BasePagedListModel<TModel>
