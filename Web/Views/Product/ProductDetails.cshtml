@@ -88,7 +88,7 @@
                                         <div class="row">
 
                                             @foreach (var option in map.productAttributeOptions)
-                                            {
+                                             {
                                                 <div class="col-lg-2">
                                                     <div class="value">
                                                         <input type="radio" asp-for="SelectedAttributes[w]" value="@option.Id" name="@map.productAttribute.Name">
@@ -96,7 +96,7 @@
                                                     </div>
                                                     <img class="pic" src="/uploads/@option.PicturePath" />
                                                 </div>
-                                            }
+                                             }
                                         </div>
                                     </div>
                                 </div>
@@ -111,6 +111,27 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                             <label for="" class="Size "></label>
                         </div>
+
+                        <select asp-for="Qty">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+
+                            <option value="4">4</option>
+
+                             <option value="5">5</option>
+
+                             <option value="6">6</option>
+
+                             <option value="7">7</option>
+
+                              <option value="8">8</option>
+
+                              <option value="9">9</option>
+                              <option value="10">10</option>
+
+                        </select>
+
 
                         <button type="submit" class="btnn">ADD TO CART</button>
 

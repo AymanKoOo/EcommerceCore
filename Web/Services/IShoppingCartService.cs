@@ -11,5 +11,9 @@ namespace Web.Services
     {
         public void AddCart(SCart cart);
         public ShopCart GetCart();
+        public void RemoveFromCart(SCart cart);
+
+        public void SubtractFromCart(SCart cart);
+
     }
 }

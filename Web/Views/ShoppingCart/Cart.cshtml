@@ -14,14 +14,14 @@
 
             </div>
 
-            <div class="container ">
+            <div id="cart-items" class="container ">
                 <div class="row cart-product">
                     @foreach (var item in Model.products)
                     {
 
                         <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                             <div class="prod-img">
-                                <img src="/uploads/@item.product.productPictures[0].picture.MimeType" alt="Card Back" />
+                                <img src="/uploads/@item.product.Picture" alt="Card Back" />
                             </div>
                         </div>
 
@@ -51,12 +51,24 @@
                                 </div>
                             </div>
 
-                            <select>
-                                @item.Qty
-                            </select>
+                            <div class="quantity">
+                                <div id="add-quantity">
+                                    <a data-productID="@item.product.Id" data-Qty="@item.Qty" class="AddQty">
+                                        +
+                                    </a>
+                                </div>
+                                <div class="counter-quantity">
+                                    @item.Qty
+                                </div>
+                                <div class="subtract-quantity">
+                                    <a data-productID="@item.product.Id" data-Qty="@item.Qty" class="SubQty">
+                                        -
+                                    </a>
+                                </div>
+                            </div>
 
                             <div class="remove">
-                                <a href="#">
+                                <a data-productID="@item.product.Id" data-Qty="@item.Qty" class="remove-btn">
                                     Remove
                                 </a>
                             </div>
@@ -91,4 +103,197 @@
         </div>
     </div>
 
+
 </div>
+
+
+<script>
+
+    $(function () {
+
+        $('#cart-items').on("click", '.AddQty', function () {
+            var qtyCount = $(this).attr('data-Qty');
+            var ProductID = $(this).attr('data-productID');
+            addQty(qtyCount, ProductID);
+        });
+        $('#cart-items').on("click", '.SubQty', function () {
+            var qtyCount = $(this).attr('data-Qty');
+            var ProductID = $(this).attr('data-productID');
+            SubtractQty(qtyCount, ProductID);
+        });
+        $('#cart-items').on("click", '.remove-btn', function () {
+            var qtyCount = $(this).attr('data-Qty');
+            var ProductID = $(this).attr('data-productID');
+            RemoveProduct(qtyCount, ProductID);
+        });
+         function addQty(Qty, ProductID) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("AddQantityCartAjaxx")",
+                data: { 'Qty': Qty, 'ProductID': ProductID },
+                AddCart: "json",
+                traditional: true,
+                success: function (response) {
+                    var res = JSON.parse(response);
+
+                    $("#cart-items").empty();
+
+                    DrawCart(res);
+
+                    $("#cart-items").html(html);
+
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+         function SubtractQty(Qty, ProductID) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SubtractQantityCartAjaxx")",
+                data: { 'Qty': Qty, 'ProductID': ProductID },
+                AddCart: "json",
+                traditional: true,
+                success: function (response) {
+                    var res = JSON.parse(response);
+
+                    $("#cart-items").empty();
+
+                    DrawCart(res);
+
+                    $("#cart-items").html(html);
+
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+         function RemoveProduct(Qty, ProductID) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("RemoveProductCartAjaxx")",
+                data: { 'Qty': Qty, 'ProductID': ProductID },
+                AddCart: "json",
+                traditional: true,
+                success: function (response) {
+                    var res = JSON.parse(response);
+
+                    $("#cart-items").empty();
+
+                    DrawCart(res);
+
+                    $("#cart-items").html(html);
+
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+         function DrawCart(res) {
+            html = `<div class="row cart-product">`;
+            for (var i = 0; i < res.products.length; i++) {
+                html += `
+                        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                            <div class="prod-img">
+                                <img src="/uploads/`+ res.products[i].product.Picture + `" alt="Card Back" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="prod-name">
+                                `+ res.products[i].product.Name + `
+                            </div>
+                            <div class="stock">
+                                <span>
+                                    In Stock
+                                </span>
+                            </div>
+                            <div class="prod-attr">
+                                <div class="attr">
+                                    Colour:
+                                </div>
+                                <div class="value">
+                                    Granite Grey
+                                </div>
+                            </div>
+                            <div class="prod-attr">
+                                <div class="attr">
+                                    Size:
+                                </div>
+                                <div class="value">
+                                    32 GB
+                                </div>
+                            </div>
+
+                            <div class="quantity">
+                                <div id="add-quantity">
+                                    <a data-productID="`+ res.products[i].product.Id + `" data-Qty="` + res.products[i].Qty + `" class="AddQty">
+                                        +
+                                    </a>
+                                </div>
+                                <div class="counter-quantity">
+                                    `+ res.products[i].Qty + `
+                                </div>
+                                <div class="subtract-quantity">
+                                    <a data-productID="`+ res.products[i].product.Id + `" data-Qty="` + res.products[i].Qty + `" class="SubQty">
+
+                                        -
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="remove">
+                              <a  data-productID="`+ res.products[i].product.Id + `" data-Qty="` + res.products[i].Qty + `"  class="remove-btn">
+                                    Remove
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                            <div class="prod-price">
+                                `+ res.products[i].product.Price + `
+                            </div>
+                        </div>
+                    </div>
+                    `
+            }
+
+            html += `
+                       </div>
+
+                    <div class="sub-total">
+                    <span class="number-of-items">
+                        Subtotal (  `+ res.totalItems + ` item):
+                    </span>
+                    <span class="total-price">
+                        EGP   `+ res.totalPrice + `
+                    </span>
+                </div>
+                <div class="procced">
+                    <button type="submit">
+                        Procced to Buy
+                    </button>
+                </div>
+                 `;
+        }
+    })
+</script>
