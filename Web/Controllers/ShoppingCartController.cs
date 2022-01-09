@@ -33,17 +33,18 @@ namespace Web.Controllers
 
     
         [HttpGet("Cart")]
-        public IActionResult Cart()
+        public async Task<IActionResult> Cart()
         {
-            var model = _shoppingCartService.GetCart();
+            var model =await _shoppingCartService.GetCartAsync();
+            
             return View(model);
         }
 
         [HttpPost("AddQantityCartAjaxx")]
-        public IActionResult AddQantityCartAjaxx(SCart model)
+        public async Task<IActionResult> AddQantityCartAjaxx(SCart model)
         {
              _shoppingCartService.AddCart(model);
-            var objectCart = _shoppingCartService.GetCart();
+            var objectCart = await _shoppingCartService.GetCartAsync();
             var jsonStr = JsonConvert.SerializeObject(objectCart);
             return Json(jsonStr);
         }
@@ -52,7 +53,7 @@ namespace Web.Controllers
         public IActionResult SubtractQantityCartAjaxx(SCart model)
         {
             _shoppingCartService.SubtractFromCart(model);
-            var objectCart = _shoppingCartService.GetCart();
+            var objectCart = _shoppingCartService.GetCartAsync();
             var jsonStr = JsonConvert.SerializeObject(objectCart);
             return Json(jsonStr);
         }
@@ -61,7 +62,7 @@ namespace Web.Controllers
         public IActionResult RemoveProductCartAjaxx(SCart model)
         {
             _shoppingCartService.RemoveFromCart(model);
-            var objectCart = _shoppingCartService.GetCart();
+            var objectCart = _shoppingCartService.GetCartAsync();
             var jsonStr = JsonConvert.SerializeObject(objectCart);
             return Json(jsonStr);
         }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Core.Interfaces;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +18,14 @@ namespace Web.Controllers
         private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IProductModelFactory _productModelFactory;
+        private readonly IPriceCalculationService priceCalculation;
 
-        public ProductController(IUnitOfWork unitOfWork, IMapper mapper, IProductModelFactory productModelFactory)
+        public ProductController(IUnitOfWork unitOfWork, IMapper mapper, IProductModelFactory productModelFactory, IPriceCalculationService priceCalculation)
         {
-            _unitOfWork = unitOfWork;
+            this.priceCalculation = priceCalculation;
+     
+
+                 _unitOfWork = unitOfWork;
             _mapper = mapper;
             _productModelFactory = productModelFactory;
         }
@@ -35,5 +41,26 @@ namespace Web.Controllers
             return View(productDetailVM);
         }
 
+        [HttpPost("GetExtraProductPriceByAjax")]
+        public virtual async Task<IActionResult> GetExtraProductPriceByAjax(List<int> options, int ProductID)
+        {
+            //_unitOfWork.Product.GetProduct()
+            var ExtraPrice = _unitOfWork.productAttributes.getAttributePrices(options);
+            var product = _unitOfWork.Product.GetProduct(ProductID);
+
+            var pricingObj = await priceCalculation.GetFinalPriceAsync(product);
+
+            product.Price = pricingObj.finalPrice;
+            var finalPrice = ExtraPrice + product.Price;
+
+            return Json(finalPrice);
+        }
     }
+
 }
+
+
+
+
+
+

@@ -298,10 +298,14 @@ namespace Infrastructure.Repo
         public Product GetProduct(int productId)
         {
             return _dbcontext.products.Include(x=>x.productPictures).ThenInclude(x=>x.picture)
-                .FirstOrDefault(x => x.Id == productId);
+                .Include(x=>x.ProductAttributeMappings).ThenInclude(x=>x.productAttributeOptions).FirstOrDefault(x => x.Id == productId);
         }
+        //public Product GetProductByGivenAttribute(int[] options,int productId)
+        //{
+        //    //return _dbcontext.products.Where(x=>x.Id==productId).Include(x=>x.ProductAttributeMappings)
+        //}
 
-
+        
         /// <summary>
         /// ////////
         /// </summary>

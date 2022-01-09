@@ -46,11 +46,11 @@
 
         <div class="col-lg-7 col-md-6 col-sm-12 col-12">
           
-            <div class="container">
+            <div id="product-details" class="container ">
                 <form asp-controller="ShoppingCart" asp-action="AddCart" method="post">
 
                     <input type="hidden" asp-for="productID" value="@Model.product.Id" />
-
+                  
                     <div class="product-name">
                         @Model.product.Name
                     </div>
@@ -88,15 +88,18 @@
                                         <div class="row">
 
                                             @foreach (var option in map.productAttributeOptions)
-                                             {
+                                            {
                                                 <div class="col-lg-2">
                                                     <div class="value">
-                                                        <input type="radio" asp-for="SelectedAttributes[w]" value="@option.Id" name="@map.productAttribute.Name">
-                                                        @option.Name
+                                                        @*<input type="radio" asp-for="SelectedAttributes" value="@option.Id" name="@map.productAttribute.Name">*@
+
+                                                        <a data-attrID="@option.Id" data-attrType="@map.productAttribute.Name" data-productID="@Model.product.Id" class="AddAttr">
+                                                            @option.Name
+                                                        </a>
                                                     </div>
                                                     <img class="pic" src="/uploads/@option.PicturePath" />
                                                 </div>
-                                             }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -119,19 +122,17 @@
 
                             <option value="4">4</option>
 
-                             <option value="5">5</option>
+                            <option value="5">5</option>
 
-                             <option value="6">6</option>
+                            <option value="6">6</option>
 
-                             <option value="7">7</option>
+                            <option value="7">7</option>
 
-                              <option value="8">8</option>
+                            <option value="8">8</option>
 
-                              <option value="9">9</option>
-                              <option value="10">10</option>
-
+                            <option value="9">9</option>
+                            <option value="10">10</option>
                         </select>
-
 
                         <button type="submit" class="btnn">ADD TO CART</button>
 
@@ -154,9 +155,77 @@
                     </div>
                 </form>
             </div>
-           
-</div>
+        </div>
     </div>
 </div>
 
 
+
+<script>
+
+    $(function () {
+        //Color  red
+        //Size   11
+
+        let attributesObj = {
+        };
+
+        $('#product-details').on("click", '.AddAttr', function () {
+            var AttrID = $(this).attr('data-attrID');
+            var AttrName = $(this).attr('data-attrType');
+            var productId = $(this).attr('data-productID');
+            console.log(attributesObj);
+            console.log(productId);
+            attributesObj[AttrName] = AttrID;
+            const myJSON = JSON.stringify(attributesObj);
+            GetProduct(myJSON,productId);
+        });
+
+
+         function GetProduct(attributesObj, ProductID) {
+             var options=[];
+             Object.values(attributesObj).forEach(val => {
+                 console.log(options.push(val));
+             });
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetExtraProductPriceByAjax")",
+                data: { 'options': options, 'ProductID': ProductID },
+                AddCart: "json",
+                traditional: true,
+                success: function (response) {
+                    var res = JSON.parse(response);
+
+                    $(".product-price").empty();
+                    EditPriceAfterAttribute(res, options);
+                    console.log(res);
+
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+          function EditPriceAfterAttribute(res, options) {
+                html= `
+                        
+                        <span class="a-price-symbol">EGP</span>
+                        <span class="a-price-whole">EGP  `+ res+ `</span>
+             `;
+
+            for (var i = 0; i < options.length; i++){
+                html += `
+                  <input type="hidden" value=`+options[i]+` name="SelectedAttributes">
+                  `
+              }
+            
+            
+             $(".product-price").html(html);
+        }
+    })
+</script>

@@ -10,6 +10,8 @@ using Web.ViewModels.SCart;
 using Web.ViewModels.ShopCart;
 using Microsoft.AspNetCore.Http;
 using Web.ViewModels.ShoppCart;
+using Infrastructure.Services;
+using Core.Entites.Catalog;
 
 namespace Web.Services
 {
@@ -17,11 +19,13 @@ namespace Web.Services
     {
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPriceCalculationService priceCalculation;
 
-        public ShoppingCartService(IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork)
+        public ShoppingCartService(IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork, IPriceCalculationService priceCalculation)
         {
             this.httpContextAccessor = httpContextAccessor;
             _unitOfWork = unitOfWork;
+            this.priceCalculation = priceCalculation;
         }
 
         public void AddCart(SCart cart)
@@ -42,6 +46,7 @@ namespace Web.Services
                 {
                     ProductID = cart.ProductID,
                     Qty = cart.Qty,
+                    SelectedAttributes = cart.SelectedAttributes
                 });
             }
 
@@ -70,49 +75,83 @@ namespace Web.Services
             httpContextAccessor.HttpContext.Session.SetString("Cart", stringObject);
         }
 
-        public ShopCart GetCart()
+        public async Task<ShopCart> GetCartAsync()
         {
             var stringObject = httpContextAccessor.HttpContext.Session.GetString("Cart");
 
             var cartList = JsonConvert.DeserializeObject<List<SCart>>(stringObject);
-            var ids = new List<int>();
-            foreach(var id in cartList)
-            {
-                ids.Add(id.ProductID);
-            }
-            var products = _unitOfWork.Product.GetProductByCartList(ids);
-            var sCart = new ShopCart();
-            //var ProdcutsInCart = new ProductsInCart();
-            //var pr = new Product();
-
             decimal totalPrice = 0;
-            int totalItems = 0;
-            foreach (var p in products)
-            {
-                int Qty = cartList.FirstOrDefault(x => x.ProductID == p.Id).Qty;
+            int totalItems = 0; 
+            var sCart = new ShopCart();
 
-                var pp = new Product
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Price = p.Price * Qty,
-                    Picture = p.productPictures[0].picture.MimeType
-                };
+            var options = new List<ProductAttributeOption>();
+
+            foreach (var product in cartList)
+            {
+                var ExtraPrice = _unitOfWork.productAttributes.getAttributePrices(product.SelectedAttributes);
+                var prod = _unitOfWork.Product.GetProduct(product.ProductID);
+                //
+                var attributes = await _unitOfWork.productAttributes.GetListProductAttrOptionByID(product.SelectedAttributes);
+                //
+                int qty = product.Qty;
+                var pricingObj = await priceCalculation.GetFinalPriceAsync(prod);
+                var FinalPrice = ExtraPrice + pricingObj.finalPrice;
+                prod.Price = FinalPrice * qty;
+                prod.Picture = prod.productPictures[0].picture.MimeType;
+                
+                //var pp = new Product
+                //{
+                //    Id = prod.Id,
+                //    Name = prod.Name,
+                //    Price = FinalPrice * qty,
+                //    Picture = prod.productPictures[0].picture.MimeType,
+                //};
+
                 var cart = new ProductsInCart
                 {
-                    product = pp,
-                    Qty = cartList.FirstOrDefault(x => x.ProductID == p.Id).Qty,
+                    Id = prod.Id,
+                    Name = prod.Name,
+                    Price = FinalPrice * qty,
+                    Picture = prod.productPictures[0].picture.MimeType,
+                    Qty = qty,
+                    productAttributeOptions= attributes
                 };
-               totalPrice = totalPrice + (p.Price * Qty);
-               sCart.products.Add(cart);
-               totalItems = (totalItems + 1)+Qty;
+                totalPrice = totalPrice + (prod.Price * qty);
+                sCart.products.Add(cart);
+                totalItems = (totalItems) + qty;
             }
             sCart.totalPrice = totalPrice;
             sCart.totalItems = totalItems;
 
+            //var products = _unitOfWork.Product.GetProductByCartList(ids);
+            //var sCart = new ShopCart();
+            //decimal totalPrice = 0;
+            //int totalItems = 0;
+            //foreach (var p in products)
+            //{
+            //    int Qty = cartList.FirstOrDefault(x => x.ProductID == p.Id).Qty;
+
+            //    var pp = new Product
+            //    {
+            //        Id = p.Id,
+            //        Name = p.Name,
+            //        Price = p.Price * Qty,
+            //        Picture = p.productPictures[0].picture.MimeType
+            //    };
+            //    var cart = new ProductsInCart
+            //    {
+            //        product = pp,
+            //        Qty = cartList.FirstOrDefault(x => x.ProductID == p.Id).Qty,
+            //    };
+            //   totalPrice = totalPrice + (p.Price * Qty);
+            //   sCart.products.Add(cart);
+            //   totalItems = (totalItems + 1)+Qty;
+            //}
+            //sCart.totalPrice = totalPrice;
+            //sCart.totalItems = totalItems;
+
             return sCart;
         }
-
 
         public void RemoveFromCart(SCart cart)
         {
@@ -131,6 +170,5 @@ namespace Web.Services
             stringObject = JsonConvert.SerializeObject(cartList);
             httpContextAccessor.HttpContext.Session.SetString("Cart", stringObject);
         }
-
     }
 }

@@ -10,10 +10,8 @@ namespace Web.Services
     public interface IShoppingCartService
     {
         public void AddCart(SCart cart);
-        public ShopCart GetCart();
+        public  Task<ShopCart> GetCartAsync();
         public void RemoveFromCart(SCart cart);
-
         public void SubtractFromCart(SCart cart);
-
     }
 }

@@ -9,5 +9,6 @@ namespace Web.ViewModels.SCart
     {
         public int ProductID { get; set; }
         public int Qty { get; set; }
+        public List<int> SelectedAttributes { get; set; }
     }
 }

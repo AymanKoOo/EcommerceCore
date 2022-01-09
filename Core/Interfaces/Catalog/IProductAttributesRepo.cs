@@ -18,5 +18,9 @@ namespace Core.Interfaces.Catalog
         IEnumerable<int>  GetProductAttributeOptionUsedByProduct(int productID);
         Task<ProductAttribute> GetProductAttrByOptionID(int id);
         void DeleteProductOptionById(int optionId);
+        public decimal getAttributePrices(List<int> optionsIds);
+
+        public  Task<List<ProductAttributeOption>> GetListProductAttrOptionByID(List<int> ids);
+
     }
 }

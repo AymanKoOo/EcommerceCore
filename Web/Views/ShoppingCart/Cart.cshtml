@@ -21,69 +21,68 @@
 
                         <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                             <div class="prod-img">
-                                <img src="/uploads/@item.product.Picture" alt="Card Back" />
+                                <img src="/uploads/@item.Picture" alt="Card Back" />
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="prod-name">
-                                @item.product.Name
+                                @item.Name
                             </div>
                             <div class="stock">
                                 <span>
                                     In Stock
                                 </span>
                             </div>
-                            <div class="prod-attr">
-                                <div class="attr">
-                                    Colour:
-                                </div>
-                                <div class="value">
-                                    Granite Grey
-                                </div>
-                            </div>
-                            <div class="prod-attr">
-                                <div class="attr">
-                                    Size:
-                                </div>
-                                <div class="value">
-                                    32 GB
-                                </div>
-                            </div>
 
-                            <div class="quantity">
-                                <div id="add-quantity">
-                                    <a data-productID="@item.product.Id" data-Qty="@item.Qty" class="AddQty">
-                                        +
+                            @foreach(var att in item.productAttributeOptions)
+                            {
+
+
+
+                                <div class="prod-attr">
+                                    <div class="attr">
+                                        @att.productAttributeMapping.productAttribute.Name
+                                    </div>
+                                    <div class="value">
+                                        @att.Name
+                                    </div>
+                                </div>
+                             
+
+                            }
+                                <div class="quantity">
+                                    <div id="add-quantity">
+                                        <a data-productID="@item.Id" data-Qty="@item.Qty" class="AddQty">
+                                            +
+                                        </a>
+                                    </div>
+                                    <div class="counter-quantity">
+                                        @item.Qty
+                                    </div>
+                                    <div class="subtract-quantity">
+                                        <a data-productID="@item.Id" data-Qty="@item.Qty" class="SubQty">
+                                            -
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="remove">
+                                    <a data-productID="@item.Id" data-Qty="@item.Qty" class="remove-btn">
+                                        Remove
                                     </a>
                                 </div>
-                                <div class="counter-quantity">
-                                    @item.Qty
-                                </div>
-                                <div class="subtract-quantity">
-                                    <a data-productID="@item.product.Id" data-Qty="@item.Qty" class="SubQty">
-                                        -
-                                    </a>
-                                </div>
-                            </div>
 
-                            <div class="remove">
-                                <a data-productID="@item.product.Id" data-Qty="@item.Qty" class="remove-btn">
-                                    Remove
-                                </a>
                             </div>
-
-                        </div>
 
 
                         <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                             <div class="prod-price">
-                                @item.product.Price
+                                @item.Price
                             </div>
                         </div>
                     }
                 </div>
-
 
                 <div class="sub-total">
                     <span class="number-of-items">

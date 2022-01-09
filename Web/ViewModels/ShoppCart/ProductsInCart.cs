@@ -1,4 +1,5 @@
 ﻿using Core.Entites;
+using Core.Entites.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ namespace Web.ViewModels.ShoppCart
 {
     public class ProductsInCart
     {
-        public ProductsInCart()
-        {
-            product = new Product();
-        }
-        public Product product { get; set; }
         public int Qty { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public string Picture { get; set; }
+        public List<ProductAttributeOption> productAttributeOptions { get; set; }
     }
 }

@@ -44,10 +44,22 @@ namespace Infrastructure.Repo.Catalog
             return await _dbcontext.productAttributes.FirstOrDefaultAsync(x => x.Id == id);
         }
 
+
         public async Task<ProductAttributeOption> GetProductAttrOptionByID(int id)
         {
             if (id < 0) return null;
             return await _dbcontext.productAttributeOptions.FirstOrDefaultAsync(x => x.Id == id);
+        }
+        public async Task<List<ProductAttributeOption>> GetListProductAttrOptionByID(List<int> ids)
+        {
+            List<ProductAttributeOption> options = new List<ProductAttributeOption>();
+            foreach (var id in ids)
+            {
+                if (id < 0) return null;
+                var option = await _dbcontext.productAttributeOptions.Include(x=>x.productAttributeMapping).ThenInclude(x=>x.productAttribute).FirstOrDefaultAsync(x => x.Id == id);
+                options.Add(option);
+            }
+            return options;
         }
         //public  async Task<ProductAttribute> GetProductAttrByOptionID(int id)
         //{
@@ -75,9 +87,16 @@ namespace Infrastructure.Repo.Catalog
             throw new NotImplementedException();
         }
 
-        //public  async  Task<ProductAttribute> GetProductAttrByOptionID(int id)
-        //{
-        //    return await _dbcontext.productAttributeOptions.FirstOrDefaultAsync(x => x.Id == id);
-        //}
+        public decimal getAttributePrices(List<int> optionsIds)
+        {
+            decimal finalPrice = 0;
+
+            foreach(var id in optionsIds)
+            {
+               finalPrice += _dbcontext.productAttributeOptions.Where(x => x.Id == id).Select(x => x.PriceAdjustment).Single();
+            }
+            return finalPrice;
+        }
+      
     }
 }
