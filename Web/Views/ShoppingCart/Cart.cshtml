@@ -35,21 +35,16 @@
                                 </span>
                             </div>
 
-                            @foreach(var att in item.productAttributeOptions)
+                            @foreach(var att in item.productAttributeOptionsMapping)
                             {
-
-
-
                                 <div class="prod-attr">
                                     <div class="attr">
-                                        @att.productAttributeMapping.productAttribute.Name
+                                        @att.Attribute
                                     </div>
-                                    <div class="value">
-                                        @att.Name
+                                    <div data-optionID="@att.OptionID"  class="option">
+                                        @att.Option
                                     </div>
                                 </div>
-                             
-
                             }
                                 <div class="quantity">
                                     <div id="add-quantity">
@@ -113,35 +108,40 @@
         $('#cart-items').on("click", '.AddQty', function () {
             var qtyCount = $(this).attr('data-Qty');
             var ProductID = $(this).attr('data-productID');
-            addQty(qtyCount, ProductID);
+
+            var list = $(".option").map(function () { return $(this).attr("data-optionID"); }).get();
+            console.log(list);
+            addQty(qtyCount, ProductID, list);
         });
         $('#cart-items').on("click", '.SubQty', function () {
             var qtyCount = $(this).attr('data-Qty');
             var ProductID = $(this).attr('data-productID');
-            SubtractQty(qtyCount, ProductID);
+
+            var list = $(".option").map(function () { return $(this).attr("data-optionID"); }).get();
+            console.log(list);
+            SubtractQty(qtyCount, ProductID,list);
         });
         $('#cart-items').on("click", '.remove-btn', function () {
             var qtyCount = $(this).attr('data-Qty');
             var ProductID = $(this).attr('data-productID');
-            RemoveProduct(qtyCount, ProductID);
+            var list = $(".option").map(function () { return $(this).attr("data-optionID"); }).get();
+
+            RemoveProduct(qtyCount, ProductID, list);
         });
-         function addQty(Qty, ProductID) {
+         function addQty(Qty, ProductID, list) {
 
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("AddQantityCartAjaxx")",
-                data: { 'Qty': Qty, 'ProductID': ProductID },
+                data: { 'Qty': Qty, 'ProductID': ProductID, 'SelectedAttributes':list },
                 AddCart: "json",
                 traditional: true,
                 success: function (response) {
                     var res = JSON.parse(response);
-
                     $("#cart-items").empty();
-
                     DrawCart(res);
 
-                    $("#cart-items").html(html);
-
+                    console.log(response);
                 },
                 failure: function (response) {
                     alert(response.responseText);
@@ -152,23 +152,20 @@
             });
         }
 
-         function SubtractQty(Qty, ProductID) {
+         function SubtractQty(Qty, ProductID, list) {
 
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("SubtractQantityCartAjaxx")",
-                data: { 'Qty': Qty, 'ProductID': ProductID },
+                data: { 'Qty': Qty, 'ProductID': ProductID, 'SelectedAttributes': list},
                 AddCart: "json",
                 traditional: true,
                 success: function (response) {
                     var res = JSON.parse(response);
-
                     $("#cart-items").empty();
-
                     DrawCart(res);
-
                     $("#cart-items").html(html);
-
+                    console.log(response);
                 },
                 failure: function (response) {
                     alert(response.responseText);
@@ -179,12 +176,12 @@
             });
         }
 
-         function RemoveProduct(Qty, ProductID) {
+         function RemoveProduct(Qty, ProductID, list) {
 
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("RemoveProductCartAjaxx")",
-                data: { 'Qty': Qty, 'ProductID': ProductID },
+                data: { 'Qty': Qty, 'ProductID': ProductID, 'SelectedAttributes': list},
                 AddCart: "json",
                 traditional: true,
                 success: function (response) {
@@ -208,43 +205,43 @@
 
          function DrawCart(res) {
             html = `<div class="row cart-product">`;
-            for (var i = 0; i < res.products.length; i++) {
+             for (var i = 0; i < res.products.length; i++) {
                 html += `
                         <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                             <div class="prod-img">
-                                <img src="/uploads/`+ res.products[i].product.Picture + `" alt="Card Back" />
+                                <img src="/uploads/`+ res.products[i].Picture + `" alt="Card Back" />
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="prod-name">
-                                `+ res.products[i].product.Name + `
+                                `+ res.products[i].Name + `
                             </div>
                             <div class="stock">
                                 <span>
                                     In Stock
                                 </span>
                             </div>
-                            <div class="prod-attr">
-                                <div class="attr">
-                                    Colour:
-                                </div>
-                                <div class="value">
-                                    Granite Grey
-                                </div>
-                            </div>
-                            <div class="prod-attr">
-                                <div class="attr">
-                                    Size:
-                                </div>
-                                <div class="value">
-                                    32 GB
-                                </div>
-                            </div>
+                            `;
+                             for (var k = 0; k < res.products[i].productAttributeOptionsMapping.length; k++)
+                               {
 
+                                html += `
+                                <div class="prod-attr">
+                                    <div class="attr">
+                                         `+ res.products[i].productAttributeOptionsMapping[k].Attribute + `
+                                    </div>
+                                    <div data-optionID=" `+ res.products[i].productAttributeOptionsMapping[k].OptionID + `"  class="option">
+                                          `+ res.products[i].productAttributeOptionsMapping[k].Option + `
+                                    </div>
+                                </div>
+                                    `;
+                             }
+
+                html += `
                             <div class="quantity">
                                 <div id="add-quantity">
-                                    <a data-productID="`+ res.products[i].product.Id + `" data-Qty="` + res.products[i].Qty + `" class="AddQty">
+                                    <a data-productID="`+ res.products[i].Id + `" data-Qty="` + res.products[i].Qty + `" class="AddQty">
                                         +
                                     </a>
                                 </div>
@@ -252,7 +249,7 @@
                                     `+ res.products[i].Qty + `
                                 </div>
                                 <div class="subtract-quantity">
-                                    <a data-productID="`+ res.products[i].product.Id + `" data-Qty="` + res.products[i].Qty + `" class="SubQty">
+                                    <a data-productID="`+ res.products[i].Id + `" data-Qty="` + res.products[i].Qty + `" class="SubQty">
 
                                         -
                                     </a>
@@ -260,7 +257,7 @@
                             </div>
 
                             <div class="remove">
-                              <a  data-productID="`+ res.products[i].product.Id + `" data-Qty="` + res.products[i].Qty + `"  class="remove-btn">
+                              <a  data-productID="`+ res.products[i].Id + `" data-Qty="` + res.products[i].Qty + `"  class="remove-btn">
                                     Remove
                                 </a>
                             </div>
@@ -269,14 +266,14 @@
 
                         <div class="col-lg-3 col-md-6 col-sm-12 col-12">
                             <div class="prod-price">
-                                `+ res.products[i].product.Price + `
+                                `+ res.products[i].Price + `
                             </div>
                         </div>
                     </div>
-                    `
+                    `;
             }
 
-            html += `
+             html += `
                        </div>
 
                     <div class="sub-total">
@@ -293,6 +290,8 @@
                     </button>
                 </div>
                  `;
+             $("#cart-items").html(html);
         }
+
     })
 </script>

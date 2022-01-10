@@ -13,7 +13,6 @@ namespace Web.ViewModels.Products
         public IEnumerable<ProductAttributeMapping> productAttributeMappings { get; set; }
         public int productID { get; set; }
         public int Qty { get; set; }
-
         public List<int> SelectedAttributes { get; set; }
     }
 }

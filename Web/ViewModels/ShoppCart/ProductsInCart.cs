@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.ViewModels.Products;
 
 namespace Web.ViewModels.ShoppCart
 {
@@ -14,6 +15,6 @@ namespace Web.ViewModels.ShoppCart
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Picture { get; set; }
-        public List<ProductAttributeOption> productAttributeOptions { get; set; }
+        public List<ProductAttributeMappingVM> productAttributeOptionsMapping { get; set; }
     }
 }

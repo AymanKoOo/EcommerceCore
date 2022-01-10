@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Web.ViewModels.ShoppCart;
 using Infrastructure.Services;
 using Core.Entites.Catalog;
+using Web.ViewModels.Products;
 
 namespace Web.Services
 {
@@ -98,7 +99,7 @@ namespace Web.Services
                 var FinalPrice = ExtraPrice + pricingObj.finalPrice;
                 prod.Price = FinalPrice * qty;
                 prod.Picture = prod.productPictures[0].picture.MimeType;
-                
+
                 //var pp = new Product
                 //{
                 //    Id = prod.Id,
@@ -106,7 +107,19 @@ namespace Web.Services
                 //    Price = FinalPrice * qty,
                 //    Picture = prod.productPictures[0].picture.MimeType,
                 //};
-
+                var listAttrOptions = new List<ProductAttributeMappingVM>();
+                foreach (var at in attributes)
+                {
+                    var attributeOptionMapping = new ProductAttributeMappingVM
+                    {
+                        Attribute = at.productAttributeMapping.productAttribute.Name,
+                        Option = at.Name,
+                        AttributeID=at.productAttributeMapping.productAttribute.Id,
+                        OptionID = at.Id
+                    };
+                    listAttrOptions.Add(attributeOptionMapping);
+                }
+               
                 var cart = new ProductsInCart
                 {
                     Id = prod.Id,
@@ -114,7 +127,7 @@ namespace Web.Services
                     Price = FinalPrice * qty,
                     Picture = prod.productPictures[0].picture.MimeType,
                     Qty = qty,
-                    productAttributeOptions= attributes
+                    productAttributeOptionsMapping = listAttrOptions
                 };
                 totalPrice = totalPrice + (prod.Price * qty);
                 sCart.products.Add(cart);

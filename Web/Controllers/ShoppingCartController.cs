@@ -50,10 +50,10 @@ namespace Web.Controllers
         }
 
         [HttpPost("SubtractQantityCartAjaxx")]
-        public IActionResult SubtractQantityCartAjaxx(SCart model)
+        public async Task<IActionResult> SubtractQantityCartAjaxx(SCart model)
         {
             _shoppingCartService.SubtractFromCart(model);
-            var objectCart = _shoppingCartService.GetCartAsync();
+            var objectCart =await _shoppingCartService.GetCartAsync();
             var jsonStr = JsonConvert.SerializeObject(objectCart);
             return Json(jsonStr);
         }
