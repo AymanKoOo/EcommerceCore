@@ -1,0 +1,62 @@
+﻿@model Core.Entites.Common.Address
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-3">
+            @{ Html.RenderPartial("~/Views/Shared/PartialView/_accountSettings.cshtml");}
+        </div>
+
+
+        <div class="col-md-9">
+            @if (Model != null)
+            {
+                <form asp-controller="Account" asp-action="EditAddresses" method="post">
+
+                    <div asp-validation-summary="All"></div>
+
+                    <input asp-for="Country" class="form-control" type="text" value="@Model.Country" placeholder="Country">
+                    <input asp-for="Street" class="form-control" type="text" value="@Model.Street" placeholder="Street">
+                    <input asp-for="address" class="form-control" type="text" value="@Model.address" placeholder="address">
+                    <input asp-for="City" class="form-control" type="text" value="@Model.City" placeholder="City">
+                    <input asp-for="State" class="form-control" type="text" value="@Model.State" placeholder="State">
+                    <input asp-for="Zipcode" class="form-control" type="text" value="@Model.Zipcode" placeholder="Zipcode">
+
+                    <div class="form-footer">
+
+                        <button class="btn btn-primary" type="submit">
+                            Save
+                        </button>
+                    </div>
+
+                </form>
+            }
+            else
+            {
+                <form asp-controller="Account" asp-action="EditAddresses" method="post">
+
+                    <div asp-validation-summary="All"></div>
+
+                    <input asp-for="Country" class="form-control" type="text" placeholder="Country">
+                    <input asp-for="Street" class="form-control" type="text" placeholder="Street">
+                    <input asp-for="address" class="form-control" type="text" placeholder="address">
+                    <input asp-for="City" class="form-control" type="text" placeholder="City">
+                    <input asp-for="State" class="form-control" type="text" placeholder="State">
+                    <input asp-for="Zipcode" class="form-control" type="text" placeholder="Zipcode">
+
+                    <div class="form-footer">
+
+                        <button class="btn btn-primary" type="submit">
+                            Save
+                        </button>
+                    </div>
+
+                </form>
+            }
+
+        </div>
+
+    </div>
+
+</div>

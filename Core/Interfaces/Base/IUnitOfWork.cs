@@ -20,7 +20,9 @@ namespace Core.Interfaces
         IPictureRepo picture { get; }
         ISpecificationAttributesRepo SpecificationAttributes { get; }
         IProductAttributesRepo productAttributes { get; }
-
+        IShippingRepo shippingRepo { get; }
+        IPaymentRepo paymentRepo { get; }
+        IOrderRepo orderRepo { get; }
         void Save();
     }
 }

@@ -14,6 +14,7 @@ using Infrastructure.Repo.Base;
 using Infrastructure.Repo.Catalog;
 using Infrastructure.Repo.Discounts;
 using Infrastructure.Repo.Media;
+using Infrastructure.Repo.Orders;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -78,8 +79,11 @@ namespace Web
             services.AddScoped(typeof(IPictureRepo), typeof(PictureRepo));
             services.AddScoped(typeof(ISpecificationAttributesRepo), typeof(SpecificationAttributesRepo));
             services.AddScoped(typeof(IProductAttributesRepo), typeof(ProductAttributesRepo));
+            services.AddScoped(typeof(IPaymentRepo), typeof(PaymentRepo));
+            services.AddScoped(typeof(IShippingRepo), typeof(ShippingRepo));
+            services.AddScoped(typeof(IOrderRepo), typeof(OrderRepo));
 
-
+            services.AddScoped(typeof(IOrderModelFactory), typeof(OrderModelFactory));
             services.AddScoped(typeof(IPictureService), typeof(PictureService));
             services.AddScoped(typeof(IPriceCalculationService), typeof(PriceCalculationService));
             services.AddScoped(typeof(IDiscountModelFactory), typeof(DiscountModelFactory));

@@ -1,0 +1,39 @@
+﻿
+@model Core.Entites.ApplicationUser
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-3">
+            @{ Html.RenderPartial("~/Views/Shared/PartialView/_accountSettings.cshtml");}
+        </div>
+
+
+        <div class="col-md-9">
+
+            <form asp-controller="Account" asp-action="EditCustomerinfo" method="post">
+
+                <div asp-validation-summary="All"></div>
+
+                <input asp-for="UserName" class="form-control" type="text" value="@Model.UserName" placeholder="First Name">
+                <input asp-for="Email" class="form-control" type="email" value="@Model.Email" placeholder="Email">
+                <input asp-for="PhoneNumber" class="form-control" type="number" value="@Model.PhoneNumber" placeholder="PhoneNumber">
+                <input asp-for="Country" class="form-control" type="text" value="@Model.Country" placeholder="Country">
+
+                <div class="form-footer">
+
+                    <button class="btn btn-primary" type="submit">
+                        Save
+                    </button>
+                </div>
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+</div>

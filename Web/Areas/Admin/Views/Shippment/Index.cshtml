@@ -1,0 +1,82 @@
+﻿@model List<Core.Entites.Shipping.ShippingMethods>
+
+<div class="table-responsive">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="show-entries">
+                        <span><font style="vertical-align: inherit;">Show </font></span>
+                        <select>
+                            <option><font style="vertical-align: inherit;">5 </font></option>
+                            <option><font style="vertical-align: inherit;">10 </font></option>
+                            <option><font style="vertical-align: inherit;">15 </font></option>
+                            <option><font style="vertical-align: inherit;">20 </font></option>
+                        </select>
+                        <span><font style="vertical-align: inherit;">entries </font></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <h2 class="text-center"><font style="vertical-align: inherit;">Customer  </font><b><font style="vertical-align: inherit;">Details </font></b></h2>
+                </div>
+                <div class="col-sm-4">
+                    <div class="search-box">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="material-icons"><font style="vertical-align: inherit;"> </font></i></span>
+                            <input type="text" class="form-control" placeholder="Search…">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" asp-controller="Product" asp-action="Index">
+            <input type="hidden" value="" name="products" />
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th><font style="vertical-align: inherit;"># </font></th>
+                        <th><font style="vertical-align: inherit;">Id  </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Name </font></th>
+                        <th><font style="vertical-align: inherit;"> Description </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Category </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Actions </font></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                <input type="checkbox" value="@p.Id" name="products" />
+                            </td>
+                            <td><font style="vertical-align: inherit;">@p.Name </font></td>
+                            <td><font style="vertical-align: inherit;">@p.Description  </font></td>
+                            <td><font style="vertical-align: inherit;">@p.DisplayOrder </font></td>
+                            <td>
+                                <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
+                                <a asp-controller="Product" asp-action="EditProduct" asp-route-productID="@p.Id">Edit</a>
+                                <a asp-controller="Product" asp-action="DeleteProduct" asp-route-productID="@p.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" value="Submit" />
+        </form>
+        <div class="clearfix">
+            <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
+            <ul class="pagination">
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">1 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">2 </font></a></li>
+                <li class="page-item active"><a href="#" class="page-link"><font style="vertical-align: inherit;">3 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">4 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">5 </font></a></li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>

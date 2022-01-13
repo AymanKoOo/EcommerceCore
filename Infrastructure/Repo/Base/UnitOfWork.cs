@@ -6,6 +6,7 @@ using Infrastructure.Data;
 using Infrastructure.Repo.Catalog;
 using Infrastructure.Repo.Discounts;
 using Infrastructure.Repo.Media;
+using Infrastructure.Repo.Orders;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,6 +34,10 @@ namespace Infrastructure.Repo.Base
         public ISpecificationAttributesRepo SpecificationAttributes { get; }
 
         public IProductAttributesRepo productAttributes { get; }
+        public IShippingRepo shippingRepo { get; }
+
+        public IPaymentRepo paymentRepo { get; }
+        public IOrderRepo orderRepo { get; }
 
         public UnitOfWork(DataContext context)
         {
@@ -46,6 +51,9 @@ namespace Infrastructure.Repo.Base
             this.picture = new PictureRepo(_dbContext);
             this.SpecificationAttributes = new SpecificationAttributesRepo(_dbContext);
             this.productAttributes = new ProductAttributesRepo(_dbContext);
+            this.shippingRepo = new ShippingRepo(_dbContext);
+            this.paymentRepo = new PaymentRepo(_dbContext);
+            this.orderRepo = new OrderRepo(_dbContext);
         }
 
         public void Save()

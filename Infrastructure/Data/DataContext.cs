@@ -9,6 +9,10 @@ using Infrastructure.ModelConfig;
 using Core.Entites.Base;
 using Core.Entites.Discounts;
 using Core.Entites.Catalog;
+using Core.Entites.Orders;
+using Core.Entites.Common;
+using Core.Entites.Shipping;
+using Core.Entites.Payments;
 
 namespace Infrastructure.Data
 {
@@ -100,17 +104,21 @@ namespace Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> orderItems { get; set; }
+        public DbSet<OrderNotes> orderNotes { get; set; }
+        public DbSet<Address> Address { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Cart> Carts { get; set; }
-
         public DbSet<Discount> discounts { get; set; }
-     
         public DbSet<DiscountProduct> discountProducts { get; set; }
         public DbSet<ProductPicture> productPictures { get; set; }
         public DbSet<CategoryPicture> categoryPictures { get; set; }
         public DbSet<Picture> pictures { get; set; }
+        public DbSet<Shipment> shipments { get; set; }
+        public DbSet<ShipmentItem> shipmentItems { get; set; }
+        public DbSet<ShippingMethods> shippingMethods { get; set; }
 
-
+        public DbSet<PaymentMethods> paymentMethods { get; set; }
+        
         public DbSet<SpecificationAttribute> specificationAttributes { get; set; }
         public DbSet<SpecificationAttributeGroup> specificationAttributeGroups { get; set; }
         public DbSet<SpecificationAttributeOption> SpecificationAttributeOptions { get; set; }

@@ -76,14 +76,14 @@ namespace Web.Services
             httpContextAccessor.HttpContext.Session.SetString("Cart", stringObject);
         }
 
-        public async Task<ShopCart> GetCartAsync()
+        public async Task<ShopCartt> GetCartAsync()
         {
             var stringObject = httpContextAccessor.HttpContext.Session.GetString("Cart");
 
             var cartList = JsonConvert.DeserializeObject<List<SCart>>(stringObject);
             decimal totalPrice = 0;
             int totalItems = 0; 
-            var sCart = new ShopCart();
+            var sCart = new ShopCartt();
 
             var options = new List<ProductAttributeOption>();
 

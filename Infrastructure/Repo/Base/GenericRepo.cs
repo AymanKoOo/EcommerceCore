@@ -1,4 +1,5 @@
-﻿using Core.Interfaces;
+﻿using Core.Entites.Orders;
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,7 +26,7 @@ namespace Infrastructure.Repo
         {
             await _dbcontext.AddAsync(entity);
         }
-
+      
         public  void Delete(T entity)
         {
             _dbcontext.Remove(entity);

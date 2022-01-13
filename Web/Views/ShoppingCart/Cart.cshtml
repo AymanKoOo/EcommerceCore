@@ -1,5 +1,5 @@
 ﻿
-@model Web.ViewModels.ShopCart.ShopCart
+@model Web.ViewModels.ShopCart.ShopCartt
 
 
 
@@ -88,9 +88,9 @@
                     </span>
                 </div>
                 <div class="procced">
-                    <button type="submit">
+                    <a class="submit-order" asp-controller="Order" asp-action="CheckOut">
                         Procced to Buy
-                    </button>
+                    </a>
                 </div>
             </div>
 

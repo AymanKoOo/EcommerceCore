@@ -30,12 +30,11 @@ namespace Web.Controllers
             _shoppingCartService.AddCart(model);
             return RedirectToAction("Cart");
         }
-
     
         [HttpGet("Cart")]
         public async Task<IActionResult> Cart()
         {
-            var model =await _shoppingCartService.GetCartAsync();
+            var model = await _shoppingCartService.GetCartAsync();
             
             return View(model);
         }

@@ -4,12 +4,15 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.Entites;
+using Core.Entites.Common;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Web.DTOs;
+using Web.ViewModels;
 
 namespace Web.Controllers
 {
@@ -20,13 +23,14 @@ namespace Web.Controllers
         //roleManger
 
         private readonly UserManager<ApplicationUser> _userManager;
-
+        private readonly IUnitOfWork unitOfWork;
         private readonly SignInManager<ApplicationUser> _signInManger;
         private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
+        public AccountController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
+            this.unitOfWork = unitOfWork;
             _signInManger = signInManager;
             _roleManager = roleManager;
         }
@@ -227,7 +231,6 @@ namespace Web.Controllers
                 if (roleName != null)
                 {
                     AddCookies(user.UserName, roleName, user.Id, true,model.Email);
-
                 }
                 return Ok();
             }
@@ -254,6 +257,92 @@ namespace Web.Controllers
             return RedirectToAction("Login");
         }
 
+        ////
+
+        [HttpGet]
+        [Route("EditCustomerinfo")]
+        public async Task<IActionResult> EditCustomerinfo()
+        {
+            string email = User.FindFirst(ClaimTypes.Email)?.Value;
+            {
+                if (!string.IsNullOrEmpty(email))
+                {
+                    var user =await unitOfWork.Admin.GetUser(email);
+                    return View(user);
+                }
+                else
+                {
+                    return View("/");
+                }
+            }
+        }
+
+        [HttpPost]
+        [Route("EditCustomerinfo")]
+        public async Task<IActionResult> EditCustomerinfo(UserData model)
+        {
+           
+                string email = User.FindFirst(ClaimTypes.Email)?.Value;
+                {
+                    if (!string.IsNullOrEmpty(email)&&model!=null)
+                    {
+                        var user = await unitOfWork.Admin.GetUser(email);
+                        user.UserName = model.UserName;
+                        user.Email = model.Email;
+                        user.Country = model.Country;
+                        user.PhoneNumber = model.PhoneNumber;
+                        unitOfWork.Admin.EditUser(user);
+                        unitOfWork.Save();
+                        return View("/");
+                    }
+                    else
+                    {
+                        return View("/");
+                    }
+              
+            }
+        }
+
+
+        [HttpGet]
+        [Route("EditAddresses")]
+        public async Task<IActionResult> EditAddresses()
+        {
+            string email = User.FindFirst(ClaimTypes.Email)?.Value;
+            {
+                if (!string.IsNullOrEmpty(email))
+                {
+                    var user = await unitOfWork.Admin.GetUserAndAddress(email);
+                    return View(user.ShippingAddress);
+                }
+                else
+                {
+                    return View("/");
+                }
+            }
+        }
+        [HttpPost]
+        [Route("EditAddresses")]
+        public async Task<IActionResult> EditAddresses(Address model)
+        {
+
+            string email = User.FindFirst(ClaimTypes.Email)?.Value;
+            {
+                if (!string.IsNullOrEmpty(email) && model != null)
+                {
+                    var user = await unitOfWork.Admin.GetUserAndAddress(email);
+                   
+                    user.ShippingAddress = model;
+                    unitOfWork.Admin.EditUser(user);
+                    unitOfWork.Save();
+                    return View("/");
+                }
+                else
+                {
+                    return View("/");
+                }
+            }
+        }
 
     }
 }

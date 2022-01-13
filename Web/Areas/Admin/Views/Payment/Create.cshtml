@@ -1,0 +1,39 @@
+﻿
+
+@model Core.Entites.Payments.PaymentMethods
+
+<div class="contenti">
+    <div class="container">
+        <form asp-controller="Payment" asp-action="Create" method="post">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>SystemName:</label>
+                        <input asp-for="SystemName" type="text" class="form-control required" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Refund:</label>
+                        <input asp-for="Refund" type="checkbox" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>IsActive:</label>
+                        <input asp-for="IsActive" type="checkbox" />
+                    </div>
+                </div>
+          
+                <button class="btn btn-primary" type="submit">
+                    Add
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+

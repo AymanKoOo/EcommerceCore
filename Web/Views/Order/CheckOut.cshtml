@@ -1,0 +1,142 @@
+﻿@model Web.ViewModels.Order.CheckOut
+
+
+    <div class="container billing-details">
+        <div class="row justify-content-md-center">
+
+            <form asp-controller="Order" asp-action="CheckOut" method="post">
+
+                <div class="col-lg-7 col-md-12 col-sm-12 col-12">
+                    <div class="shipping">
+                        <div class="order-headers">
+                            Shipping Address
+                        </div>
+
+                        <div class="shipping-addresses">
+
+                            @foreach (var address in Model.shippingAddress)
+                            {
+                            <div class="address">
+                                <input type="radio" value="@address.Id" asp-for="shippingAddressId" >
+                                
+                                <span>
+                                    @address.address , @address.City , @address.Country
+                                </span>
+                            </div>
+                            }
+
+                            <a asp-controller="Account" asp-action="EditAddresses">Add New Address</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-5 col-md-12 col-sm-12 col-12">
+                    <div class="order-review-wrapper">
+
+                        <div class="order-headers">
+                            Your order
+                        </div>
+
+                        <div class="order-details">
+
+                            <div class="cart-item">
+                                <div class="row">
+                                    <div class="col-lg-8 ">
+                                        <div class="cart-item-header">
+                                            Product
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-4 ">
+                                        <div class="cart-item-header">
+                                            Subtotal
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    @foreach (var product in Model.shopCart.products)
+                                    {
+                                        <div class="col-lg-8 ">
+                                            <div class="prod-name">
+                                                @product.Name
+                                                <span class="qty">X@product.Qty</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4 ">
+                                            <div class="prod-price">
+                                                EGP @product.Price
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                            <div class="shipping-type">
+                                <div class="order-header-form">
+                                    Shipping
+                                </div>
+                                @foreach (var shpMethod in Model.shippingMethods)
+                                {
+                            <div class="pay-on-dilver">
+                                <input type="radio" value="@shpMethod.Name" asp-for="shippingMethod" >
+
+                                <span class="method">
+                                    @shpMethod.Name
+                                </span>
+                            </div>
+                                }
+                            </div>
+
+                            <div class="total-price">
+                                <div class="row">
+                                    <div class="col-lg-8 ">
+                                        <div class="order-header-form">
+                                            Total
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-4 ">
+                                        <div class="total">
+                                            EGP @Model.shopCart.totalPrice
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="payment-method">
+                                @foreach (var payMethod in Model.paymentMethods)
+                                {
+                                <div class="pay-on-dilver">
+                                    <input type="radio"  value="@payMethod.SystemName" asp-for="paymentMethod" >
+
+                                    <span class="method">
+                                        @payMethod.SystemName
+                                    </span>
+                                </div>
+                                }
+
+                            </div>
+
+                            <button  class="submit-order" type="submit">
+                                Place order
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+                
+        </div>
+    </div>

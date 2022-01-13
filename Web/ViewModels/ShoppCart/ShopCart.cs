@@ -7,9 +7,9 @@ using Web.ViewModels.ShoppCart;
 
 namespace Web.ViewModels.ShopCart
 {
-    public class ShopCart
+    public class ShopCartt
     {
-        public ShopCart()
+        public ShopCartt()
         {
             products = new List<ProductsInCart>();
         }
