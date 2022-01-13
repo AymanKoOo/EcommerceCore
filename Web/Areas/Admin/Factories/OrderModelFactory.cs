@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Web.Services;
 using Web.ViewModels.Order;
 using Microsoft.AspNetCore.Identity;
+using Web.Areas.Admin.ViewModels.Orders;
 
 namespace Web.Areas.Admin.Factories
 {
@@ -40,6 +41,26 @@ namespace Web.Areas.Admin.Factories
                 shopCart = model
             };
             return CheckOutmodel;
+        }
+        public virtual async Task<OrderListModel> PrepareOrderListModelAsync(int pageSize, int pageNumber)
+        {
+            var orders = unitOfWork.orderRepo.GetAllProductsList(pageSize, pageNumber);
+
+            var model = new OrderListModel().PrepareToGrid(orders, () =>
+            {
+                //fill in model values from the entity
+                return orders.Data.Select(orders =>
+                {
+                    return orders;
+                });
+            });
+            //jquery create table gets products view it 
+            //button add to dicount new form all check boxes will be added 
+            //000000000000000000000000000000000000000000000000000
+            //Home page show alll products with category old price new price show dicount
+
+            //
+            return model;
         }
     }
 }

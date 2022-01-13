@@ -1,0 +1,124 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    int nextPage = @Model.CurrentPage + 1;
+    int prevPage = @Model.CurrentPage - 1;
+
+}
+
+@model Web.Areas.Admin.ViewModels.Orders.OrderListModel
+@using Core.Entites.Orders
+@using Core.Entites.Payments
+@using Core.Entites.Shipping
+
+<div class="table-responsive">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="show-entries">
+                        <span><font style="vertical-align: inherit;">Show </font></span>
+                        <select>
+                            <option><font style="vertical-align: inherit;">5 </font></option>
+                            <option><font style="vertical-align: inherit;">10 </font></option>
+                            <option><font style="vertical-align: inherit;">15 </font></option>
+                            <option><font style="vertical-align: inherit;">20 </font></option>
+                        </select>
+                        <span><font style="vertical-align: inherit;">entries </font></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <h2 class="text-center"><font style="vertical-align: inherit;">Customer  </font><b><font style="vertical-align: inherit;">Details </font></b></h2>
+                </div>
+                <div class="col-sm-4">
+                    <div class="search-box">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="material-icons"><font style="vertical-align: inherit;"> </font></i></span>
+                            <input type="text" class="form-control" placeholder="Search…">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" asp-controller="Product" asp-action="Index">
+            <input type="hidden" value="" name="products" />
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th><font style="vertical-align: inherit;">Order id </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Order status </font></th>
+                        <th><font style="vertical-align: inherit;"> Payment status </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Shipping status </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Customer </font></th>
+                        <th><font style="vertical-align: inherit;">   Created on </font></th>
+                        <th><font style="vertical-align: inherit;">       Order total </font></th>
+
+                        <th><font style="vertical-align: inherit;">View</font></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var o in Model.Data)
+                    {
+
+                    <tr>
+                        
+                          <td><font style="vertical-align: inherit;">@o.Id</font></td>
+
+                      
+                        @if (o.OrderStatusId == 10)
+                        {
+                            <td><font style="vertical-align: inherit;">@OrderStatus.Compeleted</font></td>
+                        }
+                        @if (o.OrderStatusId == 20)
+                        {
+                            <td><font style="vertical-align: inherit;">@OrderStatus.Cancelled</font></td>
+                        }
+                        @if (o.PaymentStatusId == 10)
+                        {
+                            <td><font style="vertical-align: inherit;">@PaymentStatus.Pending</font></td>
+                        }
+                        @if (o.PaymentStatusId == 30)
+                        {
+                            <td><font style="vertical-align: inherit;">@PaymentStatus.Paid</font></td>
+                        }
+                        @if (o.ShippingStatusId == 20)
+                        {
+                            <td><font style="vertical-align: inherit;">@ShippingStatus.Notyetshipped</font></td>
+                        }
+                       
+                        @if (o.ShippingStatusId == 30)
+                        {
+                            <td><font style="vertical-align: inherit;">@ShippingStatus.Shipped</font></td>
+                        }
+
+                        <td><font style="vertical-align: inherit;">@o.customer.Email</font></td>
+                        <td><font style="vertical-align: inherit;">@o.PaidDateUtc  </font></td>
+                        <td><font style="vertical-align: inherit;">@o.OrderTotal  </font></td>
+
+                        <td>
+                            <a asp-controller="Order" asp-action="OrderDetails" asp-route-orderId="@o.Id">View</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" value="Submit" />
+        </form>
+        <div class="clearfix">
+            <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
+            <ul class="pagination">
+                <li class="page-item"> <a asp-controller="Order" asp-action="Index" asp-route-pageNumber="@prevPage">Next</a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">1 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">2 </font></a></li>
+                <li class="page-item active"><a href="#" class="page-link"><font style="vertical-align: inherit;">3 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">4 </font></a></li>
+                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">5 </font></a></li>
+                <li class="page-item"> <a asp-controller="Order" asp-action="Index" asp-route-pageNumber="@nextPage">Next</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

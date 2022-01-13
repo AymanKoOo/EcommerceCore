@@ -28,14 +28,11 @@ namespace Web.Controllers {
         {
             //var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetAllProducts());
             //var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetAllCategories());
-
-
             //var indexdto = new IndexDTO
             //{
             //    productDTOs = products,
             //    categoryDTOs = categories
             //};
-
             return View();
         }
 

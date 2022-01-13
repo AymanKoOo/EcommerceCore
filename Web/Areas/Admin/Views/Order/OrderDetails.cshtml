@@ -1,0 +1,89 @@
+﻿@model Web.Areas.Admin.ViewModels.Orders.OrderDetail
+@using Core.Entites.Orders
+@using Core.Entites.Payments
+@using Core.Entites.Shipping
+
+
+<div class="table-responsive">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th><font style="vertical-align: inherit;">Order id </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Order status </font></th>
+                        <th><font style="vertical-align: inherit;"> Payment status </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Shipping status </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Customer </font></th>
+                        <th><font style="vertical-align: inherit;">   Created on </font></th>
+                        <th><font style="vertical-align: inherit;">       Order total </font></th>
+
+                        <th><font style="vertical-align: inherit;">View</font></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td><font style="vertical-align: inherit;">Model.order.Id</font></td>
+
+                        @if (Model.order.OrderStatusId == 10)
+                        {
+                            <td><font style="vertical-align: inherit;">@OrderStatus.Compeleted</font></td>
+                            <a asp-controller="Order" asp-action="CancelOrder" asp-route-orderId="Model.order.OrderStatusId">Cancel Order</a>
+                        }
+                        @if (Model.order.OrderStatusId == 20)
+                        {
+                            <td><font style="vertical-align: inherit;">@OrderStatus.Cancelled</font></td>
+                        }
+                        @if (Model.order.PaymentStatusId == 10)
+                        {
+                            <td><font style="vertical-align: inherit;">@PaymentStatus.Pending</font></td>
+                        }
+                        @if (Model.order.PaymentStatusId == 30)
+                        {
+                            <td><font style="vertical-align: inherit;">@PaymentStatus.Paid</font></td>
+                        }
+                        @if (Model.order.ShippingStatusId == 20)
+                        {
+                            <td><font style="vertical-align: inherit;">@Model.order.ShippingMethod</font></td>
+                            <td><font style="vertical-align: inherit;">@ShippingStatus.Notyetshipped</font></td>
+                            <a asp-controller="Order" asp-action="AddShipment" asp-route-orderId="@Model.order.Id">Mark As Shipped</a>
+                        }
+
+                        @if (Model.order.ShippingStatusId == 30)
+                        {
+                            <td><font style="vertical-align: inherit;">@Model.order.ShippingMethod</font></td>
+                            <td><font style="vertical-align: inherit;">@ShippingStatus.Shipped</font></td>
+                        }
+
+
+                        <td><font style="vertical-align: inherit;">@Model.order.customer.Email</font></td>
+                        <td><font style="vertical-align: inherit;">@Model.order.PaidDateUtc  </font></td>
+                        <td><font style="vertical-align: inherit;">@Model.order.OrderTotal  </font></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="total-price">
+    <div class="row">
+        <div class="col-lg-8 ">
+            <div class="order-header-form">
+                Total
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 ">
+            <div class="total">
+                EGP @Model.order.OrderTotal
+            </div>
+        </div>
+    </div>
+</div>

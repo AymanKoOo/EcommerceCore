@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entites.Orders;
+using Core.Entites.Payments;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -52,12 +53,16 @@ namespace Web.Controllers
                 if (!string.IsNullOrEmpty(email) && checkOut != null)
                 {
                     var cart = await _shoppingCartService.GetCartAsync();
-
+                    var paymentStausId = 0;
+                    if (checkOut.paymentMethod == "CashOnDilvery") paymentStausId = 10;
                     var user = await _unitOfWork.Admin.GetUserAndAddress(email);
                     var orderModel = new Order
                     {
                         customer = user,
+                        ShippingStatusId=20,
+                        OrderStatusId = ((int)OrderStatus.Compeleted),
                         ShippingAddressId = checkOut.shippingAddressId,
+                        PaymentStatusId = paymentStausId,
                         ShippingMethod = checkOut.shippingMethod,
                         PaymentMethodSystemName = checkOut.paymentMethod,
                         PaidDateUtc = DateTime.UtcNow,

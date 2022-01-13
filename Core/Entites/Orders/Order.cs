@@ -12,9 +12,12 @@ namespace Core.Entites.Orders
         public string CustomerCurrencyCode { get; set; }
 
         public string PaymentMethodSystemName { get; set; }
-        
+
         /// //////////////////
-    
+        /// 
+        public int OrderStatusId { get; set; }
+        public int PaymentStatusId { get; set; }
+        public int ShippingStatusId { get; set; }
         public decimal OrderSubtotalInclTax { get; set; }
 
         public decimal OrderSubtotalExclTax { get; set; }
