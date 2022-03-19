@@ -1,0 +1,284 @@
+﻿
+@model List<Core.Entites.Orders.Order>
+
+            <div class="container checkout-cart">
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-6 col-sm-12 col-12">
+
+                        <div class="cart-header">
+                            Your Orders
+                        </div>
+
+                        @foreach (var order in Model)
+                        {
+                            <h5>Order Placed   @order.CreatedOnUtc </h5>
+                            <h5>Total   @order.OrderTotal </h5>
+                            <h5>Ship To   @order.customer.UserName </h5>
+                            <h5>Order # @order.Id </h5><div id="cart-items" class="container ">
+                      
+                                <div class="row cart-product">
+
+
+                                    @if (order.ShippingStatusId == 20)
+                                    {
+                                        <h2>Not Yet Shipped</h2>
+                                    }
+
+                                    @if (order.ShippingStatusId == 30)
+                                    {
+                                        <h2> Shipped   </h2>
+                                    }
+                                    @if (order.ShippingStatusId == 10)
+                                    {
+                                        <h2>Deliverd</h2>
+                                    }
+                                    @foreach (var products in order.orderItems)
+                                    {
+
+                                        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                            <div class="prod-img">
+                                                <img src="/uploads/@products.product.productPictures[0].picture.MimeType" alt="Card Back" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                            <div class="prod-name">
+                                                @products.product.Name
+                                            </div>
+                                            <div class="stock">
+                                                <span>
+                                                    In Stock
+                                                </span>
+                                            </div>
+
+                                            @*@foreach (var att in item.productAttributeOptionsMapping)
+                                            {
+                                                <div class="prod-attr">
+                                                    <div class="attr">
+                                                        @att.Attribute
+                                                    </div>
+                                                    <div data-optionID="@att.OptionID" class="option">
+                                                        @att.Option
+                                                    </div>
+                                                </div>
+                                            }*@
+                                           
+
+                                            <div class="remove">
+                                                <a>
+                                                    Buy it again
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                            <div class="prod-price">
+                                                @products.product.Price
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+        <script>
+
+            $(function () {
+
+                $('#cart-items').on("click", '.AddQty', function () {
+                    var qtyCount = $(this).attr('data-Qty');
+                    var ProductID = $(this).attr('data-productID');
+
+                    var list = $(".option").map(function () { return $(this).attr("data-optionID"); }).get();
+                    console.log(list);
+                    addQty(qtyCount, ProductID, list);
+                });
+                $('#cart-items').on("click", '.SubQty', function () {
+                    var qtyCount = $(this).attr('data-Qty');
+                    var ProductID = $(this).attr('data-productID');
+
+                    var list = $(".option").map(function () { return $(this).attr("data-optionID"); }).get();
+                    console.log(list);
+                    SubtractQty(qtyCount, ProductID,list);
+                });
+                $('#cart-items').on("click", '.remove-btn', function () {
+                    var qtyCount = $(this).attr('data-Qty');
+                    var ProductID = $(this).attr('data-productID');
+                    var list = $(".option").map(function () { return $(this).attr("data-optionID"); }).get();
+
+                    RemoveProduct(qtyCount, ProductID, list);
+                });
+                 function addQty(Qty, ProductID, list) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("AddQantityCartAjaxx")",
+                        data: { 'Qty': Qty, 'ProductID': ProductID, 'SelectedAttributes':list },
+                        AddCart: "json",
+                        traditional: true,
+                        success: function (response) {
+                            var res = JSON.parse(response);
+                            $("#cart-items").empty();
+                            DrawCart(res);
+
+                            console.log(response);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+
+                 function SubtractQty(Qty, ProductID, list) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("SubtractQantityCartAjaxx")",
+                        data: { 'Qty': Qty, 'ProductID': ProductID, 'SelectedAttributes': list},
+                        AddCart: "json",
+                        traditional: true,
+                        success: function (response) {
+                            var res = JSON.parse(response);
+                            $("#cart-items").empty();
+                            DrawCart(res);
+                            $("#cart-items").html(html);
+                            console.log(response);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+
+                 function RemoveProduct(Qty, ProductID, list) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("RemoveProductCartAjaxx")",
+                        data: { 'Qty': Qty, 'ProductID': ProductID, 'SelectedAttributes': list},
+                        AddCart: "json",
+                        traditional: true,
+                        success: function (response) {
+                            var res = JSON.parse(response);
+
+                            $("#cart-items").empty();
+
+                            DrawCart(res);
+
+                            $("#cart-items").html(html);
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+
+                 function DrawCart(res) {
+                    html = `<div class="row cart-product">`;
+                     for (var i = 0; i < res.products.length; i++) {
+                        html += `
+                                <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                    <div class="prod-img">
+                                        <img src="/uploads/`+ res.products[i].Picture + `" alt="Card Back" />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <div class="prod-name">
+                                        `+ res.products[i].Name + `
+                                    </div>
+                                    <div class="stock">
+                                        <span>
+                                            In Stock
+                                        </span>
+                                    </div>
+                                    `;
+                                     for (var k = 0; k < res.products[i].productAttributeOptionsMapping.length; k++)
+                                       {
+
+                                        html += `
+                                        <div class="prod-attr">
+                                            <div class="attr">
+                                                 `+ res.products[i].productAttributeOptionsMapping[k].Attribute + `
+                                            </div>
+                                            <div data-optionID=" `+ res.products[i].productAttributeOptionsMapping[k].OptionID + `"  class="option">
+                                                  `+ res.products[i].productAttributeOptionsMapping[k].Option + `
+                                            </div>
+                                        </div>
+                                            `;
+                                     }
+
+                        html += `
+                                    <div class="quantity">
+                                        <div id="add-quantity">
+                                            <a data-productID="`+ res.products[i].Id + `" data-Qty="` + res.products[i].Qty + `" class="AddQty">
+                                                +
+                                            </a>
+                                        </div>
+                                        <div class="counter-quantity">
+                                            `+ res.products[i].Qty + `
+                                        </div>
+                                        <div class="subtract-quantity">
+                                            <a data-productID="`+ res.products[i].Id + `" data-Qty="` + res.products[i].Qty + `" class="SubQty">
+
+                                                -
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="remove">
+                                      <a  data-productID="`+ res.products[i].Id + `" data-Qty="` + res.products[i].Qty + `"  class="remove-btn">
+                                            Remove
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-3 col-md-6 col-sm-12 col-12">
+                                    <div class="prod-price">
+                                        `+ res.products[i].Price + `
+                                    </div>
+                                </div>
+                            </div>
+                            `;
+                    }
+
+                     html += `
+                               </div>
+
+                            <div class="sub-total">
+                            <span class="number-of-items">
+                                Subtotal (  `+ res.totalItems + ` item):
+                            </span>
+                            <span class="total-price">
+                                EGP   `+ res.totalPrice + `
+                            </span>
+                        </div>
+                        <div class="procced">
+                            <button type="submit">
+                                Procced to Buy
+                            </button>
+                        </div>
+                         `;
+                     $("#cart-items").html(html);
+                }
+
+            })
+        </script>

@@ -19,5 +19,6 @@ namespace Core.Interfaces.Media
         IQueryable<OrderItem> GetOrderItemById(int id);
         Task AddShipmentItem(ShipmentItem shipmentItem);
         Task AddShipment(Shipment shipment);
+        List<Order> GetMyOrders(string userEmail);
     }
 }

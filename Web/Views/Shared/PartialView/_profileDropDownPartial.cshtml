@@ -42,7 +42,9 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="dropdown-cart-action">
+                    @Html.ActionLink("Your Account", "YourAccount", "Account", null, new { @class = "btn tbn-block" });
+                </div>
                 <div class="dropdown-cart-action">
                     @Html.ActionLink("LogOut", "Logout", "Account", null, new { @class = "btn tbn-block" });
                 </div>

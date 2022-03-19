@@ -257,7 +257,24 @@ namespace Web.Controllers
             return RedirectToAction("Login");
         }
 
-        ////
+        /////////////////Account Setting///////////////////
+
+        [HttpGet]
+        [Route("YourAccount")]
+        public async Task<IActionResult> YourAccount()
+        {
+           return View();
+        }
+
+
+        [HttpGet]
+        [Route("orderHistory")]
+        public async Task<IActionResult> orderHistory()
+        {
+            string email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var orders = unitOfWork.orderRepo.GetMyOrders(email);
+            return View(orders);
+        }
 
         [HttpGet]
         [Route("EditCustomerinfo")]

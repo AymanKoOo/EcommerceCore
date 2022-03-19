@@ -2,6 +2,7 @@
 using Core.Entites.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Core.Entites.Orders
@@ -60,5 +61,11 @@ namespace Core.Entites.Orders
         public Address ShippingAddress { get; set; }
 
         public IEnumerable<OrderNotes> orderNotes { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [NotMapped]
+        public List<OrderItem> orderItems { get; set; }
     }
 }
