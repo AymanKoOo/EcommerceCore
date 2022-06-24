@@ -2,6 +2,8 @@
 using Core.Entites;
 using Core.Entites.Discounts;
 using Core.Interfaces;
+using Infrastructure.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Areas.Admin.Factories;
 using Web.Areas.Admin.ViewModels.Discounts;
+using Web.DTOs;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -18,14 +21,18 @@ namespace Web.Areas.Admin.Controllers
     {
         readonly private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment environment;
+        private readonly IPictureService picture;
         private readonly IProductModelFactory productModelFactory;
 
         public IDiscountModelFactory DiscountModelFactory { get; }
 
-        public DiscountController(IUnitOfWork unitOfWork, IMapper mapper, IDiscountModelFactory discountModelFactory, IProductModelFactory ProductModelFactory)
+        public DiscountController(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment, IPictureService picture, IDiscountModelFactory discountModelFactory, IProductModelFactory ProductModelFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            this.environment = environment;
+            this.picture = picture;
             DiscountModelFactory = discountModelFactory;
             productModelFactory = ProductModelFactory;
         }
@@ -56,14 +63,23 @@ namespace Web.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("Create")]
-        public  async Task<IActionResult> Create(Discount model)
+        public  async Task<IActionResult> Create(DiscountDTO model)
         {
+            //Upload discount image
+            var picName = await picture.UploadPictureAsync(model.PictureFile, environment.WebRootPath);
+            var picObj = new Picture
+            {
+                MimeType = picName,
+            };
+            await _unitOfWork.picture.Add(picObj);
+
+            //  await _unitOfWork.picture.Add(picObj);
             if (ModelState.IsValid)
             {
+                var discount = _mapper.Map<Discount>(model);
+                discount.picture = picObj;
                 model.UsePercentage = true;
-                //Insert Discount
-                // await .InsertDiscountAsync(discount);
-                var response =  _unitOfWork.discount.Add(model);
+                var response = _unitOfWork.discount.Add(discount);
                 _unitOfWork.Save();
                 return Redirect("/");
             }

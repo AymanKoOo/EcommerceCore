@@ -1,0 +1,25 @@
+﻿
+
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    string email = User.FindFirst(ClaimTypes.Email)?.Value;
+    {
+        if (!string.IsNullOrEmpty(email))
+        {
+            <div class="ec-btn-desc">
+                <span class="ec-btn-title">Hello</span>
+                <span class="ec-btn-stitle"> @email</span>
+            </div>
+        }
+    }
+}
+
+else
+{
+    <div class="ec-btn-desc">
+        <span class="ec-btn-title">Account</span>
+        @Html.ActionLink("Login", "Login", "Account", null, new { @class = "ec-btn-stitle" });
+    </div>
+}

@@ -39,7 +39,7 @@ namespace Infrastructure.Repo.Discounts
 
         public Task<List<Discount>> GetForbanner()
         {
-            return _dbcontext.discounts.Take(6).OrderBy(x=>x.DiscountTypeId).ToListAsync();
+            return _dbcontext.discounts.Take(8).OrderBy(x=>x.DiscountTypeId).Include(x=>x.picture).ToListAsync();
         }
 
         public Discount GetByID(int id)

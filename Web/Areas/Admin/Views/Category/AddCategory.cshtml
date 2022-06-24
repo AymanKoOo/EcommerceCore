@@ -43,6 +43,7 @@
 
                 <select asp-for="ParentCategoryId">
 
+                    <option value="0">None</option>
                     @foreach (var category in Model.AvailableCategories)
                     {
                         <option value="@category.Id">@category.Name</option>

@@ -60,6 +60,7 @@ namespace Web.Controllers
                     {
                         customer = user,
                         ShippingStatusId=20,
+                        OrderTotal = cart.totalPrice,
                         OrderStatusId = ((int)OrderStatus.Compeleted),
                         ShippingAddressId = checkOut.shippingAddressId,
                         PaymentStatusId = paymentStausId,

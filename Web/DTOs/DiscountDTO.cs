@@ -1,13 +1,15 @@
-﻿using Core.Entites.Base;
-using Core.Entites.Discounts;
+﻿using Core.Entites;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Core.Entites
+namespace Web.DTOs
 {
-    public class Discount: EntityBase
+    public class DiscountDTO
     {
+
         //Set Name for discount
         public string Name { get; set; }
 
@@ -16,7 +18,7 @@ namespace Core.Entites
 
         ///Type of discount
         public int DiscountTypeId { get; set; }
-        
+
         /// Gets or sets a value indicating whether to use percentage
 
         public bool UsePercentage { get; set; }
@@ -33,7 +35,7 @@ namespace Core.Entites
 
         /// Gets or sets the discount start date and time
         public DateTime? StartDateUtc { get; set; }
-        
+
         /// Gets or sets the discount end date and time
         public DateTime? EndDateUtc { get; set; }
 
@@ -43,7 +45,7 @@ namespace Core.Entites
         public string CouponCode { get; set; }
 
         //public bool IsCumulative { get; set; }
-        public string PictureName { get; set; }
+        public string Picture { get; set; }
 
         //public int DiscountLimitationId { get; set; }
 
@@ -53,9 +55,11 @@ namespace Core.Entites
 
         //public bool AppliedToSubCategories { get; set; }
 
+        public IFormFile PictureFile { get; set; }
+        public string ImageFile { get; set; }
+
         public virtual ICollection<DiscountProduct> Discounts { get; set; }
         //public virtual DiscountType DiscountType { get; set; }
-        public int pictureId { get; set; }
-        public Picture picture { get; set; }
+
     }
 }

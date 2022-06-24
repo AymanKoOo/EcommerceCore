@@ -12,12 +12,12 @@
 
                         @foreach (var order in Model)
                         {
-                            <h5>Order Placed   @order.CreatedOnUtc </h5>
+                            <h5>Order Placed  @order.CreatedOnUtc </h5>
                             <h5>Total   @order.OrderTotal </h5>
                             <h5>Ship To   @order.customer.UserName </h5>
                             <h5>Order # @order.Id </h5><div id="cart-items" class="container ">
-                      
-                                <div class="row cart-product">
+                            
+                                <div class="row">
 
 
                                     @if (order.ShippingStatusId == 20)
@@ -82,6 +82,8 @@
                                     }
                                 </div>
                             </div>
+
+                            <hr/>
                         }
                     </div>
                 </div>

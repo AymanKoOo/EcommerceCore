@@ -9,12 +9,12 @@
 @{
 }
 
-@model Core.Entites.Discount
+@model Web.DTOs.DiscountDTO
 @using Core.Entites.Discounts
 
 <div class="contenti">
     <div class="container">
-        <form asp-controller="Discount" asp-action="Create" method="post">
+        <form asp-controller="Discount"  enctype="multipart/form-data" asp-action="Create" method="post">
 
             <div class="row">
                 <div class="col-md-12">
@@ -53,6 +53,14 @@
                         <input asp-for="EndDateUtc" type="date" />
                     </div>
                 </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>ImageFile:</label>
+                        <input asp-for="PictureFile" type="file" class="form-control required" />
+                    </div>
+                </div>
+
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Admin Comment</label>

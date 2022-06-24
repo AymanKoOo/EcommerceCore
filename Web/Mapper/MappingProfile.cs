@@ -123,6 +123,10 @@ namespace Web.Mapper
 
             CreateMap<ProductAttributeMapping, AProductAttributeAdd>();
             CreateMap<AProductAttributeAdd, ProductAttributeMapping>();
+
+
+            CreateMap<Discount, DiscountDTO>();
+            CreateMap<DiscountDTO, Discount>();
         }
     }
 }

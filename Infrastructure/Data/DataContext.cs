@@ -28,6 +28,7 @@ namespace Infrastructure.Data
             new ProductTypeConfig().Configure(builder.Entity<Product>());
             base.OnModelCreating(builder);
 
+          
 
             builder.Entity<DiscountProduct>().HasKey(sc => new { sc.ProductsId, sc.DiscountsId });
 

@@ -19,9 +19,9 @@ namespace Web.DTOs
         public decimal Price { get; set; }
         public string CategoryId { get; set; }
         public IFormFile PictureFile { get; set; }
-        public bool HasDiscountsApplied { get; set; }
-
         public string ImageFile { get; set; }
+
+        public bool HasDiscountsApplied { get; set; }
 
         public Category Category { get; set; }
 
