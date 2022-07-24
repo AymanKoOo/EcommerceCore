@@ -7,18 +7,20 @@
 
 
 
+<!---Home Jumbotron -->
+@await Component.InvokeAsync("HomeJumbotron")
+
+
 <!---Discounts -->
 
 @await Component.InvokeAsync("DiscountBanner")
 
 
 <hr />
-
+<!---Categories -->
 @await Component.InvokeAsync("HomeCategories")
 
-<hr />
-
-
+<!---Discounts -->
 @*@await Component.InvokeAsync("HomeProducts")*@
 
 <hr />

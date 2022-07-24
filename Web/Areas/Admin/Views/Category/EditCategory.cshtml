@@ -9,12 +9,12 @@
 @{
 }
 
-@model Core.Entites.Category
+@model Web.Areas.Admin.ViewModels.Catalog.ACategoryModel
 
 
 <div class="contenti">
     <div class="container">
-        <form asp-controller="Category" asp-action="EditCategory" method="post">
+        <form asp-controller="Category" enctype="multipart/form-data" asp-action="EditCategory" method="post">
 
             <input name="Id" value="@Model.Id" asp-for="Id" type="hidden" />
             <div class="row">
@@ -35,7 +35,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>ImageFile:</label>
-                        <input asp-for="Description" type="file" class="form-control required" />
+                        <input type="file" accept="image/*" name="ImgCategory" asp-for="ImgCategory" />
                     </div>
                 </div>
 

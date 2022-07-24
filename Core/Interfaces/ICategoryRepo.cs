@@ -24,5 +24,6 @@ namespace Core.Interfaces
         Task<List<Category>> GetAllCategoriesAsync();
         Task<List<Category>> GetSubCategory(int CategoryId);
         PagedList<Category> GetAllCategoriesList(int pageSize, int pageNumber);
+        Task EditPicture(Category categoryModel, Picture picObj);
     }
 }

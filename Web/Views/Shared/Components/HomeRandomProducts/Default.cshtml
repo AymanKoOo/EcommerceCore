@@ -48,28 +48,34 @@
 
                     @foreach (var product in Model)
                     {
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-5 ec-product-content">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 col-5 ec-product-content">
 
-                            <div class="product item">
+                        <div class="product item">
 
-                                <div class="product-image">
+                            <div class="product-image">
 
-                                    <a href="#">
+                                <a href="#">
 
-                                        <img class="pic-prduct" src="/uploads/@product.productPictures[0].picture.MimeType" />
+                                    <img class="pic-prduct" src="/uploads/@product.productPictures[0].picture.MimeType" />
 
-                                    </a>
-                                    @if (product.HasDiscountsApplied == true)
-                                    {
-                                        <span class="discount">@product.Discounts[0].discounts.DiscountPercentage %</span>
+                                </a>
+                                @if (product.HasDiscountsApplied == true)
+                                {
+                                    <span class="discount">@product.Discounts[0].discounts.DiscountPercentage %</span>
 
-                                        <div class="product-button">
-                                            <a href="Javascript:Void(0)" onclick="AddToCart(4);" class="tool-btn" data-mode="top" data-tip="Add to cart"><i class="fa fa-shopping-bag"></i></a>
-                                            <a href="Javascript:Void(0)" onclick="AddToWish(4);" class="tool-btn" data-mode="top" data-tip="Add to wish"><i class="fa fa-heart"></i></a>
-                                            <a href="Javascript:Void(0)" onclick="AddToCompare(4);" class="tool-btn" data-mode="top" data-tip="Add To Compare"><i class="fa fa-refresh"></i></a>
-                                        </div>
-                                    }
-                                </div>
+                                    <div class="product-button">
+                                        <a href="Javascript:Void(0)" onclick="AddToCart(4);" class="tool-btn" data-mode="top" data-tip="Add to cart"><i class="fa fa-shopping-bag"></i></a>
+                                        <a href="Javascript:Void(0)" onclick="AddToWish(4);" class="tool-btn" data-mode="top" data-tip="Add to wish"><i class="fa fa-heart"></i></a>
+                                        <a href="Javascript:Void(0)" onclick="AddToCompare(4);" class="tool-btn" data-mode="top" data-tip="Add To Compare"><i class="fa fa-refresh"></i></a>
+                                    </div>
+                                }
+                            </div>
+
+
+
+
+                            <div class="product-desc">
+
 
                                 <div class="category">
                                     @product.Category.Name
@@ -84,13 +90,13 @@
                                 <div class="price">
                                     @if (product.HasDiscountsApplied == true)
                                     {
-                                        <del class="old-price">@product.OldPrice</del>
+                                        <del class="old-price"> $@product.OldPrice</del>
                                     }
-                                    <span class="product-price">@product.Price</span>
+                                    <span class="product-price">$@product.Price</span>
                                 </div>
                             </div>
+                             </div>
                         </div>
-
                     }
 
 

@@ -46,17 +46,33 @@ namespace Web.Areas.Admin.Controllers
         public IActionResult EditCategory(int categoryID)
         {
             var category = _unitOfWork.Category.GetCategoryByID(categoryID);
-            return View(category);
+
+            var ACategoryModel = _mapper.Map<ACategoryModel>(category);
+
+            return View(ACategoryModel);
         }   
 
         [HttpPost("EditCategory")]
-        public IActionResult EditCategory(Category category)
+        public async Task<IActionResult> EditCategory(ACategoryModel model)
         {
-            var categoryModel = _unitOfWork.Category.GetCategoryByID(category.Id);
+            var categoryModel = _unitOfWork.Category.GetCategoryByID(model.Id);
+            //
+            var picName = await picture.UploadPictureAsync(model.ImgCategory, environment.WebRootPath);
 
-            //categoryModel.ImageName = category.ImageName;
-            categoryModel.Name = category.Name;
-            categoryModel.Description = category.Description;
+            var picObj = new Picture
+            {
+                MimeType = picName,
+            };
+            await _unitOfWork.picture.Add(picObj);
+            _unitOfWork.Save();
+
+            //
+            var pic = await _unitOfWork.picture.getPicByName(picName);
+
+            await _unitOfWork.Category.AddPicture(categoryModel.Id, pic.Id);
+
+            categoryModel.Name = model.Name;
+            categoryModel.Description = model.Description;
             //mapping
             _unitOfWork.Category.Update(categoryModel);
             _unitOfWork.Save();
@@ -67,7 +83,6 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> AddCategory()
         {
             var model = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(), null);
-
             return View(model);
         }
 

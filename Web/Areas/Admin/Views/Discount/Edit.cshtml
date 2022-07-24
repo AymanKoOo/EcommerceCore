@@ -28,8 +28,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Discount Type:</label>
-                        <select asp-for="DiscountTypeId" asp-items="Html.GetEnumSelectList<DiscountTyp>()">
-                            <option>Select Type</option>
+                        <select id="discountType" asp-for="DiscountTypeId" asp-items="Html.GetEnumSelectList<DiscountTyp>()">
                         </select>
                         <span asp-validation-for="DiscountTypeId"></span>
                     </div>
@@ -63,9 +62,13 @@
                 <button class="btn btn-primary" type="submit">
                     Edit
                 </button>
-                <a asp-controller="Discount" asp-action="AddProductsDiscount" asp-route-discountID="@Model.Id">Add More Products</a>
+              
             </div>
         </form>
+
+        <div id="add-to-discount">
+
+        </div>
     </div>
 </div>
 
@@ -99,13 +102,13 @@
         console.log(discountID);
         getPosts(pageSize, page);
 
-
+        SwitchDiscountType();
 
         $('body').on('click', '.prev-btn', function () {
             //$('html, body').animate({
             //    scrollTop: $("#posts").offset().top
             //}, 600);
-
+          
             if (HasPrev == true) {
                 getPosts(pageSize, --CurrentPage);
 
@@ -272,7 +275,59 @@
         }
 
 
+        function SwitchDiscountType() {
+            var selected_option = $('#discountType option:selected').val();
 
+            if (selected_option == 1) {
+
+                $('#add-to-discount').html(`
+                       <button id="add-product-btn">add Products</button>
+                `);
+            }
+
+            if (selected_option == 2) {
+
+            }
+        }
+
+
+        $('body').on('click', '#add-product-btn', function () {
+            addProducts();
+        })
+
+
+        function SwitchDiscountType() {
+            var selected_option = $('#discountType option:selected').val();
+
+            if (selected_option == 1) {
+
+                $('#add-to-discount').html(`
+                       <button id="add-product-btn">add Products</button>
+                `);
+            }
+
+            if (selected_option == 2) {
+
+            }
+        }
+
+
+        $('body').on('click', '#add-product-btn', function () {
+            addProducts();
+        })
+
+
+        function addProducts() {
+
+            $.ajax({
+                type: "GET",
+                url: "https://localhost:5001/Admin/Discount/AddProductsDiscount?DiscountId=" + discountID + "",
+                success: function (response) {
+                    //var data = response.success.data;
+                    console.log(response);
+                }
+            })
+        }
     })
 
 </script>
