@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels.Catalog;
+using Web.Areas.Admin.ViewModels.Categories;
+using Web.Services;
 
 namespace Web.Areas.Admin.Factories
 {
@@ -46,7 +48,21 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
 
-     
+
+        public virtual async Task<CategoryListModel> PrepareCategoryNODiscountListModelAsync(int pageSize, int pageNumber)
+        {
+            var categories = unitOfWork.Category.GetAllCategoriesWithoutDiscountList(pageSize, pageNumber);
+            var model = new CategoryListModel().PrepareToGrid(categories, () =>
+            {
+                //fill in model values from the entity
+                return categories.Data.Select(category =>
+                {
+                    var discountCategoryModel = mapper.Map<CategoryVM>(category);
+                    return discountCategoryModel;
+                });
+            });
+            return model;
+        }
 
         public async Task<ACategorySpecificationGroup> PrepareCategorySpecGroup()
         {

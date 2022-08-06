@@ -12,9 +12,8 @@ namespace Core.Interfaces
     {
         List<Category> GetAllCategories();
         Task<IEnumerable<Category>> GetAllCategoriesHome();
-        
+        Task<Category> GetCategory(int id);
         Task AddCategorySpecGroup(CategorySpecificationGroup model);
-
         Task<Category> GetCategory(string categoryName);
         Category GetCategoryByID(int categoryID);
         
@@ -24,6 +23,8 @@ namespace Core.Interfaces
         Task<List<Category>> GetAllCategoriesAsync();
         Task<List<Category>> GetSubCategory(int CategoryId);
         PagedList<Category> GetAllCategoriesList(int pageSize, int pageNumber);
+        PagedList<Category> GetAllCategoriesWithoutDiscountList(int pageSize, int pageNumber);
         Task EditPicture(Category categoryModel, Picture picObj);
+        Task AddCategoryTODiscount(Category category, int discountID);
     }
 }

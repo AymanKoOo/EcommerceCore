@@ -31,6 +31,7 @@ namespace Infrastructure.Data
           
 
             builder.Entity<DiscountProduct>().HasKey(sc => new { sc.ProductsId, sc.DiscountsId });
+            builder.Entity<DiscountCategory>().HasKey(sc => new { sc.CategoryId, sc.DiscountsId });
 
             builder.Entity<CategoryPicture>().HasKey(sc => new { sc.categoryID, sc.PictureId });
 
@@ -111,6 +112,8 @@ namespace Infrastructure.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Discount> discounts { get; set; }
         public DbSet<DiscountProduct> discountProducts { get; set; }
+        public DbSet<DiscountCategory> discountCategories { get; set; }
+
         public DbSet<ProductPicture> productPictures { get; set; }
         public DbSet<CategoryPicture> categoryPictures { get; set; }
         public DbSet<Picture> pictures { get; set; }
@@ -126,7 +129,7 @@ namespace Infrastructure.Data
         public DbSet<ProductSpecificationAttribute> ProductSpecificationAttribute { get; set; }
         public DbSet<CategorySpecificationGroup> categorySpecificationGroups { get; set; }
 
-
+        
 
         public DbSet<ProductAttribute> productAttributes { get; set; }
         public DbSet<ProductAttributeOption> productAttributeOptions { get; set; }

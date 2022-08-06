@@ -55,6 +55,7 @@ namespace Core.Entites
 
         public virtual ICollection<DiscountProduct> Discounts { get; set; }
         //public virtual DiscountType DiscountType { get; set; }
+        public virtual ICollection<DiscountCategory> DiscountCategory { get; set; }
         public int pictureId { get; set; }
         public Picture picture { get; set; }
     }

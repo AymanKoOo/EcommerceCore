@@ -127,6 +127,10 @@ namespace Web.Mapper
 
             CreateMap<Discount, DiscountDTO>();
             CreateMap<DiscountDTO, Discount>();
+
+            CreateMap<CategoryVM, Category>();
+            CreateMap<Category, CategoryVM>();
+            
         }
     }
 }

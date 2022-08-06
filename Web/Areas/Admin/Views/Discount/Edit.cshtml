@@ -108,7 +108,7 @@
             //$('html, body').animate({
             //    scrollTop: $("#posts").offset().top
             //}, 600);
-          
+
             if (HasPrev == true) {
                 getPosts(pageSize, --CurrentPage);
 
@@ -275,39 +275,46 @@
         }
 
 
-        function SwitchDiscountType() {
-            var selected_option = $('#discountType option:selected').val();
-
-            if (selected_option == 1) {
-
-                $('#add-to-discount').html(`
-                       <button id="add-product-btn">add Products</button>
-                `);
-            }
-
-            if (selected_option == 2) {
-
-            }
-        }
-
 
         $('body').on('click', '#add-product-btn', function () {
             addProducts();
         })
+        $('body').on('click', '#add-category-btn', function () {
+            addCategories();
+        })
 
-
-        function SwitchDiscountType() {
+        $("#discountType").change(function () {
             var selected_option = $('#discountType option:selected').val();
-
             if (selected_option == 1) {
-
+                $('#add-category-btn').remove();
                 $('#add-to-discount').html(`
                        <button id="add-product-btn">add Products</button>
                 `);
             }
 
             if (selected_option == 2) {
+                $('#add-product-btn').remove();
+                $('#add-to-discount').html(`
+                       <button id="add-category-btn">add Category</button>
+                `);
+            }
+        });
 
+        function SwitchDiscountType() {
+            var selected_option = $('#discountType option:selected').val();
+
+            if (selected_option == 1) {
+                $('#add-category-btn').remove();
+                $('#add-to-discount').html(`
+                       <button id="add-product-btn">add Products</button>
+                `);
+            }
+
+            if (selected_option == 2) {
+                $('#add-product-btn').remove();
+                $('#add-to-discount').html(`
+                       <button id="add-category-btn">add Category</button>
+                `);
             }
         }
 
@@ -321,10 +328,25 @@
 
             $.ajax({
                 type: "GET",
-                url: "https://localhost:5001/Admin/Discount/AddProductsDiscount?DiscountId=" + discountID + "",
+                url: "@Url.Action("AddProductsDiscount")" + "?DiscountId=" + discountID + "",
                 success: function (response) {
-                    //var data = response.success.data;
-                    console.log(response);
+                    var urll = "@Url.Action("AddProductsDiscount")" + "?DiscountId=" + discountID + "";
+                    console.log(urll);
+                    window.location = urll;
+
+                }
+            })
+        }
+
+         function addCategories() {
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("AddCategoryDiscount")" + "?DiscountId=" + discountID + "",
+                success: function (response) {
+                    var urll = "@Url.Action("AddCategoryDiscount")" + "?DiscountId=" + discountID + "";
+                    console.log(urll);
+                    window.location = urll;
                 }
             })
         }

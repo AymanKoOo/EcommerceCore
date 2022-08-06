@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Core.Entites.Catalog;
 using AyyBlog.ViewModel;
+using Core.Entites.Discounts;
 
 namespace Infrastructure.Repo
 {
@@ -46,6 +47,15 @@ namespace Infrastructure.Repo
             pageNumber,
             pageSize);
         }
+        public PagedList<Category> GetAllCategoriesWithoutDiscountList(int pageSize, int pageNumber)
+        {
+            var categories = _dbcontext.Categories.Where(x => x.HasDiscountsApplied == false);
+
+            return PagedList<Category>.ToPagedList(categories,
+            pageNumber,
+            pageSize);
+        }
+
         public async Task<IEnumerable<Category>> GetAllCategoriesHome()
         {
             return await _dbcontext.Categories.Where(q=>q.ParentCategoryId==0).Include(x => x.categoryPictures).ThenInclude(e => e.picture).ToListAsync();
@@ -66,7 +76,10 @@ namespace Infrastructure.Repo
         {
             return  await  _dbcontext.Categories.FirstOrDefaultAsync(m => m.Name == categoryName);
         }
-
+        public async Task<Category> GetCategory(int id)
+        {
+            return await _dbcontext.Categories.FirstOrDefaultAsync(m => m.Id == id);
+        }
         public async Task AddPicture(int categoryID, int picID)
         {
             var model = new CategoryPicture
@@ -96,6 +109,19 @@ namespace Infrastructure.Repo
             return _dbcontext.Categories.Where(e => e.Name == name).Include(x => x.CategorySpecificationGroups).ThenInclude(r => r.specificationAttributeGroup)
                .ThenInclude(q => q.SpecificationAttribute).ThenInclude(q => q.specificationAttributeOptions).FirstOrDefault();
 
+        }
+        public async Task AddCategoryTODiscount(Category category, int discountID)
+        {
+            var checkCategory = _dbcontext.discountCategories.FirstOrDefault(x => x.CategoryId == category.Id);
+            if (checkCategory == null)
+            {
+                var dp = new DiscountCategory
+                {
+                    CategoryId = category.Id,
+                    DiscountsId = discountID
+                };
+                _dbcontext.discountCategories.Add(dp);
+            }
         }
         //public void AddCategoryPic(int categoryID,string picPath)
         //{

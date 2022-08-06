@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Core.Entites.Base;
 using Core.Entites.Catalog;
+using Core.Entites.Discounts;
 
 namespace Core.Entites
 {
@@ -22,9 +23,10 @@ namespace Core.Entites
         public bool Published { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public DateTime UpdatedOnUtc { get; set; }
+        public bool HasDiscountsApplied { get; set; }
 
         public List<CategoryPicture> categoryPictures { get; set; }
-        
+        public virtual ICollection<DiscountCategory> DiscountCategories { get; set; }
         public virtual ICollection<CategorySpecificationGroup> CategorySpecificationGroups { get; set; }
     }
 }

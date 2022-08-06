@@ -24,10 +24,14 @@ namespace Web.Areas.Admin.Controllers
         private readonly IWebHostEnvironment environment;
         private readonly IPictureService picture;
         private readonly IProductModelFactory productModelFactory;
+        private readonly ICategoryModelFactory categoryModelFactory;
 
         public IDiscountModelFactory DiscountModelFactory { get; }
 
-        public DiscountController(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment, IPictureService picture, IDiscountModelFactory discountModelFactory, IProductModelFactory ProductModelFactory)
+        public DiscountController(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment, 
+            IPictureService picture, IDiscountModelFactory discountModelFactory,
+            IProductModelFactory ProductModelFactory,
+            ICategoryModelFactory CategoryModelFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -35,6 +39,7 @@ namespace Web.Areas.Admin.Controllers
             this.picture = picture;
             DiscountModelFactory = discountModelFactory;
             productModelFactory = ProductModelFactory;
+            categoryModelFactory = CategoryModelFactory;
         }
 
 
@@ -148,6 +153,34 @@ namespace Web.Areas.Admin.Controllers
             _unitOfWork.Save();
             return View();
         }
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////
+        [HttpGet("AddCategoryDiscount")]
+        public async Task<IActionResult> AddCategoryDiscount(int discountID, int pageSize = 2, int pageNumber = 1)
+        {
+            ViewBag.DiscountID = discountID;
+            // var products = _unitOfWork.Product.GetAllProducts();
+            var categories = await categoryModelFactory.PrepareCategoryNODiscountListModelAsync(pageSize, pageNumber);
+            return View(categories);
+        }
+
+        [HttpPost("AddCategoryDiscount")]
+        public async Task<IActionResult> AddCategoriesDiscount(int[] categories, int IDdiscount)
+        {
+            for (int i = 0; i < categories.Length; i++)
+            {
+                var category = await _unitOfWork.Category.GetCategory(categories[i]);
+                await _unitOfWork.Category.AddCategoryTODiscount(category, IDdiscount);
+                category.HasDiscountsApplied = true;
+                _unitOfWork.Category.Update(category);
+            }
+            _unitOfWork.Save();
+            return View("/");
+        }
+
+
 
         #region Create Discount Type
 

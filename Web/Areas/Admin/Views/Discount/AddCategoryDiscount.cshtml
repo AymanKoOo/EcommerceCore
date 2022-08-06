@@ -2,9 +2,12 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    int nextPage = @Model.CurrentPage + 1;
+    int prevPage = @Model.CurrentPage - 1;
+    int discountID = ViewBag.DiscountID;
 }
-@model IEnumerable<Core.Entites.Discount>
-@using Core.Entites.Discounts
+
+@model Web.Areas.Admin.ViewModels.Categories.CategoryListModel
 
 <div class="table-responsive">
     <div class="table-wrapper">
@@ -35,60 +38,51 @@
                 </div>
             </div>
         </div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th><font style="vertical-align: inherit;"># </font></th>
-                    <th><font style="vertical-align: inherit;">Name  </font><i class="fa fa-sort"></i></th>
-                    <th><font style="vertical-align: inherit;">Discount type </font></th>
-                    <th><font style="vertical-align: inherit;"> Discount </font><i class="fa fa-sort"></i></th>
-                    <th><font style="vertical-align: inherit;">Start date </font><i class="fa fa-sort"></i></th>
-                    <th><font style="vertical-align: inherit;">End date	 </font></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var discount in Model)
-                {
 
+        <form method="post" asp-controller="Discount" asp-action="AddCategoryDiscount">
+            <input type="hidden" value="@discountID" name="IDdiscount" />
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-
-                        <td><font style="vertical-align: inherit;"># </font></td>
-                        <td><font style="vertical-align: inherit;">@discount.Name </font></td>
-                        @if (discount.Id == 1)
-                        {
-                            <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToProducts</font></td>
-                        }
-                        else
-                        {
-                            <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToCategories</font></td>
-
-                        }
-                        <td><font style="vertical-align: inherit;">@discount.DiscountPercentage </font></td>
-                        <td><font style="vertical-align: inherit;">@discount.StartDateUtc  </font></td>
-                        <td><font style="vertical-align: inherit;">@discount.EndDateUtc  </font></td>
-
-                        <td>
-                            <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
-                            <a asp-controller="Discount" asp-action="Edit" asp-route-Id="@discount.Id">Edit</a>
-                            <a asp-controller="Discount" asp-action="DeleteCategory" asp-route-Id="@discount.Id">Delete</a>
-                        </td>
+                        <th><font style="vertical-align: inherit;"># </font></th>
+                        <th><font style="vertical-align: inherit;">Id  </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Name </font></th>
+                        <th><font style="vertical-align: inherit;"> Description </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Category </font><i class="fa fa-sort"></i></th>
+                        <th><font style="vertical-align: inherit;">Actions </font></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model.Data)
+                    {
+
+                        <tr>
+                            <td>
+                                <input type="checkbox" value="@c.Id" name="categories" />
+                            </td>
+                            <td><font style="vertical-align: inherit;">@c.Name </font></td>
+                            <td><font style="vertical-align: inherit;">@c.Name  </font></td>
+                            <td><font style="vertical-align: inherit;">@c.Description </font></td>
+                            <td><font style="vertical-align: inherit;">@c.MetaTitle  </font></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" value="Submit" />
+        </form>
         <div class="clearfix">
             <div class="hint-text"><font style="vertical-align: inherit;">Showing  </font><b><font style="vertical-align: inherit;">5 </font></b><font style="vertical-align: inherit;"> out of  </font><b><font style="vertical-align: inherit;">25 </font></b><font style="vertical-align: inherit;"> entries </font></div>
             <ul class="pagination">
-                <li class="page-item disabled"><a href="#"><font style="vertical-align: inherit;">Previous </font></a></li>
+                <li class="page-item"> <a asp-controller="Category" asp-action="AddCategoryDiscount" asp-route-pageNumber="@prevPage">Next</a></li>
                 <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">1 </font></a></li>
                 <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">2 </font></a></li>
                 <li class="page-item active"><a href="#" class="page-link"><font style="vertical-align: inherit;">3 </font></a></li>
                 <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">4 </font></a></li>
                 <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">5 </font></a></li>
-                <li class="page-item"><a href="#" class="page-link"><font style="vertical-align: inherit;">Next </font></a></li>
+                <li class="page-item"> <a asp-controller="Category" asp-action="AddCategoryDiscount" asp-route-pageNumber="@nextPage" asp-route-discountID="@discountID">Next</a></li>
             </ul>
         </div>
+
+
     </div>
 </div>
-
-
