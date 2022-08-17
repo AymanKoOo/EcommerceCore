@@ -50,29 +50,28 @@
                 @foreach (var discount in Model)
                 {
 
-                    <tr>
+                <tr>
 
-                        <td><font style="vertical-align: inherit;"># </font></td>
-                        <td><font style="vertical-align: inherit;">@discount.Name </font></td>
-                        @if (discount.Id == 1)
-                        {
-                            <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToProducts</font></td>
-                        }
-                        else
-                        {
-                            <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToCategories</font></td>
+                    <td><font style="vertical-align: inherit;"># </font></td>
+                    <td><font style="vertical-align: inherit;">@discount.Name </font></td>
+                    @if (discount.DiscountTypeId == 1)
+                    {
+                        <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToCategories</font></td>
+                    }
+                    else
+                    {
+                        <td><font style="vertical-align: inherit;">@DiscountTyp.AssignedToProducts</font></td>
+                    }
+                    <td><font style="vertical-align: inherit;">@discount.DiscountPercentage </font></td>
+                    <td><font style="vertical-align: inherit;">@discount.StartDateUtc  </font></td>
+                    <td><font style="vertical-align: inherit;">@discount.EndDateUtc  </font></td>
 
-                        }
-                        <td><font style="vertical-align: inherit;">@discount.DiscountPercentage </font></td>
-                        <td><font style="vertical-align: inherit;">@discount.StartDateUtc  </font></td>
-                        <td><font style="vertical-align: inherit;">@discount.EndDateUtc  </font></td>
-
-                        <td>
-                            <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
-                            <a asp-controller="Discount" asp-action="Edit" asp-route-Id="@discount.Id">Edit</a>
-                            <a asp-controller="Discount" asp-action="DeleteCategory" asp-route-Id="@discount.Id">Delete</a>
-                        </td>
-                    </tr>
+                    <td>
+                        <a href="#" class="view" title="" data-toggle="tooltip" data-original-title="View">View</a>
+                        <a asp-controller="Discount" asp-action="Edit" asp-route-Id="@discount.Id">Edit</a>
+                        <a asp-controller="Discount" asp-action="Delete" asp-route-Id="@discount.Id">Delete</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

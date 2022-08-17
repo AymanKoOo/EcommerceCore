@@ -8,11 +8,12 @@ namespace Core.Entites.Discounts
     {
         /// <summary>
         /// Assigned to order total 
-        /// </summary>
-        AssignedToProducts = 1,
+        /// </summary>       
+        AssignedToCategories = 1,
+
+        AssignedToProducts = 2,
         /// <summary>
         /// Assigned to categories (all products in a category)
         /// </summary>
-        AssignedToCategories = 2,
     }
 }

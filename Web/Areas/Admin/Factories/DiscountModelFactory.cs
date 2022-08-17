@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Areas.Admin.ViewModels.Categories;
 using Web.Areas.Admin.ViewModels.Discounts;
 using Web.Services;
 
@@ -46,5 +47,34 @@ namespace Web.Areas.Admin.Factories
             //
             return model;
         }
+
+        public virtual async Task<DiscountCategoryListModel> PrepareDiscountCategoryListModelAsync(int discountid, int pageSize, int pageNumber)
+        {
+
+            var discountCategories = unitOfWork.Category.GetAllCategoriesWithAppliedDiscountList(discountid, pageSize, pageNumber);
+
+            //var discountProductModels = mapper.Map<DiscountProductModel>(discountProducts.postsData);
+
+            var model = new DiscountCategoryListModel().PrepareToGrid(discountCategories, () =>
+            {
+                //fill in model values from the entity
+                return discountCategories.Data.Select(category =>
+                {
+                    var discountCategoryModel = mapper.Map<DiscountCategoryModel>(category);
+                    discountCategoryModel.Id = category.Id;
+                    discountCategoryModel.Name = category.Name;
+                    return discountCategoryModel;
+                });
+            });
+            //jquery create table gets products view it 
+            //button add to dicount new form all check boxes will be added 
+            //000000000000000000000000000000000000000000000000000
+            //Home page show alll products with category old price new price show dicount
+
+            //
+            return model;
+        }
+
+
     }
 }

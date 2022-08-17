@@ -46,6 +46,35 @@ namespace Infrastructure.Repo.Discounts
         {
             return _dbcontext.discounts.FirstOrDefault(x => x.Id == id);
         }
+
+        public void RemoveDiscountsFromCategoriesProducts(int discountId)
+        {
+            int discountTypeID = _dbcontext.discounts.FirstOrDefault(x => x.Id == discountId).DiscountTypeId;
+
+            if (discountTypeID == 1)
+            {
+                var discountCategories = _dbcontext.discountCategories.Where(x => x.DiscountsId == discountId).Include(x => x.Category).ToList();
+
+                foreach (var category in discountCategories)
+                {
+                    var c = _dbcontext.Categories.FirstOrDefault(x => x.Id == category.CategoryId);
+                    c.HasDiscountsApplied = false;
+                    _dbcontext.Categories.Update(c);
+                }
+            }
+            else if (discountTypeID == 2)
+            {
+                var discountProducts = _dbcontext.discountProducts.Where(x => x.DiscountsId == discountId).Include(x => x.products).ToList();
+               
+                foreach (var product in discountProducts)
+                {
+                    var p = _dbcontext.products.FirstOrDefault(x => x.Id == product.products.Id);
+                    p.HasDiscountsApplied = false;
+                    _dbcontext.products.Update(p);
+                }
+            }
+        }
+
         public Discount AddProductToDiscount(int id)
         {
             return _dbcontext.discounts.FirstOrDefault(x => x.Id == id);
@@ -57,7 +86,13 @@ namespace Infrastructure.Repo.Discounts
             if (discountProduct!=null)
              _dbcontext.discountProducts.Remove(discountProduct);
         }
+        public void RemoveCategoryToDiscount(Category category)
+        {
+            var discountCategory = _dbcontext.discountCategories.FirstOrDefault(x => x.CategoryId == category.Id);
 
+            if (discountCategory != null)
+                _dbcontext.discountCategories.Remove(discountCategory);
+        }
         public async Task<IList<Discount>> GetAppliedDiscountsOnProductAsync(Product product)
         {
             var products = _dbcontext.products.Where(x => x.HasDiscountsApplied);

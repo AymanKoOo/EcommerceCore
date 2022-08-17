@@ -19,7 +19,7 @@ namespace Core.Interfaces.Discounts
         public  List<Discount> GetPreferredDiscount(IList<Discount> discounts,
         decimal amount, out decimal discountAmount);
         public decimal GetDiscountAmount(Discount discount, decimal amount);
-
-
+        public void RemoveCategoryToDiscount(Category category);
+        public void RemoveDiscountsFromCategoriesProducts(int discountId);
     }
 }

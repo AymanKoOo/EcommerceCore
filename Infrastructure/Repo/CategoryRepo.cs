@@ -55,7 +55,22 @@ namespace Infrastructure.Repo
             pageNumber,
             pageSize);
         }
+        public PagedList<Category> GetAllCategoriesWithAppliedDiscountList(int discountId, int pageSize, int pageNumber)
+        {
+            var categories = _dbcontext.Categories.Where(x => x.HasDiscountsApplied);
 
+            if (discountId >= 0)
+                categories = from category in categories
+                           join dpm in _dbcontext.discountCategories on category.Id equals dpm.CategoryId
+                           where dpm.DiscountsId == discountId
+                           select category;
+
+            categories = categories.OrderBy(Category => Category.Name).ThenBy(Category => Category.Id);
+
+            return PagedList<Category>.ToPagedList(categories,
+            pageNumber,
+            pageSize);
+        }
         public async Task<IEnumerable<Category>> GetAllCategoriesHome()
         {
             return await _dbcontext.Categories.Where(q=>q.ParentCategoryId==0).Include(x => x.categoryPictures).ThenInclude(e => e.picture).ToListAsync();

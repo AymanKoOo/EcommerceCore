@@ -130,7 +130,10 @@ namespace Web.Mapper
 
             CreateMap<CategoryVM, Category>();
             CreateMap<Category, CategoryVM>();
-            
+
+            CreateMap<DiscountCategoryModel, Category>();
+            CreateMap<Category, DiscountCategoryModel>();
+
         }
     }
 }

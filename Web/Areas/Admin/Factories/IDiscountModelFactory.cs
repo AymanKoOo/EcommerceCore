@@ -9,6 +9,7 @@ namespace Web.Areas.Admin.Factories
     public interface IDiscountModelFactory
     {
         Task<DiscountProductListModel> PrepareDiscountProductListModelAsync(int discountid, int pageSize, int pageNumber);
+        Task<DiscountCategoryListModel> PrepareDiscountCategoryListModelAsync(int discountid, int pageSize, int pageNumber);
 
     }
 }

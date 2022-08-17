@@ -26,5 +26,8 @@ namespace Core.Interfaces
         PagedList<Category> GetAllCategoriesWithoutDiscountList(int pageSize, int pageNumber);
         Task EditPicture(Category categoryModel, Picture picObj);
         Task AddCategoryTODiscount(Category category, int discountID);
+
+        PagedList<Category> GetAllCategoriesWithAppliedDiscountList(int discountId, int pageSize, int pageNumber);
+
     }
 }

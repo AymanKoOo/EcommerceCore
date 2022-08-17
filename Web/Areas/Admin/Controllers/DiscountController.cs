@@ -59,6 +59,14 @@ namespace Web.Areas.Admin.Controllers
         }
 
 
+        [HttpPost]
+        [Route("GetDiscountCategories")]
+        public async Task<IActionResult> GetDiscountCategories(int discountID, int pageSize, int pageNumber)
+        {
+            var categories = await DiscountModelFactory.PrepareDiscountCategoryListModelAsync(discountID, pageSize, pageNumber);
+            return Ok(categories);
+        }
+
         [HttpGet]
         [Route("Create")]
         public  async Task<IActionResult> Create()
@@ -91,6 +99,23 @@ namespace Web.Areas.Admin.Controllers
             return Redirect("/failed");
         }
 
+        
+        [HttpGet]
+        [Route("Delete")]
+        public async Task<IActionResult> Delete(int Id)
+        {
+            if (ModelState.IsValid)
+            {
+                //Insert Discount
+                // await .InsertDiscountAsync(discount);
+                var discount = _unitOfWork.discount.GetByID(Id);
+                _unitOfWork.discount.RemoveDiscountsFromCategoriesProducts(Id);
+                _unitOfWork.discount.Delete(discount);
+                _unitOfWork.Save();
+                return Redirect("/");
+            }
+            return Redirect("/failed");
+        }
         [HttpGet]
         [Route("Edit")]
         public async Task<IActionResult> Edit(int Id)
@@ -107,8 +132,14 @@ namespace Web.Areas.Admin.Controllers
             {
                 //Insert Discount
                 // await .InsertDiscountAsync(discount);
-               // var discount = _unitOfWork.discount.GetByID(model.Id);
-                _unitOfWork.discount.Update(model);
+                // var discount = _unitOfWork.discount.GetByID(model.Id);
+                var discountUpdated = _unitOfWork.discount.GetByID(model.Id);
+
+                discountUpdated.DiscountTypeId = model.DiscountTypeId;
+                discountUpdated.Name = model.Name;
+                discountUpdated.DiscountPercentage = model.DiscountPercentage;
+
+                _unitOfWork.discount.Update(discountUpdated);
                 _unitOfWork.Save();
                 return Redirect("/");
             }
@@ -127,6 +158,13 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost("AddProductsDiscount")]
         public IActionResult AddProductsDiscount(int[] products, int IDdiscount)
         {
+            var discount = _unitOfWork.discount.GetByID(IDdiscount);
+            var discountTypeID = discount.DiscountTypeId;
+
+            if (discountTypeID == 1)
+            {
+                _unitOfWork.discount.RemoveDiscountsFromCategoriesProducts(IDdiscount);
+            }
 
             for (int i = 0; i < products.Length; i++)
             {
@@ -169,6 +207,13 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost("AddCategoryDiscount")]
         public async Task<IActionResult> AddCategoriesDiscount(int[] categories, int IDdiscount)
         {
+            var discount = _unitOfWork.discount.GetByID(IDdiscount);
+            var discountTypeID = discount.DiscountTypeId;
+
+            if (discountTypeID == 2)
+            {
+                _unitOfWork.discount.RemoveDiscountsFromCategoriesProducts(IDdiscount);
+            }
             for (int i = 0; i < categories.Length; i++)
             {
                 var category = await _unitOfWork.Category.GetCategory(categories[i]);
@@ -180,7 +225,20 @@ namespace Web.Areas.Admin.Controllers
             return View("/");
         }
 
-
+        [HttpPost("RemoveCategoryDiscount")]
+        public async Task<IActionResult> RemoveCategoryDiscount(int[] categoryIds)
+        {
+            // var products = _unitOfWork.Product.GetAllProducts();
+            for (int i = 0; i < categoryIds.Length; i++)
+            {
+                var category = await _unitOfWork.Category.GetCategory(categoryIds[i]);
+                category.HasDiscountsApplied = false;
+                _unitOfWork.Category.Update(category);
+                _unitOfWork.discount.RemoveCategoryToDiscount(category);
+            }
+            _unitOfWork.Save();
+            return View();
+        }
 
         #region Create Discount Type
 
