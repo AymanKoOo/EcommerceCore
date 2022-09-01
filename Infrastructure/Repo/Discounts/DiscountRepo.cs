@@ -170,6 +170,10 @@ namespace Infrastructure.Repo.Discounts
             return result;
         }
 
+        public Discount GetDiscountBySlug(string slug)
+        {
+            return _dbcontext.discounts.Where(x => x.slug == slug).FirstOrDefault();
+        }
 
         //public Discount GetProductsByDiscount(int id)
         //{

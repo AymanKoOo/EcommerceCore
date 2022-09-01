@@ -156,11 +156,15 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost("ProductSpecAttributeAdd")]
-        public IActionResult ProductSpecAttributeAdd(AProductSpecificationOption model)
+        public async  Task<IActionResult> ProductSpecAttributeAdd(AProductSpecificationOption model)
         {
 
             var productSpec = _mapper.Map<ProductSpecificationAttribute>(model);
-            _unitOfWork.Product.AddProductSpecificationAttribute(productSpec);
+            var product = _unitOfWork.Product.GetProduct(model.ProductID);
+            var attrOption = await _unitOfWork.SpecificationAttributes.GetAttrOptionByID(model.SpecificationAttributeOptionId);
+            productSpec.specificationAttributeOption = attrOption;
+            productSpec.product = product;
+            await _unitOfWork.Product.AddProductSpecificationAttribute(productSpec);
             _unitOfWork.Save();
             return Redirect("/");
         }
@@ -225,6 +229,27 @@ namespace Web.Areas.Admin.Controllers
             _unitOfWork.Save();
 
             return View("/");
+        }
+
+
+
+
+        [HttpGet("FetchAttributeOptions")]
+        public async Task<IActionResult> FetchAttributeOptions(int attributeID)
+        {
+            var att = await _unitOfWork.SpecificationAttributes.GetSpecAttrByID(attributeID);
+            var options = att.specificationAttributeOptions;
+
+            List<OptionList> ol = new List<OptionList>();
+
+            foreach (var item in options)
+            {
+                OptionList o = new OptionList();
+                o.id = item.Id;
+                o.name = item.Name;
+                ol.Add(o);
+            }
+            return Ok(ol);
         }
     }
 }

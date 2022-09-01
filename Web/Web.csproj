@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Catalog\" />
+    <Folder Include="Views\Discount\" />
     <Folder Include="wwwroot\images\HomeBanners\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>

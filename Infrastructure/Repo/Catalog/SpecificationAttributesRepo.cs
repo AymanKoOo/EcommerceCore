@@ -29,7 +29,7 @@ namespace Infrastructure.Repo.Catalog
         }
         public async Task<IEnumerable<SpecificationAttributeOption>> GetAllSpecificationAttributeOption()
         {
-            return await _dbcontext.SpecificationAttributeOptions.ToListAsync();
+            return await _dbcontext.SpecificationAttributeOptions.Include(x=>x.ProductSpecificationAttributes).ToListAsync();
         }
         public async Task<IEnumerable<SpecificationAttribute>> GetAllSpecificationAttributes()
         {
@@ -57,7 +57,13 @@ namespace Infrastructure.Repo.Catalog
         public async Task<SpecificationAttribute> GetSpecAttrByID(int id)
         {
             if (id < 0) return null;
-            return await _dbcontext.specificationAttributes.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbcontext.specificationAttributes.Include(x=>x.specificationAttributeOptions).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<SpecificationAttributeGroup> GetSpecAttrGroupByID(int id)
+        {
+            if (id < 0) return null;
+            return await _dbcontext.specificationAttributeGroups.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

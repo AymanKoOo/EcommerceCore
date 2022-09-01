@@ -9,25 +9,30 @@
 
     <div class="row">
 
-        @*<select asp-for="SpecificationAttributeId">
+        <select id="attr" asp-for="SpecificationAttributeId">
 
             @foreach (var att in Model.specificationAttributes)
             {
                 <option value="@att.Id">@att.Name</option>
             }
 
-        </select>*@
+        </select>
 
-        <select asp-for="SpecificationAttributeOptionId">
+
+        <select id="options" asp-for="SpecificationAttributeOptionId">
+        </select>
+
+
+        @*<select asp-for="SpecificationAttributeOptionId">
 
             @foreach (var op in Model.specificationAttributeOptions)
             {
                 <option value="@op.Id">@op.Name</option>
             }
 
-        </select>
+        </select>*@
 
-        <input type="hidden" asp-for="ProductID"  value="@Model.ProductID"/>
+        <input type="hidden" asp-for="ProductID" value="@Model.ProductID" />
 
         <div class="col-md-12">
             <div class="form-group">
@@ -42,3 +47,38 @@
 
     </div>
 </form>
+
+<script src="~/jquery/jquery.js"></script>
+<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+<script>
+
+    console.log("asdasdasdasd");
+
+    $("#attr").on('change', function () {
+        fetchOptionAttributes(parseInt(this.value));
+    });
+
+
+    function fetchOptionAttributes(attributeID) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("FetchAttributeOptions")",
+            data: { 'attributeID': attributeID},
+
+            success: function (response) {
+                console.log(response);
+                addOptionSelect(response);
+            }
+        });
+    }
+
+    function addOptionSelect(options) {
+        $("#options").empty();
+        $.each(options, function (key, value) {
+          
+            $("#options").append($('<option>', { value: value['id'], text: value['name'] }));
+        });
+    }
+
+</script>

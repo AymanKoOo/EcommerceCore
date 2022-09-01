@@ -48,6 +48,8 @@ namespace Web.Areas.Admin.Controllers
             return View();
         }
 
+
+
         //    GROUP SpecificationAttribute   //
         [HttpGet("CreateSpecificationAttribute")]
         public async Task<IActionResult> CreateSpecificationAttribute()
@@ -57,13 +59,24 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost("CreateSpecificationAttribute")]
-        public IActionResult CreateSpecificationAttribute(SpecificationAttribute model)
+        public async Task<IActionResult> CreateSpecificationAttribute(SpecificationAttribute model)
         {
             var modelSp = _mapper.Map<SpecificationAttribute>(model);
-            _unitOfWork.SpecificationAttributes.CreateSpecificationAttribute(modelSp);
+
+            var CurrentspecGroup = await _unitOfWork.SpecificationAttributes.GetSpecAttrGroupByID(model.SpecificationAttributeGroupId);
+
+            modelSp.SpecificationAttributeGroup = CurrentspecGroup;
+            await _unitOfWork.SpecificationAttributes.CreateSpecificationAttribute(modelSp);
             _unitOfWork.Save();
             return View("/");
         }
+
+
+
+
+
+
+
 
 
         //  Option ATTRIBUTE   //
@@ -84,5 +97,8 @@ namespace Web.Areas.Admin.Controllers
             _unitOfWork.Save();
             return View("/");
         }
+
+
+
     }
 }

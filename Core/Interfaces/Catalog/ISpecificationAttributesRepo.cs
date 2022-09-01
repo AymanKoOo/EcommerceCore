@@ -18,6 +18,6 @@ namespace Core.Interfaces.Catalog
         Task<SpecificationAttributeOption> GetAttrOptionByName(string name);
         Task<SpecificationAttributeOption> GetAttrOptionByID(int id);
         Task<SpecificationAttribute> GetSpecAttrByID(int id);
-
+        Task<SpecificationAttributeGroup> GetSpecAttrGroupByID(int id);
     }
 }

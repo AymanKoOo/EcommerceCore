@@ -2,6 +2,7 @@
 using Core.Entites.Discounts;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Core.Entites
@@ -11,6 +12,8 @@ namespace Core.Entites
         //Set Name for discount
         public string Name { get; set; }
 
+        public string slug { get; set; }
+        
         //Admin Comment
         public string AdminComment { get; set; }
 
@@ -58,5 +61,46 @@ namespace Core.Entites
         public virtual ICollection<DiscountCategory> DiscountCategory { get; set; }
         public int pictureId { get; set; }
         public Picture picture { get; set; }
+
+
+
+        public static string CreateDiscountslug(string slug)
+        {
+
+            slug = slug?.ToLowerInvariant().Replace(
+                " ", "-", StringComparison.OrdinalIgnoreCase) ?? string.Empty;
+            slug = RemoveDiacritics(slug);
+            slug = RemoveReservedUrlCharacters(slug);
+
+            return slug.ToLowerInvariant();
+        }
+        private static string RemoveDiacritics(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        private static string RemoveReservedUrlCharacters(string text)
+        {
+            var reservedCharacters = new List<string> { "!", "#", "$", "&", "'", "(", ")", "*", ",", "/", ":", ";", "=", "?", "@", "[", "]", "\"", "%", ".", "<", ">", "\\", "^", "_", "'", "{", "}", "|", "~", "`", "+" };
+
+            foreach (var chr in reservedCharacters)
+            {
+                text = text.Replace(chr, string.Empty, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return text;
+        }
     }
 }

@@ -134,7 +134,9 @@ namespace Web.Areas.Admin.Factories
         {
             var model = new AProductSpecificationOption();
             var attrOptions = await unitOfWork.SpecificationAttributes.GetAllSpecificationAttributeOption();
+            var attr = await unitOfWork.SpecificationAttributes.GetAllSpecificationAttributes();
             model.specificationAttributeOptions = attrOptions;
+            model.specificationAttributes = attr;
             return model;
         }
        

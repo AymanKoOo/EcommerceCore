@@ -423,14 +423,14 @@
 
         $("#discountType").change(function () {
             var selected_option = $('#discountType option:selected').val();
-            if (selected_option == 1) {
+            if (selected_option == 2) {
                 $('#add-category-btn').remove();
                 $('#add-to-discount').html(`
                        <button id="add-product-btn">add Products</button>
                 `);
             }
 
-            if (selected_option == 2) {
+            if (selected_option == 1) {
                 $('#add-product-btn').remove();
                 $('#add-to-discount').html(`
                        <button id="add-category-btn">add Category</button>

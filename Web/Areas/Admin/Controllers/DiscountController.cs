@@ -92,6 +92,7 @@ namespace Web.Areas.Admin.Controllers
                 var discount = _mapper.Map<Discount>(model);
                 discount.picture = picObj;
                 model.UsePercentage = true;
+                discount.slug = Core.Entites.Discount.CreateDiscountslug(model.Name);
                 var response = _unitOfWork.discount.Add(discount);
                 _unitOfWork.Save();
                 return Redirect("/");
@@ -150,9 +151,18 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> AddProductsDiscount(int discountID, int pageSize=2 , int pageNumber=1 )
         {
             ViewBag.DiscountID = discountID;
-            // var products = _unitOfWork.Product.GetAllProducts();
-            var productsList = await productModelFactory.PrepareProductNODiscountListModelAsync(pageSize, pageNumber);
-            return View(productsList);
+            var discount = _unitOfWork.discount.GetByID(discountID);
+
+            if (discount.DiscountTypeId == (int) DiscountTyp.AssignedToProducts)
+            {
+                // var products = _unitOfWork.Product.GetAllProducts();
+                var productsList = await productModelFactory.PrepareProductNODiscountListModelAsync(pageSize, pageNumber);
+                return View(productsList);
+            }
+            else
+            {
+                return Redirect("/failed");
+            }
         }
 
         [HttpPost("AddProductsDiscount")]
@@ -199,9 +209,18 @@ namespace Web.Areas.Admin.Controllers
         public async Task<IActionResult> AddCategoryDiscount(int discountID, int pageSize = 2, int pageNumber = 1)
         {
             ViewBag.DiscountID = discountID;
-            // var products = _unitOfWork.Product.GetAllProducts();
-            var categories = await categoryModelFactory.PrepareCategoryNODiscountListModelAsync(pageSize, pageNumber);
-            return View(categories);
+            var discount = _unitOfWork.discount.GetByID(discountID);
+
+            if (discount.DiscountTypeId == (int)DiscountTyp.AssignedToCategories)
+            {
+                // var products = _unitOfWork.Product.GetAllProducts();
+                var categories = await categoryModelFactory.PrepareCategoryNODiscountListModelAsync(pageSize, pageNumber);
+                return View(categories);
+            }
+            else
+            {
+                return Redirect("/failed");
+            }
         }
 
         [HttpPost("AddCategoryDiscount")]

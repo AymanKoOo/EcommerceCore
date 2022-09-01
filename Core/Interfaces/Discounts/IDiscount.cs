@@ -21,5 +21,6 @@ namespace Core.Interfaces.Discounts
         public decimal GetDiscountAmount(Discount discount, decimal amount);
         public void RemoveCategoryToDiscount(Category category);
         public void RemoveDiscountsFromCategoriesProducts(int discountId);
+        public Discount GetDiscountBySlug(string slug);
     }
 }
