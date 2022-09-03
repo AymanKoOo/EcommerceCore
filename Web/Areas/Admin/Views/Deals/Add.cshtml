@@ -1,0 +1,57 @@
+﻿
+@model Web.Areas.Admin.ViewModels.Deals.DealVM
+
+<h1>Adding Deal</h1>
+
+<div class="contenti">
+    <div class="container">
+
+        <form asp-controller="Deals" asp-action="Add" method="post" enctype="multipart/form-data">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input asp-for="Name" type="text" class="form-control required" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Description:</label>
+
+                        <input asp-for="Description" type="text" class="form-control required" />
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>ImageFile:</label>
+                        <input asp-for="Picture" type="file" class="form-control required" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Home:</label>
+                        <input asp-for="ShowOnBigBanner" type="checkbox" class="form-control required" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Home:</label>
+                        <input asp-for="ShowOnSmallBanner" type="checkbox" class="form-control required" />
+                    </div>
+                </div>
+
+
+                <button class="btn btn-primary" type="submit">
+                    Add
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+

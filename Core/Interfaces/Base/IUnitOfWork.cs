@@ -23,6 +23,7 @@ namespace Core.Interfaces
         IShippingRepo shippingRepo { get; }
         IPaymentRepo paymentRepo { get; }
         IOrderRepo orderRepo { get; }
+        IDealRepo dealRepo { get; }
         void Save();
     }
 }

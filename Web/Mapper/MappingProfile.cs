@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Web.Areas.Admin.ViewModels;
 using Web.Areas.Admin.ViewModels.Catalog;
 using Web.Areas.Admin.ViewModels.Categories;
+using Web.Areas.Admin.ViewModels.Deals;
 using Web.Areas.Admin.ViewModels.Discounts;
 using Web.Areas.Admin.ViewModels.Products;
 using Web.DTOs;
@@ -134,6 +135,12 @@ namespace Web.Mapper
             CreateMap<DiscountCategoryModel, Category>();
             CreateMap<Category, DiscountCategoryModel>();
 
+
+            CreateMap<DealVM, Deal>();
+            CreateMap<Deal, DealVM>();
+
+            CreateMap<DealDiscount, DealDiscountVM>();
+            CreateMap<DealDiscountVM, DealDiscount>();
         }
     }
 }

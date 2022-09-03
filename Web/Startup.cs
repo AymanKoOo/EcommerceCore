@@ -74,6 +74,7 @@ namespace Web
             services.AddScoped(typeof(IProductRepo), typeof(ProductRepo));
             services.AddScoped(typeof(ICategoryRepo), typeof(CategoryRepo));
             services.AddScoped(typeof(ICustomerRepo), typeof(CustomerRepo));
+            services.AddScoped(typeof(IDealRepo), typeof(DealRepo));
             services.AddScoped(typeof(IRoleRepo), typeof(RoleRepo));
             services.AddScoped(typeof(IDiscount), typeof(DiscountRepo));
             services.AddScoped(typeof(IPictureRepo), typeof(PictureRepo));
@@ -85,6 +86,10 @@ namespace Web
 
             services.AddScoped(typeof(IOrderModelFactory), typeof(OrderModelFactory));
             services.AddScoped(typeof(IPictureService), typeof(PictureService));
+
+            services.AddScoped(typeof(ISlugService), typeof(SlugService));
+
+
             services.AddScoped(typeof(IPriceCalculationService), typeof(PriceCalculationService));
             services.AddScoped(typeof(IDiscountModelFactory), typeof(DiscountModelFactory));
             services.AddScoped(typeof(IProductModelFactory), typeof(ProductModelFactory));

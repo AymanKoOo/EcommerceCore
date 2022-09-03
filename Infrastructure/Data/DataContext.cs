@@ -28,7 +28,20 @@ namespace Infrastructure.Data
             new ProductTypeConfig().Configure(builder.Entity<Product>());
             base.OnModelCreating(builder);
 
-          
+
+            builder.Entity<DealDiscount>()
+                .HasKey(x => new { x.dealID, x.discountID });
+
+            builder.Entity<DealDiscount>()
+                .HasOne(x => x.deal)
+                .WithMany(c => c.DealDiscounts)
+                .HasForeignKey(x => x.dealID);
+
+            builder.Entity<DealDiscount>()
+                .HasOne(x => x.discount)
+                .WithMany(c => c.DealDiscounts)
+                .HasForeignKey(x => x.discountID);
+
 
             builder.Entity<DiscountProduct>().HasKey(sc => new { sc.ProductsId, sc.DiscountsId });
             builder.Entity<DiscountCategory>().HasKey(sc => new { sc.CategoryId, sc.DiscountsId });
@@ -44,6 +57,20 @@ namespace Infrastructure.Data
                 .HasOne(pt => pt.picture)
                 .WithMany(t => t.categoryPictures)
                 .HasForeignKey(pt => pt.PictureId);
+
+
+            builder.Entity<DealPictures>().HasKey(sc => new { sc.DealID, sc.PictureId });
+
+            builder.Entity<DealPictures>()
+              .HasOne(pt => pt.deal)
+              .WithMany(p => p.dealPictures)
+              .HasForeignKey(pt => pt.DealID);
+
+            builder.Entity<DealPictures>()
+                .HasOne(pt => pt.picture)
+                .WithMany(t => t.dealPictures)
+                .HasForeignKey(pt => pt.PictureId);
+
 
 
             builder.Entity<ProductPicture>().HasKey(sc => new { sc.ProductId, sc.PictureId });
@@ -129,8 +156,10 @@ namespace Infrastructure.Data
         public DbSet<ProductSpecificationAttribute> ProductSpecificationAttribute { get; set; }
         public DbSet<CategorySpecificationGroup> categorySpecificationGroups { get; set; }
 
-        
 
+        public DbSet<Deal> deals { get; set; }
+        public DbSet<DealDiscount> dealDiscounts { get; set; }
+        public DbSet<DealPictures> dealPictures { get; set; }
         public DbSet<ProductAttribute> productAttributes { get; set; }
         public DbSet<ProductAttributeOption> productAttributeOptions { get; set; }
         public DbSet<ProductAttributeMapping> productAttributeMappings { get; set; }

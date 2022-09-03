@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220903214040_deals-table")]
+    partial class dealstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,8 +216,8 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PictureId")
-                        .HasColumnType("int");
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ShowOnBigBanner")
                         .HasColumnType("bit");
@@ -228,7 +230,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("deals");
+                    b.ToTable("Deal");
                 });
 
             modelBuilder.Entity("Core.Entites.Catalog.DealDiscount", b =>
@@ -243,22 +245,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("discountID");
 
-                    b.ToTable("dealDiscounts");
-                });
-
-            modelBuilder.Entity("Core.Entites.Catalog.DealPictures", b =>
-                {
-                    b.Property<int>("DealID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PictureId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DealID", "PictureId");
-
-                    b.HasIndex("PictureId");
-
-                    b.ToTable("dealPictures");
+                    b.ToTable("DealDiscount");
                 });
 
             modelBuilder.Entity("Core.Entites.Catalog.ProductAttribute", b =>
@@ -1103,25 +1090,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("discount");
                 });
 
-            modelBuilder.Entity("Core.Entites.Catalog.DealPictures", b =>
-                {
-                    b.HasOne("Core.Entites.Catalog.Deal", "deal")
-                        .WithMany("dealPictures")
-                        .HasForeignKey("DealID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entites.Picture", "picture")
-                        .WithMany("dealPictures")
-                        .HasForeignKey("PictureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("deal");
-
-                    b.Navigation("picture");
-                });
-
             modelBuilder.Entity("Core.Entites.Catalog.ProductAttributeMapping", b =>
                 {
                     b.HasOne("Core.Entites.Catalog.ProductAttribute", "productAttribute")
@@ -1407,8 +1375,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entites.Catalog.Deal", b =>
                 {
                     b.Navigation("DealDiscounts");
-
-                    b.Navigation("dealPictures");
                 });
 
             modelBuilder.Entity("Core.Entites.Catalog.ProductAttribute", b =>
@@ -1469,8 +1435,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entites.Picture", b =>
                 {
                     b.Navigation("categoryPictures");
-
-                    b.Navigation("dealPictures");
 
                     b.Navigation("productPictures");
                 });

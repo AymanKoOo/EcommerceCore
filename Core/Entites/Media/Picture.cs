@@ -17,7 +17,8 @@ namespace Core.Entites
         public string TitleAttribute { get; set; }
 
         public bool IsNew { get; set; }
-       
+        public List<DealPictures> dealPictures { get; set; }
+
         public List<CategoryPicture> categoryPictures { get; set; }
         public List<ProductPicture> productPictures { get; set; }
     }

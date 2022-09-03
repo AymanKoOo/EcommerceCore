@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Web.Areas.Admin.ViewModels.Deals.DealDiscountVM;
+
+<form asp-controller="Deals" asp-action="AddDiscounts" method="post">
+
+    <div class="row">
+
+        <select asp-for="discounts">
+
+            @foreach (var d in Model.discounts)
+            {
+                <option value="@d.Id">@d.Name</option>
+            }
+
+        </select>
+
+        <input type="hidden" asp-for="DealID" value="@Model.DealID" />
+
+
+        <button class="btn btn-primary" type="submit">
+            Add
+        </button>
+
+    </div>
+</form>

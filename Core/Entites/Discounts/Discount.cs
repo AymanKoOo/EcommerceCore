@@ -1,4 +1,5 @@
 ﻿using Core.Entites.Base;
+using Core.Entites.Catalog;
 using Core.Entites.Discounts;
 using System;
 using System.Collections.Generic;
@@ -63,6 +64,7 @@ namespace Core.Entites
         public Picture picture { get; set; }
 
 
+        public virtual ICollection<DealDiscount> DealDiscounts { get; set; }
 
         public static string CreateDiscountslug(string slug)
         {

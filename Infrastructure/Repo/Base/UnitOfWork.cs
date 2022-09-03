@@ -38,6 +38,7 @@ namespace Infrastructure.Repo.Base
 
         public IPaymentRepo paymentRepo { get; }
         public IOrderRepo orderRepo { get; }
+        public IDealRepo dealRepo { get; }
 
         public UnitOfWork(DataContext context)
         {
@@ -54,6 +55,7 @@ namespace Infrastructure.Repo.Base
             this.shippingRepo = new ShippingRepo(_dbContext);
             this.paymentRepo = new PaymentRepo(_dbContext);
             this.orderRepo = new OrderRepo(_dbContext);
+            this.dealRepo = new DealRepo(_dbContext);
         }
 
         public void Save()
