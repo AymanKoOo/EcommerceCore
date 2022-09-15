@@ -10,6 +10,6 @@ namespace Web.Areas.Admin.Factories
     {
         Task<DiscountProductListModel> PrepareDiscountProductListModelAsync(int discountid, int pageSize, int pageNumber);
         Task<DiscountCategoryListModel> PrepareDiscountCategoryListModelAsync(int discountid, int pageSize, int pageNumber);
-
+        Task<DiscountProductListModel> PrepareDiscountSProductListModelAsync(List<int> discountid, int pageSize, int pageNumber);
     }
 }

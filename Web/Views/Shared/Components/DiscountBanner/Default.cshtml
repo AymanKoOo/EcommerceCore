@@ -9,19 +9,23 @@
 
                     if (discount.DiscountTypeId == 1)
                     {
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <a asp-controller="Discount" asp-route-discountSlug="@discount.slug" asp-action="Index">
 
-                        <div class="col-lg-3 col-md-6 col-12">
-
-                            <img class="img-fluid"
-                                 src="/uploads/@discount.picture.MimeType" />
-                        </div>
+                           <img class="img-fluid"
+                             src="/uploads/@discount.picture.MimeType" />
+                        </a>
+                    </div>
                     }
                     else
                     {
-                        <div class="col-lg-3 col-md-6 col-12">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <a asp-controller="Discount" asp-route-discountSlug="@discount.slug" asp-action="Index">
+
                             <img class="img-fluid"
                                  src="/uploads/@discount.picture.MimeType" />
-                        </div>
+                        </a>
+                    </div>
                     }
                 }
             </div>

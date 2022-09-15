@@ -9,11 +9,11 @@
 
     <div class="row">
 
-        <select asp-for="discounts">
+        <select asp-for="DiscountID">
 
             @foreach (var d in Model.discounts)
             {
-                <option value="@d.Id">@d.Name</option>
+                <option  value="@d.Id">@d.Name</option>
             }
 
         </select>

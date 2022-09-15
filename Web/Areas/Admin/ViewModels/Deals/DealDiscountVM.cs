@@ -9,6 +9,7 @@ namespace Web.Areas.Admin.ViewModels.Deals
     public class DealDiscountVM
     {
         public int DealID { get; set; }
+        public int DiscountID { get; set; }
         public IEnumerable<Discount> discounts { get; set; }
     }
 }

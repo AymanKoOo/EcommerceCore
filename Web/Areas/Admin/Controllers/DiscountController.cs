@@ -92,6 +92,7 @@ namespace Web.Areas.Admin.Controllers
                 var discount = _mapper.Map<Discount>(model);
                 discount.picture = picObj;
                 model.UsePercentage = true;
+                discount.UsePercentage = true;
                 discount.slug = Core.Entites.Discount.CreateDiscountslug(model.Name);
                 var response = _unitOfWork.discount.Add(discount);
                 _unitOfWork.Save();

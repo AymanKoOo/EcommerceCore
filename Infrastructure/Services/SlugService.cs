@@ -13,7 +13,7 @@ namespace Infrastructure.Services
             string slug = "";
             slug = text?.ToLowerInvariant().Replace(
                " ", "-", StringComparison.OrdinalIgnoreCase) ?? string.Empty;
-            slug =  RemoveDiacritics(text);
+            slug = RemoveDiacritics(slug);
             slug = RemoveReservedUrlCharacter(slug);
 
             return slug.ToLowerInvariant();

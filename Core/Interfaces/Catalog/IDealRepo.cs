@@ -11,6 +11,8 @@ namespace Core.Interfaces.Catalog
         Deal geBySlug(string slug);
         Task AddPicture(int dealID,int PicID);
         Deal geById(int id);
+        IEnumerable<Deal> getallDeals();
+        Task<List<Deal>> GetForbanner();
         Task AddDealDiscount(DealDiscount dealDiscount);
     }
 }

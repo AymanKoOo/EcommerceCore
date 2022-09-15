@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Core.Entites;
 
 namespace Infrastructure.Repo.Catalog
 {
@@ -65,5 +66,21 @@ namespace Infrastructure.Repo.Catalog
             if (id < 0) return null;
             return await _dbcontext.specificationAttributeGroups.FirstOrDefaultAsync(x => x.Id == id);
         }
+
+
+        public async Task<SpecificationAttributeGroup> GetCommonSpecAttrFromProducts(List<Product> products)
+        {
+
+            List<string> specificationAttributes = new List<string>();
+
+            foreach(var p in products)
+            {
+                //p.ProductSpecificationAttributes
+            }
+
+            //return await _dbcontext.specificationAttributeGroups.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+
     }
 }

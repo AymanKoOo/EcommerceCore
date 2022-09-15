@@ -1,0 +1,266 @@
+﻿@model Web.Areas.Admin.ViewModels.Catalog.ACategoryModel
+
+@using Core.Entites.Catalog
+@{
+    int nextPage = @Model.ProductsList.CurrentPage + 1;
+    int prevPage = @Model.ProductsList.CurrentPage - 1;
+
+    if (nextPage > Model.ProductsList.TotalPages)
+    {
+        nextPage = Model.ProductsList.TotalPages;
+    }
+
+}
+
+
+<div class="nav-progressive-content">
+
+    <div class="trending">
+        <i class="fas fa-angle-double-right"></i>
+    </div>
+
+    @foreach (var catt in Model.AvailableCategories)
+    {
+    <div class="navTrend-item">
+        <a asp-controller="Category" asp-action="Index" asp-route-cat="@catt.Name">
+            @catt.Name
+        </a>
+    </div>
+    }
+
+    <div class="sale-pic">
+        <img src="">
+    </div>
+
+</div>
+
+<!---jUMPTron-->
+@*@foreach (var item in Model.AvailableCategories)
+    {
+<li class="list-group-item">
+    <a href="#">@item.Name</a>
+</li>
+    }*@
+@await Component.InvokeAsync("HomeCategories")
+
+<div class="sort-btn">
+
+    <div class="count-results">
+        <span class="count">
+            @Model.ProductsList.Data.Count()  results
+        </span>
+    </div>
+
+
+
+
+</div>
+
+<div class="main-container grid-products mt-5 product-detail">
+    <div class="row ">
+        @if (Model.SubCategories.Count == 0)
+        {
+        <div class="col-lg-2 col-md-4 col-sm-4 col-12">
+
+            <div class="right">
+
+                <div class="filter-section">
+
+                    <div class="filter-category">
+
+                        @await Html.PartialAsync("_CatalogFilters", Model)
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        }
+        <div class="col-lg-10 col-md-7 col-sm-7 col-12">
+
+            <div class="left">
+
+                <div class="products Container">
+
+                    <div id="posts" class="row">
+
+
+                        @if (Model.SubCategories.Count > 0)
+                        {
+                        @foreach (var item in Model.SubCategories)
+                        {
+                        <div class="product-item col-lg-3">
+
+                            <a asp-controller="Category" asp-action="Index" asp-route-cat="@item.Name">
+
+                                <img class="img-thumbnail"
+                                     src="/uploads/@item.categoryPictures[0].picture.MimeType" />
+                            </a>
+
+
+                            <div class="category-name">
+                                <h3 class="cat-block-title">@item.Name</h3>
+                            </div>
+                        </div>
+                        }
+                        }
+
+                        else
+                        {
+                        @foreach (var product in Model.ProductsList.Data)
+                        {
+                        <div class="product-item col-lg-4 col-md-6 col-sm-12">
+
+                            <div class="Product-Img">
+                                <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.Id">
+                                    <img class="img-fluid" src="/uploads/@product.productPictures[0].picture.MimeType">
+                                </a>
+                            </div>
+
+                            <div class="product-name">
+                                @product.Name
+                            </div>
+
+                            <div class="rating">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                            <div class="product-price">
+
+                                <span class="a-price-symbol">EGP</span>
+                                <span class="a-price-whole">@product.Price</span>
+                                @if (product.HasDiscountsApplied == true)
+                                {
+                                <span class="a-price-discount">@product.OldPrice</span>
+                                }
+                            </div>
+
+                        </div>
+                        }
+                        }
+
+                    </div>
+                </div>
+                @if (Model.SubCategories.Count == 0)
+                {
+
+                <div id="pag" class="pagination">
+                    <ul>
+
+                        @if (Model.ProductsList.HasPrevious == true)
+                        {
+                        <li> <a class="page-link prev" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@prevPage">Prev</a></li>
+
+                        }
+                        else
+                        {
+                        <li class="disabled prev"> <a class="page-link" asp-controller="Category" asp-route-cat="@Model.Name" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
+                        }
+
+                        @for (int i = 1; i <= Model.ProductsList.TotalPages; i++)
+                        {
+                        if (i == Model.ProductsList.CurrentPage)
+                        {
+                        <li class="disabled"> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@i">@i</a></li>
+                        }
+                        else
+                        {
+                        <li> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@i">@i</a></li>
+                        }
+                        }
+
+
+                        @if (Model.ProductsList.HasNext == true)
+                        {
+                        <li>
+                            <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@nextPage">Next</a>
+                        </li>
+                        }
+                        else
+                        {
+                        <li class="disabled">
+                            <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@nextPage">Next</a>
+                        </li>
+                        }
+                    </ul>
+
+                </div>
+                }
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <script src="~/jquery/jquery.js"></script>
+    <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+    <script>
+
+    $("input:checkbox").on('click', function() {
+  // in the handler, 'this' refers to the box clicked on
+  var $box = $(this);
+  if ($box.is(":checked")) {
+    // the name of the box is retrieved using the .attr() method
+    // as it is assumed and expected to be immutable
+    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+    // the checked state of the group/box on the other hand will change
+    // and the current value is retrieved using .prop() method
+    $(group).prop("checked", false);
+      $box.prop("checked", true);
+         $.ajax({
+                    type: "POST",
+                    url: "https://localhost:44333/Category/index",
+                    data: { "categoryID": $box.attr("value") },
+                    success: function (response) {
+                          $(".filterd-products").empty();
+
+                         for (var i = 0; i < response.productDTOs.length; i++ ) {
+                             console.log(response.productDTOs[i].name);
+                             $(".filterd-products").append(`
+
+                                 <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                <div id="productsClick">
+                                <div class="pic">
+                                    <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
+
+                                    <div class="product-content">
+                                        <h3>`+response.productDTOs[i].name+`</h3>
+                                        <a href="">`+response.productDTOs[i].unitPrice+`</a>
+                                    </div>
+
+                                    <button onclick="myFunction(`+response.productDTOs[i].id+`)">Details</button>
+
+                                </div>
+                            </div>
+                            </div>
+                                 `);
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                   }
+                });
+   }
+
+    else {
+    $box.prop("checked", false);
+        }
+    });
+
+
+    function myFunction(id) {
+
+        window.location.href = '@Url.Action("ProductDetail", "Products")/' + id;
+
+    }
+
+
+
+    </script>

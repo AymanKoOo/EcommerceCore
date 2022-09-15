@@ -195,18 +195,39 @@ namespace Infrastructure.Repo
             pageNumber,
             pageSize);
         }
+        
+
+        public PagedList<Product> GetProductsWithAppliedDiscountSAsync(List<int> discountId, int pageSize, int pageNumber)
+        {
+           
+            var products = _dbcontext.products.Where(x => x.HasDiscountsApplied);
+
+            if (discountId != null)
+                    products = (from product in products
+                               join dpm in _dbcontext.discountProducts on product.Id equals dpm.ProductsId
+                               where discountId.Contains(dpm.DiscountsId)
+                               select product).Include(x => x.productPictures).ThenInclude(x => x.picture);
+
+            products = products.OrderBy(product => product.Name).ThenBy(product => product.Id);
+
+            return PagedList<Product>.ToPagedList(products,
+            pageNumber,
+            pageSize);
+        }
 
         public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, int pageSize, int pageNumber)
         {
             var products = _dbcontext.products.Where(x => x.HasDiscountsApplied);
 
             if (discountId >= 0)
-                products = from product in products
+                products = (from product in products
                            join dpm in _dbcontext.discountProducts on product.Id equals dpm.ProductsId
                            where dpm.DiscountsId == discountId
-                           select product;
+                           select product).Include(x => x.productPictures).ThenInclude(x => x.picture);
 
             products = products.OrderBy(product => product.Name).ThenBy(product => product.Id);
+
+
 
             return PagedList<Product>.ToPagedList(products,
             pageNumber,

@@ -1,0 +1,191 @@
+﻿@model Web.ViewModels.Deals.DealsVM
+
+@{
+    int nextPage = @Model.discountProductListModel.CurrentPage + 1;
+    int prevPage = @Model.discountProductListModel.CurrentPage - 1;
+
+    if (nextPage > Model.discountProductListModel.TotalPages)
+    {
+        nextPage = Model.discountProductListModel.TotalPages;
+    }
+}
+
+
+<div class="nav-progressive-content">
+
+    <div class="trending">
+        <i class="fas fa-angle-double-right"></i>
+    </div>
+
+
+    <div class="navTrend-item">
+
+    </div>
+
+
+</div>
+
+
+@foreach (var d in Model.deal.DealDiscounts)
+{
+    <div class="Product-Img">
+
+        <a asp-controller="Discount" asp-action="Index" asp-route-discountSlug="@d.discount.slug">
+            <img class="img-fluid" src="/uploads/@d.discount.picture.MimeType">
+        </a>
+    </div>
+}
+
+<div class="sort-btn">
+
+    <div class="count-results">
+        <span class="count">
+            @Model.discountProductListModel.Data.Count()  results
+        </span>
+    </div>
+
+</div>
+
+<div class="main-container grid-products mt-5 product-detail">
+    <div class="row ">
+        
+        @if (Model.discountProductListModel.TotalCount > 0)
+        {
+            <div class="col-lg-2 col-md-4 col-sm-4 col-12">
+
+                <div class="right">
+
+                    <div class="filter-section">
+
+                        <div class="filter-category">
+
+                            @await Html.PartialAsync("_CatalogFilters", Model)
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        <div class="col-lg-10 col-md-7 col-sm-7 col-12">
+
+            <div class="left">
+
+                <div class="products Container">
+
+                    <div id="posts" class="row">
+                        {
+
+                        @foreach (var product in Model.discountProductListModel.Data)
+                        {
+                            <div class="product-item col-lg-4 col-md-6 col-sm-12">
+
+                                <div class="Product-Img">
+                                    <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.ProductId">
+                                        <img class="img-fluid" src="/uploads/@product.picture">
+                                    </a>
+                                </div>
+
+                                <div class="product-name">
+                                    @product.ProductName
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="product-price">
+
+                                    <span class="a-price-symbol">EGP</span>
+                                    <span class="a-price-whole">@product.Price</span>
+                                    @if (product.HasDiscountsApplied == true)
+                                    {
+                                        <span class="a-price-discount">@product.OldPrice</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <script src="~/jquery/jquery.js"></script>
+    <script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+    <script>
+
+    $("input:checkbox").on('click', function() {
+  // in the handler, 'this' refers to the box clicked on
+  var $box = $(this);
+  if ($box.is(":checked")) {
+    // the name of the box is retrieved using the .attr() method
+    // as it is assumed and expected to be immutable
+    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+    // the checked state of the group/box on the other hand will change
+    // and the current value is retrieved using .prop() method
+    $(group).prop("checked", false);
+      $box.prop("checked", true);
+         $.ajax({
+                    type: "POST",
+                    url: "https://localhost:44333/Category/index",
+                    data: { "categoryID": $box.attr("value") },
+                    success: function (response) {
+                          $(".filterd-products").empty();
+
+                         for (var i = 0; i < response.productDTOs.length; i++ ) {
+                             console.log(response.productDTOs[i].name);
+                             $(".filterd-products").append(`
+
+                                 <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                                <div id="productsClick">
+                                <div class="pic">
+                                    <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
+
+                                    <div class="product-content">
+                                        <h3>`+response.productDTOs[i].name+`</h3>
+                                        <a href="">`+response.productDTOs[i].unitPrice+`</a>
+                                    </div>
+
+                                    <button onclick="myFunction(`+response.productDTOs[i].id+`)">Details</button>
+
+                                </div>
+                            </div>
+                            </div>
+                                 `);
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                   }
+                });
+   }
+
+    else {
+    $box.prop("checked", false);
+        }
+    });
+
+
+    function myFunction(id) {
+
+        window.location.href = '@Url.Action("ProductDetail", "Products")/' + id;
+
+    }
+
+
+
+    </script>

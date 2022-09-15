@@ -29,7 +29,6 @@ namespace Web.Controllers
             this.categoryModelFactory = categoryModelFactory;
         }
 
-
         [Route("AddCategory")]
         [HttpGet]
         public IActionResult AddCategory()
@@ -80,9 +79,7 @@ namespace Web.Controllers
             //prepare model
             var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(), category, attrOption, orderBy, pageSize, pageNumber);
 
-         
             return View(categoryModel);
-          
         }
 
 

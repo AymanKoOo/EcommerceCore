@@ -35,7 +35,8 @@ namespace Web.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var deals = _unitOfWork.dealRepo.getallDeals();
+            return View(deals);
         }
 
 
@@ -135,6 +136,16 @@ namespace Web.Areas.Admin.Controllers
         {
             var dealDiscount = _mapper.Map<DealDiscount>(model);
             await _unitOfWork.dealRepo.AddDealDiscount(dealDiscount);
+            _unitOfWork.Save();
+            return Redirect("/");
+        }
+
+
+        [HttpGet("Delete")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deal = _unitOfWork.dealRepo.geById(id);
+            _unitOfWork.dealRepo.Delete(deal);
             _unitOfWork.Save();
             return Redirect("/");
         }
