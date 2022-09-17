@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Core.Entites;
+using AyyBlog.ViewModel;
 
 namespace Infrastructure.Repo.Catalog
 {
@@ -68,19 +69,26 @@ namespace Infrastructure.Repo.Catalog
         }
 
 
-        public async Task<SpecificationAttributeGroup> GetCommonSpecAttrFromProducts(List<Product> products)
+        public List<SpecificationAttribute> GetCommonSpecAttrFromProducts(PagedList<Product> products)
         {
 
-            List<string> specificationAttributes = new List<string>();
+            HashSet<int> TspecificationAttributes = new HashSet<int>();
 
-            foreach(var p in products)
+            foreach (var p in products)
             {
-                //p.ProductSpecificationAttributes
+                if (p.ProductSpecificationAttributes != null)
+                {
+                    foreach (var s in p.ProductSpecificationAttributes)
+                    {
+                        TspecificationAttributes.Add(s.specificationAttributeOption.specificationAttribute.Id);
+                    }
+                }
             }
-
+            var SpecifcationAtrribute = _dbcontext.specificationAttributes.Where(x=>TspecificationAttributes.Contains(x.Id)).Include(x=>x.specificationAttributeOptions).ToList();
+            
+            return SpecifcationAtrribute;
             //return await _dbcontext.specificationAttributeGroups.FirstOrDefaultAsync(x => x.Id == id);
         }
-
 
     }
 }

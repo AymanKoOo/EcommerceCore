@@ -5,7 +5,7 @@
 }
 @using Core.Entites.Catalog
 
-@model Web.Areas.Admin.ViewModels.Catalog.ACategoryModel
+@model Web.Areas.Admin.ViewModels.Products.ProductListModel
 
 @{
     var order = Html.GetEnumSelectList<OrderByFilterOptions>();
@@ -14,13 +14,13 @@
 <a class="filter-header">
     Order Filtering
 </a>
-<input type="hidden" id="category-name" value="@Model.Name" />
+@*<input type="hidden" id="category-name" value="@Model.Name" />*@
 @foreach (var o in order)
 {
 
     <div class="filter-options">
 
-        <a  id="@o.Value" class="option order-option">
+        <a id="@o.Value" class="option order-option">
             <div class="a-section">
 
                 <span class="a-size-base a-color-base" dir="auto">@o.Text</span>
@@ -28,263 +28,29 @@
         </a>
     </div>
 
-    }
+}
 
-
-@foreach (var c in Model.CategoryAttributes)
+@if (Model.SpecificationAttributes != null)
 {
-    @foreach (var s in @c.specificationAttributeGroup.SpecificationAttribute)
+
+    @foreach (var c in Model.SpecificationAttributes)
     {
         <a class="filter-header">
-            @s.Name
+            @c.Name
         </a>
-        @foreach (var e in s.specificationAttributeOptions)
+        @foreach (var e in c.specificationAttributeOptions)
         {
-                <div class="filter-options">
+            <div class="filter-options">
 
-                    <a  id="@e.Id" class="option spec-option">
-                        <div class="a-section">
+                <a id="@e.Id" class="option spec-option">
+                    <div class="a-section">
 
-                            <span class="a-size-base a-color-base" dir="auto">@e.Name</span>
-                        </div>
-                    </a>
+                        <span class="a-size-base a-color-base" dir="auto">@e.Name</span>
+                    </div>
+                </a>
             </div>
         }
     }
 }
+}
 
-
-<script>
-
-    $(function () {
-
-        var spec = [];
-        var option;
-        var currentCat;
-        var CurrentPage,
-            HasNext,
-            HasPrev,
-            TotalPages = 0,
-            pageSize = 4,
-            pageNumber = 1;
-
-        currentCat = $('#category-name').val();
-
-        console.log($('#next-btn'));
-        $('.spec-option').click(function () {
-            $($(this)
-            ).toggleClass("selected");
-            var specID = $(this).attr('id');
-        
-
-            if (spec.includes(specID)) {
-
-                const index = spec.indexOf(specID);
-                if (index > -1) {
-                    spec.splice(index);
-                }
-            }
-            else {
-                spec.push(specID);
-            }
-
-            filter(currentCat, spec, option, 1);
-        });
-
-        $('.order-option').click(function () {
-            $($(this)
-                ).toggleClass("selected");
-             option = $(this).attr('id');
-            filter(currentCat, spec, option, 1);
-        });
-    
-        $('#pag').on("click", '.page-number', function () {
-            var number = $(this).attr('id');
-            filter(currentCat, spec, option, number);
-        });
-
-        $('#pag').on("click", '.prev', function () {
-            console.log(pageNumber)
-            if (pageNumber <= 0) {
-                pageNumber = 1;
-            }
-            else {
-                pageNumber = pageNumber - 1;
-            }
-            filter(currentCat, spec, option, pageNumber);
-        });
-
-        $('#pag').on("click", '.next', function () {
-            console.log(pageNumber)
-            if (pageNumber > TotalPages) {
-                pageNumber = TotalPages;
-            }
-            else {
-                pageNumber = pageNumber + 1;
-            }
-            filter(currentCat, spec, option, pageNumber);
-        });
-
-
-    function filter(cat, spec, option, pageNumber) {
-        console.log(pageNumber);
-        if (pageNumber > TotalPages) {
-            pageNumber = TotalPages;
-        }
-        if (pageNumber == 0) {
-            pageNumber = 1;
-        }
-        $.ajax({
-            type: "GET",
-            url: "@Url.Action("cat")",
-            data: { 'cat': cat, 'specs': spec, 'orderBy': option, 'pageNumber': pageNumber },
-            datatype: "json",
-            traditional: true,
-            success: function (response) {
-                //Assign vars
-                CurrentPage = parseInt(response.currentPage);
-                HasNext = response.hasNext;
-                HasPrev = response.hasPrevious;
-                TotalPages = parseInt(response.totalPages);
-
-                html = ``;
-                pig = ``;
-                $("#posts").empty();
-                $("#pag").empty();
-
-                console.log(response);
-
-
-                for (var i = 0; i < response.products.length; i++) {
-                    html += `
-                            <div class="product-item col-lg-4 col-md-6 col-sm-12">
-
-                                        <div class="Product-Img">
-                                            <a href="#">
-                                                <img class="img-fluid" src="/uploads/`+ response.products[i].picture + `">
-                                            </a>
-                                        </div>
-
-                                        <div class="product-name">
-                                            `+ response.products[i].name + `
-                                        </div>
-
-                                        <div class="rating">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="product-price">
-
-                                            <span class="a-price-symbol">EGP</span>
-                                            <span class="a-price-whole">
-                                            `+ response.products[i].price + `
-                                            </span>
-                                            `;
-                    if (response.products[i].hasDiscountsApplied == true) {
-                        html += `<span class="a-price-discount">` + response.products[i].oldPrice + `</span>`;
-                    }
-
-                    html += `
-
-                                        </div>
-                             </div>
-                    `
-                    console.log(html);
-
-                }
-
-
-                $("#posts").html(html);
-
-
-                //Add Pag
-                pag = `
-                    <ul>
-                `
-                if (HasPrev == true) {
-                    pag += `
-                   <li>
-
-                         <a id="prev-btn" class="page-link prev">prev</a>
-
-                   </li>
-                `
-                }
-                else {
-                    pag += `
-                        <li class="disabled prev">
-                         <a id="prev-btn" class="page-link prev">prev</a>
-                        </li>
-                `
-                }
-                for (var i = 1; i <= response.totalPages; i++) {
-                    if (i == CurrentPage) {
-                        pag += `
-                                   <li class="disabled ">
-                                        
-                                         <a id=`+ i + ` class="page-link page-number">` + i + `</a>
-
-                                   </li>
-                                `
-                    }
-                    else {
-                        pag += `
-                                    <li>
-
-                                         <a id=`+ i + ` class="page-link page-number">` + i + `</a>
-
-                                   </li>
-                                `
-                    }
-                }
-                if (HasNext == true) {
-                    pag += `
-                   <li>
-                        <a id="next-btn" class="page-link next">Next</a>
-                   </li>
-                `
-                }
-                else {
-                    pag += `
-                   <li class="disabled ">
-                        <a  id="next-btn" class="page-link next">Next</a>
-                   </li>
-                `
-                }
-
-                pag += `
-                    </ul>
-                `
-                $("#pag").html(pag);
-
-                const url = new URL(window.location);
-                if (spec.length > 0) {
-                    url.searchParams.set('spec', spec);
-                }
-                else {
-                    url.searchParams.delete('spec');
-
-                }
-                if (option > 0) {
-                    url.searchParams.set('orderBy', option);
-                }
-                else {
-                    url.searchParams.delete('orderBy');
-                }
-                window.history.pushState({}, '', url);
-            },
-            failure: function (response) {
-                alert(response.responseText);
-            },
-            error: function (response) {
-                alert(response.responseText);
-            }
-        });
-
-    }
-
-    })
-
-</script>

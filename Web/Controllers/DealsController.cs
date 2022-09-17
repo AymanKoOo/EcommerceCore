@@ -44,7 +44,17 @@ namespace Web.Controllers
             {
                 discountIds.Add(id.discountID);
             }
-            var disc = await _discountModelFactory.PrepareDiscountSProductListModelAsync(discountIds, pageSize, pageNumber);
+            var attrOption = new List<SpecificationAttributeOption>();
+
+            foreach (var i in specs)
+            {
+                var option = await _unitOfWork.SpecificationAttributes.GetAttrOptionByID(i);
+                if (option != null)
+                {
+                    attrOption.Add(option);
+                }
+            }
+            var disc = await _discountModelFactory.PrepareDiscountSProductListModelAsync(discountIds, pageSize, pageNumber, orderBy, attrOption);
 
             var dealVm = new DealsVM
             {
@@ -55,7 +65,7 @@ namespace Web.Controllers
             return View(dealVm);
         }
 
-        [HttpGet("/d/{dealSlug}")]
+        [HttpGet("promotions")]
         public async Task<IActionResult> deals(string dealSlug, int pageSize = 2, int pageNumber = 1, int orderBy = 0, int[] specs = null)
         {
 
@@ -82,11 +92,14 @@ namespace Web.Controllers
             {
                 discountIds.Add(id.discountID);
             }
-            var disc = await _discountModelFactory.PrepareDiscountSProductListModelAsync(discountIds, pageSize, pageNumber);
+            var disc = await _discountModelFactory.PrepareDiscountSProductListModelAsync(discountIds, pageSize, pageNumber, orderBy, attrOption);
+           // var categoryModel = await categoryModelFactory.PrepareCategoryModelAsync(new ACategoryModel(), category, attrOption, orderBy, pageSize, pageNumber);
+
+            var products = _mapper.Map<List<ProductsVM>>(disc.Data);
+
             var metadata = new
             {
-                deal,
-                disc,
+                products,
                 orderBy,
                 specs,
                 disc.TotalCount,

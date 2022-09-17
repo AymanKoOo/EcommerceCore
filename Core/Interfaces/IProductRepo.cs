@@ -18,7 +18,7 @@ namespace Core.Interfaces
         Task<IEnumerable<Product>> GetAllProducts();
 
         PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber,List<SpecificationAttributeOption> filterSpec,int orderFilter);
-        public PagedList<Product> GetProductsWithAppliedDiscountSAsync(List<int> discountId, int pageSize, int pageNumber);
+        public PagedList<Product> GetProductsWithAppliedDiscountSAsync(List<int> discountId, List<SpecificationAttributeOption> filterSpec, int pageSize, int pageNumber, int OrderFilter);
 
         public PagedList<Product> GetAllProductsList(int pageSize, int pageNumber);
         public PagedList<Product> GetAllProductsWithoutDiscountList(int pageSize, int pageNumber);
@@ -37,7 +37,7 @@ namespace Core.Interfaces
         //void AddPriceToProduct(Price price);
         public IQueryable<Product> FindAll();
         public PagedList<Product> GetProducts(int pageSize, int pageNumber);
-        public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, int pageSize, int pageNumber);
+        public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, List<SpecificationAttributeOption> filterSpec, int pageSize, int pageNumber, int OrderFilter);
         public Task AddProductTODiscount(Product product,int discountID);
 
 

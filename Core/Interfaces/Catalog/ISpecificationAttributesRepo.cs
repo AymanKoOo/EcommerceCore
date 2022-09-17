@@ -1,4 +1,6 @@
-﻿using Core.Entites.Catalog;
+﻿using AyyBlog.ViewModel;
+using Core.Entites;
+using Core.Entites.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,5 +21,6 @@ namespace Core.Interfaces.Catalog
         Task<SpecificationAttributeOption> GetAttrOptionByID(int id);
         Task<SpecificationAttribute> GetSpecAttrByID(int id);
         Task<SpecificationAttributeGroup> GetSpecAttrGroupByID(int id);
+        List<SpecificationAttribute> GetCommonSpecAttrFromProducts(PagedList<Product> products);
     }
 }

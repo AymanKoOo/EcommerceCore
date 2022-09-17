@@ -52,29 +52,57 @@ namespace Web.Areas.Admin.Factories
         public virtual async Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID,int pageSize, int pageNumber,List<SpecificationAttributeOption> filterSpec,int OrderFilter)
         {
             var products = unitOfWork.Product.GetProductsByCatgoryList(categoryID,pageSize, pageNumber, filterSpec, OrderFilter);
-            
-            foreach (var product in products)
-            {
-                var pricingObj = await priceCalculation.GetFinalPriceAsync(product);
-                string picture=null;
-                foreach (var k in product.productPictures)
-                {
-                    picture = k.picture.MimeType;
-                }
 
-                product.Picture = picture;
-                product.OldPrice = pricingObj.priceWithoutDiscounts;
-                product.Price = pricingObj.finalPrice;
-            }
-            var model = new ProductListModel().PrepareToGrid(products, () =>
+            //foreach (var product in products)
+            //{
+            //    var pricingObj = await priceCalculation.GetFinalPriceAsync(product);
+            //    string picture=null;
+            //    foreach (var k in product.productPictures)
+            //    {
+            //        picture = k.picture.MimeType;
+            //    }
+
+            //    product.Picture = picture;
+            //    product.OldPrice = pricingObj.priceWithoutDiscounts;
+            //    product.Price = pricingObj.finalPrice;
+            //}
+            var model = new ProductListModel();
+
+            if (products.Count>0)
             {
-                //fill in model values from the entity
-                return products.Data.Select(product =>
+                var pricingObj = await priceCalculation.GetFinalPriceAsync(products.Data[0]);
+                 model = new ProductListModel().PrepareToGrid(products, () =>
                 {
-                    var discountProductModel = mapper.Map<ProductModel>(product);
-                    return discountProductModel;
+                    //fill in model values from the entity
+                    return products.Data.Select(product =>
+                    {
+                        var discountProductModel = mapper.Map<ProductModel>(product);
+
+                        discountProductModel.Id = product.Id;
+                        discountProductModel.Name = product.Name;
+                        discountProductModel.Picture = product.productPictures[0].picture.MimeType;
+                        discountProductModel.OldPrice = pricingObj.priceWithoutDiscounts;
+                        discountProductModel.Price = pricingObj.finalPrice;
+                        discountProductModel.HasDiscountsApplied = product.HasDiscountsApplied;
+                        return discountProductModel;
+                    });
                 });
-            });
+            }
+
+            else
+            {
+                 model = new ProductListModel().PrepareToGrid(products, () =>
+                {
+                    //fill in model values from the entity
+                    return products.Data.Select(product =>
+                    {
+                        var discountProductModel = mapper.Map<ProductModel>(product);
+                        return discountProductModel;
+                    });
+                });
+            }
+
+          
             //jquery create table gets products view it 
             //button add to dicount new form all check boxes will be added 
             //000000000000000000000000000000000000000000000000000

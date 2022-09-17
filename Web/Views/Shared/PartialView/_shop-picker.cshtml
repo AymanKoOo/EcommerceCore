@@ -1,81 +1,28 @@
-﻿@model Web.Areas.Admin.ViewModels.Catalog.ACategoryModel
+﻿@model Web.Areas.Admin.ViewModels.Products.ProductListModel
 
-@using Core.Entites.Catalog
-@{
-    int nextPage = @Model.ProductsList.CurrentPage + 1;
-    int prevPage = @Model.ProductsList.CurrentPage - 1;
-
-    if (nextPage > Model.ProductsList.TotalPages)
-    {
-        nextPage = Model.ProductsList.TotalPages;
-    }
-
-}
-
-
-<div class="nav-progressive-content">
-
-    <div class="trending">
-        <i class="fas fa-angle-double-right"></i>
-    </div>
-
-    @foreach (var catt in Model.AvailableCategories)
-    {
-    <div class="navTrend-item">
-        <a asp-controller="Category" asp-action="Index" asp-route-cat="@catt.Name">
-            @catt.Name
-        </a>
-    </div>
-    }
-
-    <div class="sale-pic">
-        <img src="">
-    </div>
-
-</div>
-
-<!---jUMPTron-->
-@*@foreach (var item in Model.AvailableCategories)
-    {
-<li class="list-group-item">
-    <a href="#">@item.Name</a>
-</li>
-    }*@
-@await Component.InvokeAsync("HomeCategories")
-
-<div class="sort-btn">
-
-    <div class="count-results">
-        <span class="count">
-            @Model.ProductsList.Data.Count()  results
-        </span>
-    </div>
-
-
-
-
-</div>
 
 <div class="main-container grid-products mt-5 product-detail">
     <div class="row ">
-        @if (Model.SubCategories.Count == 0)
+
+        @if (Model.PageSize > 0)
         {
-        <div class="col-lg-2 col-md-4 col-sm-4 col-12">
+            <div class="col-lg-2 col-md-4 col-sm-4 col-12">
 
-            <div class="right">
+                <div class="right">
 
-                <div class="filter-section">
+                    <div class="filter-section">
 
-                    <div class="filter-category">
+                        <div class="filter-category">
 
-                        @await Html.PartialAsync("_CatalogFilters", Model)
+                            @await Html.PartialAsync("../Shared/PartialView/_Groupfilter", Model)
 
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
         }
+
         <div class="col-lg-10 col-md-7 col-sm-7 col-12">
 
             <div class="left">
@@ -83,110 +30,43 @@
                 <div class="products Container">
 
                     <div id="posts" class="row">
-
-
-                        @if (Model.SubCategories.Count > 0)
                         {
-                        @foreach (var item in Model.SubCategories)
+
+                        @foreach (var product in Model.Data)
                         {
-                        <div class="product-item col-lg-3">
+                            <div class="product-item col-lg-4 col-md-6 col-sm-12">
 
-                            <a asp-controller="Category" asp-action="Index" asp-route-cat="@item.Name">
+                                <div class="Product-Img">
+                                    <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.Id">
+                                        <img class="img-fluid" src="/uploads/@product.Picture">
+                                    </a>
+                                </div>
 
-                                <img class="img-thumbnail"
-                                     src="/uploads/@item.categoryPictures[0].picture.MimeType" />
-                            </a>
+                                <div class="product-name">
+                                    @product.Name
+                                </div>
 
+                                <div class="rating">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="product-price">
 
-                            <div class="category-name">
-                                <h3 class="cat-block-title">@item.Name</h3>
+                                    <span class="a-price-symbol">EGP</span>
+                                    <span class="a-price-whole">@product.Price</span>
+                                    @if (product.HasDiscountsApplied == true)
+                                    {
+                                        <span class="a-price-discount">@product.OldPrice</span>
+                                    }
+                                </div>
                             </div>
-                        </div>
-                        }
-                        }
-
-                        else
-                        {
-                        @foreach (var product in Model.ProductsList.Data)
-                        {
-                        <div class="product-item col-lg-4 col-md-6 col-sm-12">
-
-                            <div class="Product-Img">
-                                <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.Id">
-                                    <img class="img-fluid" src="/uploads/@product.productPictures[0].picture.MimeType">
-                                </a>
-                            </div>
-
-                            <div class="product-name">
-                                @product.Name
-                            </div>
-
-                            <div class="rating">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                            <div class="product-price">
-
-                                <span class="a-price-symbol">EGP</span>
-                                <span class="a-price-whole">@product.Price</span>
-                                @if (product.HasDiscountsApplied == true)
-                                {
-                                <span class="a-price-discount">@product.OldPrice</span>
-                                }
-                            </div>
-
-                        </div>
                         }
                         }
 
                     </div>
                 </div>
-                @if (Model.SubCategories.Count == 0)
-                {
 
-                <div id="pag" class="pagination">
-                    <ul>
-
-                        @if (Model.ProductsList.HasPrevious == true)
-                        {
-                        <li> <a class="page-link prev" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@prevPage">Prev</a></li>
-
-                        }
-                        else
-                        {
-                        <li class="disabled prev"> <a class="page-link" asp-controller="Category" asp-route-cat="@Model.Name" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
-                        }
-
-                        @for (int i = 1; i <= Model.ProductsList.TotalPages; i++)
-                        {
-                        if (i == Model.ProductsList.CurrentPage)
-                        {
-                        <li class="disabled"> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@i">@i</a></li>
-                        }
-                        else
-                        {
-                        <li> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@i">@i</a></li>
-                        }
-                        }
-
-
-                        @if (Model.ProductsList.HasNext == true)
-                        {
-                        <li>
-                            <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@nextPage">Next</a>
-                        </li>
-                        }
-                        else
-                        {
-                        <li class="disabled">
-                            <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@nextPage">Next</a>
-                        </li>
-                        }
-                    </ul>
-
-                </div>
-                }
             </div>
         </div>
 

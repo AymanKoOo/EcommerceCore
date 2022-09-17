@@ -1,4 +1,5 @@
-﻿using Core.Interfaces;
+﻿using Core.Entites.Catalog;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,9 +25,23 @@ namespace Web.Controllers
         public async Task<IActionResult> Index(string discountSlug, int pageSize = 2, int pageNumber = 1, int orderBy = 0, int[] specs = null)
         {
             var discount = _unitOfWork.discount.GetDiscountBySlug(discountSlug);
-            var desc = await _discountModelFactory.PrepareDiscountProductListModelAsync(discount.Id, pageSize, pageNumber);
+            //discounts + discount products
+            if (pageNumber < 0)
+            {
+                pageNumber = 1;
+            }
+            var attrOption = new List<SpecificationAttributeOption>();
 
-            return View(desc);
+            foreach (var i in specs)
+            {
+                var option = await _unitOfWork.SpecificationAttributes.GetAttrOptionByID(i);
+                if (option != null)
+                {
+                    attrOption.Add(option);
+                }
+            }
+            var disc = await _discountModelFactory.PrepareDiscountProductListModelAsync(discount.Id, pageSize, pageNumber, orderBy, attrOption);
+            return View(disc);
         }
 
 
