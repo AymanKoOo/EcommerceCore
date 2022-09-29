@@ -69,7 +69,7 @@ namespace Infrastructure.Repo.Catalog
         }
 
 
-        public List<SpecificationAttribute> GetCommonSpecAttrFromProducts(PagedList<Product> products)
+        public List<SpecificationAttribute> GetCommonSpecAttrFromProducts(List<Product> products)
         {
 
             HashSet<int> TspecificationAttributes = new HashSet<int>();

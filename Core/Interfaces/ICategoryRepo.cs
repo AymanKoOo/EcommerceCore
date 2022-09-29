@@ -10,13 +10,16 @@ namespace Core.Interfaces
 {
     public interface ICategoryRepo:IGenericRepo<Category>
     {
+        Task<Category> GetCategoryBySlug(string slug);
+
         List<Category> GetAllCategories();
         Task<IEnumerable<Category>> GetAllCategoriesHome();
         Task<Category> GetCategory(int id);
         Task AddCategorySpecGroup(CategorySpecificationGroup model);
         Task<Category> GetCategory(string categoryName);
         Category GetCategoryByID(int categoryID);
-        
+        string MakeCategorySlugUnique(string Slug);
+
                     Category GetCategoryByName(string name);
 
         Task AddPicture(int categoryID,int picID);

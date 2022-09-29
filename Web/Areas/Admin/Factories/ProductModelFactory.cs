@@ -52,25 +52,19 @@ namespace Web.Areas.Admin.Factories
         public virtual async Task<ProductListModel> PrepareProductByCategoryListModelAsync(int categoryID,int pageSize, int pageNumber,List<SpecificationAttributeOption> filterSpec,int OrderFilter)
         {
             var products = unitOfWork.Product.GetProductsByCatgoryList(categoryID,pageSize, pageNumber, filterSpec, OrderFilter);
-
-            //foreach (var product in products)
-            //{
-            //    var pricingObj = await priceCalculation.GetFinalPriceAsync(product);
-            //    string picture=null;
-            //    foreach (var k in product.productPictures)
-            //    {
-            //        picture = k.picture.MimeType;
-            //    }
-
-            //    product.Picture = picture;
-            //    product.OldPrice = pricingObj.priceWithoutDiscounts;
-            //    product.Price = pricingObj.finalPrice;
-            //}
+            
+            var TspecifcationAtrributes = unitOfWork.SpecificationAttributes.GetCommonSpecAttrFromProducts(products);
+           
             var model = new ProductListModel();
+            foreach (var pr in products)
+            {
+                var pricingObj = await priceCalculation.GetFinalPriceAsync(pr);
+                pr.OldPrice = pricingObj.priceWithoutDiscounts;
+                pr.Price = pricingObj.finalPrice;
+            }
 
             if (products.Count>0)
             {
-                var pricingObj = await priceCalculation.GetFinalPriceAsync(products.Data[0]);
                  model = new ProductListModel().PrepareToGrid(products, () =>
                 {
                     //fill in model values from the entity
@@ -81,12 +75,14 @@ namespace Web.Areas.Admin.Factories
                         discountProductModel.Id = product.Id;
                         discountProductModel.Name = product.Name;
                         discountProductModel.Picture = product.productPictures[0].picture.MimeType;
-                        discountProductModel.OldPrice = pricingObj.priceWithoutDiscounts;
-                        discountProductModel.Price = pricingObj.finalPrice;
+                        discountProductModel.OldPrice = product.OldPrice;
+                        discountProductModel.Price = product.Price;
                         discountProductModel.HasDiscountsApplied = product.HasDiscountsApplied;
                         return discountProductModel;
                     });
+
                 });
+                model.SpecificationAttributes = TspecifcationAtrributes;
             }
 
             else

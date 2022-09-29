@@ -25,13 +25,15 @@ namespace Web.Areas.Admin.Controllers
         private readonly IPictureService picture;
         private readonly IProductModelFactory productModelFactory;
         private readonly ICategoryModelFactory categoryModelFactory;
+        private readonly ISlugService slugService;
 
         public IDiscountModelFactory DiscountModelFactory { get; }
 
         public DiscountController(IUnitOfWork unitOfWork, IMapper mapper, IWebHostEnvironment environment, 
             IPictureService picture, IDiscountModelFactory discountModelFactory,
             IProductModelFactory ProductModelFactory,
-            ICategoryModelFactory CategoryModelFactory)
+            ICategoryModelFactory CategoryModelFactory,
+            ISlugService slugService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -40,6 +42,7 @@ namespace Web.Areas.Admin.Controllers
             DiscountModelFactory = discountModelFactory;
             productModelFactory = ProductModelFactory;
             categoryModelFactory = CategoryModelFactory;
+            this.slugService = slugService;
         }
 
 
@@ -93,7 +96,15 @@ namespace Web.Areas.Admin.Controllers
                 discount.picture = picObj;
                 model.UsePercentage = true;
                 discount.UsePercentage = true;
-                discount.slug = Core.Entites.Discount.CreateDiscountslug(model.Name);
+
+                //check slug is unique//
+
+                string slug = slugService.createSlug(model.Name);
+
+                string uniqueSlug = _unitOfWork.discount.MakeDiscountSlugUnique(slug);
+
+                discount.slug = uniqueSlug;
+
                 var response = _unitOfWork.discount.Add(discount);
                 _unitOfWork.Save();
                 return Redirect("/");

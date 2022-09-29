@@ -14,7 +14,7 @@ using Web.ViewModels.Products;
 
 namespace Web.Controllers
 {
-    [Route("/deals")]
+    [Route("/deals/")]
 
     public class DealsController : Controller
     {
@@ -29,6 +29,7 @@ namespace Web.Controllers
             _discountModelFactory = discountModelFactory;
         }
 
+        [HttpGet("/promotions/{dealSlug}")]
         public async Task<IActionResult> Index(string dealSlug, int pageSize = 2, int pageNumber = 1, int orderBy = 0, int[] specs = null)
         {
             //discounts + discount products

@@ -47,6 +47,16 @@ namespace Infrastructure.Repo.Discounts
             return _dbcontext.discounts.FirstOrDefault(x => x.Id == id);
         }
 
+        public string MakeDiscountSlugUnique(string Slug)
+        {
+            int i = 0;
+            while (_dbcontext.discounts.Any(x => x.slug == Slug))
+            {
+                Slug = $"{Slug}-{i++}";
+            }
+            return Slug;
+        }
+
         public void RemoveDiscountsFromCategoriesProducts(int discountId)
         {
             int discountTypeID = _dbcontext.discounts.FirstOrDefault(x => x.Id == discountId).DiscountTypeId;

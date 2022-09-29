@@ -22,14 +22,16 @@ namespace Web.Areas.Admin.Controllers
 
         readonly private IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ISlugService slugService;
         private readonly ICategoryModelFactory categoryModelFactory;
         private readonly IWebHostEnvironment environment;
         private readonly IPictureService picture;
 
-        public CategoryController(IUnitOfWork unitOfWork, IMapper mapper, ICategoryModelFactory categoryModelFactory, IWebHostEnvironment environment, IPictureService picture)
+        public CategoryController(IUnitOfWork unitOfWork, IMapper mapper, ISlugService slugService,ICategoryModelFactory categoryModelFactory, IWebHostEnvironment environment, IPictureService picture)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            this.slugService = slugService;
             this.categoryModelFactory = categoryModelFactory;
             this.environment = environment;
             this.picture = picture;
@@ -72,6 +74,7 @@ namespace Web.Areas.Admin.Controllers
             await _unitOfWork.Category.AddPicture(categoryModel.Id, pic.Id);
 
             categoryModel.Name = model.Name;
+
             categoryModel.Description = model.Description;
             //mapping
             _unitOfWork.Category.Update(categoryModel);
@@ -107,11 +110,19 @@ namespace Web.Areas.Admin.Controllers
             var category = _mapper.Map<Category>(model);
             await _unitOfWork.Category.Add(category);
 
+            //check slug is unique//
+
+            string CategorySlug = slugService.createSlug(model.Name);
+
+            string uniqueSlug = _unitOfWork.Category.MakeCategorySlugUnique(CategorySlug);
+
+            category.slug = uniqueSlug;
+
             _unitOfWork.Save();
 
             var pic = await _unitOfWork.picture.getPicByName(picName);
 
-            var cat = await _unitOfWork.Category.GetCategory(model.Name);
+            var cat = await _unitOfWork.Category.GetCategoryBySlug(uniqueSlug);
             
             await _unitOfWork.Category.AddPicture(cat.Id, pic.Id);
           

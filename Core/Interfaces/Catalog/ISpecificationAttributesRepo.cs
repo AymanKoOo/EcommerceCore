@@ -21,6 +21,6 @@ namespace Core.Interfaces.Catalog
         Task<SpecificationAttributeOption> GetAttrOptionByID(int id);
         Task<SpecificationAttribute> GetSpecAttrByID(int id);
         Task<SpecificationAttributeGroup> GetSpecAttrGroupByID(int id);
-        List<SpecificationAttribute> GetCommonSpecAttrFromProducts(PagedList<Product> products);
+        List<SpecificationAttribute> GetCommonSpecAttrFromProducts(List<Product> products);
     }
 }

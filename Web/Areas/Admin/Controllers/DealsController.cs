@@ -62,8 +62,12 @@ namespace Web.Areas.Admin.Controllers
 
             var deal = _mapper.Map<Deal>(model);
 
+
             string DealSlug = _slugService.createSlug(deal.Name);
-            deal.Slug = DealSlug;
+
+            string uniqueSlug = _unitOfWork.dealRepo.MakeDealSlugUnique(DealSlug);
+
+            deal.Slug = uniqueSlug;
             
             await _unitOfWork.dealRepo.Add(deal);
 

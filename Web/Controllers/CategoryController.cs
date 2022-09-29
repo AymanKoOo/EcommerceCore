@@ -15,7 +15,7 @@ using Web.ViewModels.Products;
 
 namespace Web.Controllers
 {
-    [Route("/category")]
+    [Route("/category/")]
     public class CategoryController : Controller
     {
         private IUnitOfWork _unitOfWork;
@@ -46,20 +46,10 @@ namespace Web.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index(string cat, int pageSize = 2, int pageNumber = 1, int orderBy = 0, int[] specs = null)
+        [HttpGet("/category/{slug}")]
+        public async Task<IActionResult> Index(string slug, int pageSize = 2, int pageNumber = 1, int orderBy = 0, int[] specs = null)
         {
-           
-            //var products = _mapper.Map<List<ProductDTO>>(_unitOfWork.Product.GetAllProducts());
-            //var categories = _mapper.Map<List<CategoryDTO>>(_unitOfWork.Category.GetAllCategories());
-
-            //var indexdto = new IndexDTO
-            //{
-            //    productDTOs = products,
-            //    categoryDTOs = categories
-            //};
-            //var category = _unitOfWork.Category.GetCategoryByID(id);
-            var category = _unitOfWork.Category.GetCategoryByName(cat);
+            var category = await _unitOfWork.Category.GetCategoryBySlug(slug);
             if (category == null)
             {
                 return View("choose Cat");
@@ -83,14 +73,15 @@ namespace Web.Controllers
         }
 
 
-        [HttpGet("cat")]
-        public async Task<IActionResult> FilterProducts(string cat, int pageSize = 2, int pageNumber = 1, int orderBy = 0, int[] specs = null)
+        [HttpGet("FilterProducts")]
+        public async Task<IActionResult> FilterProducts(string slug, int pageSize = 2, int pageNumber = 1, int orderBy = 0, int[] specs = null)
         {
             if (pageNumber < 0)
             {
                 pageNumber = 1;
             }
-            var category = _unitOfWork.Category.GetCategoryByName(cat);
+            _unitOfWork.Category.GetCategoryByName(slug);
+            var category = await _unitOfWork.Category.GetCategoryBySlug(slug);
             var attrOption = new List<SpecificationAttributeOption>();
 
             foreach (var i in specs)
@@ -111,7 +102,7 @@ namespace Web.Controllers
             {      
                     products,
                     orderBy,
-                    cat
+                    slug
                     ,specs,
                     categoryModel.ProductsList.TotalCount,
                     categoryModel.ProductsList.PageSize,

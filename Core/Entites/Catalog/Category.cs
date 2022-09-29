@@ -11,6 +11,7 @@ namespace Core.Entites
     public class Category : EntityBase
     {
         public string Name { get; set; }
+        public string slug { get; set; }
         public string Description { get; set; }
         public int PictureId { get; set; }
         public int ParentCategoryId { get; set; }

@@ -50,6 +50,45 @@
 
 @await Html.PartialAsync("../Shared/PartialView/_shop-picker", Model.discountProductListModel);
 
+<div id="pag" class="pagination">
+    <ul>
+
+        @if (Model.discountProductListModel.HasPrevious == true)
+        {
+            <li> <a class="page-link prev" asp-controller="Deals" asp-action="Index" asp-route-dealSlug="@Model.deal.Slug" asp-route-pageNumber="@prevPage">Prev</a></li>
+        }
+        else
+        {
+            <li class="disabled prev"> <a class="page-link" asp-controller="Deals" asp-route-dealSlug="@Model.deal.Slug" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
+        }
+
+        @for (int i = 1; i <= Model.discountProductListModel.TotalPages; i++)
+        {
+            if (i == Model.discountProductListModel.CurrentPage)
+            {
+                <li class="disabled"> <a class="page-link" asp-controller="Deals" asp-action="Index" asp-route-dealSlug="@Model.deal.Slug" asp-route-pageNumber="@i">@i</a></li>
+            }
+            else
+            {
+                <li> <a class="page-link" asp-controller="Deals" asp-action="Index" asp-route-dealSlug="@Model.deal.Slug" asp-route-pageNumber="@i">@i</a></li>
+            }
+        }
+
+        @if (Model.discountProductListModel.HasNext == true)
+        {
+            <li>
+                <a class="page-link next" asp-controller="Deals" asp-action="Index" asp-route-dealSlug="@Model.deal.Slug" asp-route-pageNumber="@nextPage">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="disabled">
+                <a class="page-link next" asp-controller="Deals" asp-action="Index" asp-route-dealSlug="@Model.deal.Slug" asp-route-pageNumber="@nextPage">Next</a>
+            </li>
+        }
+    </ul>
+
+</div>
 
 
 
@@ -94,12 +133,12 @@
             $($(this)
                 ).toggleClass("selected");
              option = $(this).attr('id');
-            filter(currentCat, spec, option, 1);
+            filter(currentDeal, spec, option, 1);
         });
 
         $('#pag').on("click", '.page-number', function () {
             var number = $(this).attr('id');
-            filter(currentCat, spec, option, number);
+            filter(currentDeal, spec, option, number);
         });
 
         $('#pag').on("click", '.prev', function () {
@@ -110,7 +149,7 @@
             else {
                 pageNumber = pageNumber - 1;
             }
-            filter(currentCat, spec, option, pageNumber);
+            filter(currentDeal, spec, option, pageNumber);
         });
 
         $('#pag').on("click", '.next', function () {
@@ -121,14 +160,14 @@
             else {
                 pageNumber = pageNumber + 1;
             }
-            filter(currentCat, spec, option, pageNumber);
+            filter(currentDeal, spec, option, pageNumber);
         });
 
         //deal
         //discount
         //category
         function filter(currentDeal,spec, option, pageNumber) {
-       
+
 
         if (pageNumber > TotalPages) {
             pageNumber = TotalPages;

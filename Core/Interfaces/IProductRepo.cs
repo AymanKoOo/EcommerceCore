@@ -58,6 +58,11 @@ namespace Core.Interfaces
         public void deleteProductAttrMapping(int mapID);
 
         public List<Product> GetProductByCartList(List<int> IDs);
+
+
+        public List<Product> GetAllProductsWithAppliedDiscountAsync(int discountId);
+        public List<Product> GetAllProductsWithAppliedDiscountSAsync(List<int> discountId);
+
     }
 }
 

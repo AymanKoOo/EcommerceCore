@@ -26,12 +26,27 @@ namespace Infrastructure.Repo
         {
             _dbcontext.Categories.Add(category);
         }
-
+        public async Task<Category> GetCategoryBySlug(string slug)
+        {
+            return await _dbcontext.Categories.Where(x => x.slug == slug).Include(x => x.CategorySpecificationGroups).ThenInclude(r => r.specificationAttributeGroup)
+               .ThenInclude(q => q.SpecificationAttribute).ThenInclude(q => q.specificationAttributeOptions).FirstOrDefaultAsync();
+        }
         public List<Category> GetAllCategories()
         {
             return (from cat in _dbcontext.Categories
                    select cat).Include(x=>x.categoryPictures).ThenInclude(e=>e.picture).ToList();
         }
+
+        public string MakeCategorySlugUnique(string Slug)
+        {
+            int i = 0;
+            while (_dbcontext.Categories.Any(x => x.slug == Slug))
+            {
+                Slug = $"{Slug}-{i++}";
+            }
+            return Slug;
+        }
+
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
             return await (from cat in _dbcontext.Categories

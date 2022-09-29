@@ -13,6 +13,7 @@ namespace Core.Interfaces.Discounts
         public List<Discount> GetAll();
         public Task<List<Discount>> GetForbanner();
         public Discount GetByID(int id);
+        public string MakeDiscountSlugUnique(string Slug);
         public void RemoveProductToDiscount(Product product);
         public Task<IList<Discount>> GetAppliedDiscountsOnProductAsync(Product product);
         public void AddProductsToDiscount(IEnumerable<int> id);

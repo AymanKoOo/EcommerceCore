@@ -25,7 +25,15 @@ namespace Infrastructure.Repo.Catalog
             dp.PictureId = PicID;
             await _dbcontext.dealPictures.AddAsync(dp);
         }
-      
+        public string MakeDealSlugUnique(string Slug)
+        {
+            int i = 0;
+            while (_dbcontext.deals.Any(x => x.Slug == Slug))
+            {
+                Slug = $"{Slug}-{i++}";
+            }
+            return Slug;
+        }
         public Deal geBySlug(string slug)
         {
            return  _dbcontext.deals.Where(x => x.Slug == slug).Include(x=>x.DealDiscounts).ThenInclude(x=>x.discount).ThenInclude(x=>x.picture)

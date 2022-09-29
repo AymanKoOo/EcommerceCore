@@ -12,6 +12,7 @@
 
 }
 
+<input type="hidden" id="category-slug" value="@Model.Slug" />
 
 <div class="nav-progressive-content">
 
@@ -22,7 +23,7 @@
     @foreach (var catt in Model.AvailableCategories)
     {
         <div class="navTrend-item">
-            <a asp-controller="Category" asp-action="Index" asp-route-cat="@catt.Name">
+            <a asp-controller="Category" asp-action="Index" asp-route-slug="@catt.slug">
                 @catt.Name
             </a>
         </div>
@@ -34,13 +35,7 @@
 
 </div>
 
-<!---jUMPTron-->
-@*@foreach (var item in Model.AvailableCategories)
-    {
-        <li class="list-group-item">
-            <a href="#">@item.Name</a>
-        </li>
-    }*@
+
 @await Component.InvokeAsync("HomeCategories")
 
 <div class="sort-btn">
@@ -50,9 +45,6 @@
             @Model.ProductsList.Data.Count()  results
         </span>
     </div>
-
-
- 
 
 </div>
 
@@ -68,7 +60,7 @@
 
                         <div class="filter-category">
 
-                            @await Html.PartialAsync("_CatalogFilters", Model)
+                            @await Html.PartialAsync("../Shared/PartialView/_Groupfilter", Model.ProductsList)
 
                         </div>
                     </div>
@@ -76,122 +68,122 @@
                 </div>
             </div>
         }
-            <div class="col-lg-10 col-md-7 col-sm-7 col-12">
+        <div class="col-lg-10 col-md-7 col-sm-7 col-12">
 
-                <div class="left">
+            <div class="left">
 
-                    <div class="products Container">
+                <div class="products Container">
 
-                        <div id="posts" class="row">
+                    <div id="posts" class="row">
 
 
-                            @if (Model.SubCategories.Count > 0)
+                        @if (Model.SubCategories.Count > 0)
+                        {
+                            @foreach (var item in Model.SubCategories)
                             {
-                                @foreach (var item in Model.SubCategories)
-                                {
-                                    <div class="product-item col-lg-3">
+                                <div class="product-item col-lg-3">
 
-                                        <a asp-controller="Category" asp-action="Index" asp-route-cat="@item.Name">
+                                    <a asp-controller="Category" asp-action="Index" asp-route-slug="@item.slug">
 
-                                            <img class="img-thumbnail" 
-                                                 src="/uploads/@item.categoryPictures[0].picture.MimeType" />
-                                        </a>
+                                        <img class="img-thumbnail"
+                                             src="/uploads/@item.categoryPictures[0].picture.MimeType" />
+                                    </a>
 
 
-                                        <div class="category-name">
-                                            <h3 class="cat-block-title">@item.Name</h3>
-                                        </div>
+                                    <div class="category-name">
+                                        <h3 class="cat-block-title">@item.Name</h3>
                                     </div>
-                                }
+                                </div>
                             }
+                        }
 
+                        else
+                        {
+                            @foreach (var product in Model.ProductsList.Data)
+                            {
+                                <div class="product-item col-lg-4 col-md-6 col-sm-12">
+
+                                    <div class="Product-Img">
+                                        <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.Id">
+                                            <img class="img-fluid" src="/uploads/@product.productPictures[0].picture.MimeType">
+                                        </a>
+                                    </div>
+
+                                    <div class="product-name">
+                                        @product.Name
+                                    </div>
+
+                                    <div class="rating">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="product-price">
+
+                                        <span class="a-price-symbol">EGP</span>
+                                        <span class="a-price-whole">@product.Price</span>
+                                        @if (product.HasDiscountsApplied == true)
+                                        {
+                                            <span class="a-price-discount">@product.OldPrice</span>
+                                        }
+                                    </div>
+
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+                @if (Model.SubCategories.Count == 0)
+                {
+
+                    <div id="pag" class="pagination">
+                        <ul>
+
+                            @if (Model.ProductsList.HasPrevious == true)
+                            {
+                                <li> <a class="page-link prev" asp-controller="Category" asp-action="Index" asp-route-slug="@Model.Slug" asp-route-pageNumber="@prevPage">Prev</a></li>
+
+                            }
                             else
                             {
-                                @foreach (var product in Model.ProductsList.Data)
+                                <li class="disabled prev"> <a class="page-link" asp-controller="Category" asp-route-slug="@Model.Slug" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
+                            }
+
+                            @for (int i = 1; i <= Model.ProductsList.TotalPages; i++)
+                            {
+                                if (i == Model.ProductsList.CurrentPage)
                                 {
-                                    <div class="product-item col-lg-4 col-md-6 col-sm-12">
-
-                                        <div class="Product-Img">
-                                            <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.Id">
-                                                <img class="img-fluid" src="/uploads/@product.productPictures[0].picture.MimeType">
-                                            </a>
-                                        </div>
-
-                                        <div class="product-name">
-                                            @product.Name
-                                        </div>
-
-                                        <div class="rating">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="product-price">
-
-                                            <span class="a-price-symbol">EGP</span>
-                                            <span class="a-price-whole">@product.Price</span>
-                                            @if (product.HasDiscountsApplied == true)
-                                            {
-                                                <span class="a-price-discount">@product.OldPrice</span>
-                                            }
-                                        </div>
-
-                                    </div>
+                                    <li class="disabled"> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-slug="@Model.Slug" asp-route-pageNumber="@i">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-slug="@Model.Slug" asp-route-pageNumber="@i">@i</a></li>
                                 }
                             }
 
-                        </div>
+
+                            @if (Model.ProductsList.HasNext == true)
+                            {
+                                <li>
+                                    <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-slug="@Model.Slug" asp-route-pageNumber="@nextPage">Next</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="disabled">
+                                    <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-slug="@Model.Slug" asp-route-pageNumber="@nextPage">Next</a>
+                                </li>
+                            }
+                        </ul>
+
                     </div>
-                    @if (Model.SubCategories.Count == 0)
-                    {
-
-                        <div id="pag" class="pagination">
-                            <ul>
-
-                                @if (Model.ProductsList.HasPrevious == true)
-                                {
-                                    <li> <a class="page-link prev" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@prevPage">Prev</a></li>
-
-                                }
-                                else
-                                {
-                                    <li class="disabled prev"> <a class="page-link" asp-controller="Category" asp-route-cat="@Model.Name" asp-action="Index" asp-route-pageNumber="@prevPage">Prev</a></li>
-                                }
-
-                                @for (int i = 1; i <= Model.ProductsList.TotalPages; i++)
-                                {
-                                    if (i == Model.ProductsList.CurrentPage)
-                                    {
-                                        <li class="disabled"> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@i">@i</a></li>
-                                    }
-                                    else
-                                    {
-                                        <li> <a class="page-link" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@i">@i</a></li>
-                                    }
-                                }
-
-
-                                @if (Model.ProductsList.HasNext == true)
-                                {
-                                    <li>
-                                        <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@nextPage">Next</a>
-                                    </li>
-                                }
-                                else
-                                {
-                                    <li class="disabled">
-                                        <a class="page-link next" asp-controller="Category" asp-action="Index" asp-route-cat="@Model.Name" asp-route-pageNumber="@nextPage">Next</a>
-                                    </li>
-                                }
-                            </ul>
-
-                        </div>
-                    }
-                </div>
+                }
             </div>
-
-
         </div>
+
+
+    </div>
 
 
 
@@ -200,67 +192,235 @@
 
     <script>
 
-    $("input:checkbox").on('click', function() {
-  // in the handler, 'this' refers to the box clicked on
-  var $box = $(this);
-  if ($box.is(":checked")) {
-    // the name of the box is retrieved using the .attr() method
-    // as it is assumed and expected to be immutable
-    var group = "input:checkbox[name='" + $box.attr("name") + "']";
-    // the checked state of the group/box on the other hand will change
-    // and the current value is retrieved using .prop() method
-    $(group).prop("checked", false);
-      $box.prop("checked", true);
-         $.ajax({
-                    type: "POST",
-                    url: "https://localhost:44333/Category/index",
-                    data: { "categoryID": $box.attr("value") },
-                    success: function (response) {
-                          $(".filterd-products").empty();
+    $(function () {
 
-                         for (var i = 0; i < response.productDTOs.length; i++ ) {
-                             console.log(response.productDTOs[i].name);
-                             $(".filterd-products").append(`
+        var spec = [];
+        var option;
+        var currentCat;
+        var CurrentPage,
+            HasNext,
+            HasPrev,
+            TotalPages = 0,
+            pageSize = 4,
+            pageNumber = 1;
 
-                                 <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-                                <div id="productsClick">
-                                <div class="pic">
-                                    <a href="#" class="picCont button js-add-product"> <img style="width:100%" src="images/a.png"></a>
+        currentCat = $('#category-slug').val();
 
-                                    <div class="product-content">
-                                        <h3>`+response.productDTOs[i].name+`</h3>
-                                        <a href="">`+response.productDTOs[i].unitPrice+`</a>
-                                    </div>
+        console.log($('#next-btn'));
+        $('.spec-option').click(function () {
+            $($(this)
+            ).toggleClass("selected");
+            var specID = $(this).attr('id');
 
-                                    <button onclick="myFunction(`+response.productDTOs[i].id+`)">Details</button>
 
-                                </div>
-                            </div>
-                            </div>
-                                 `);
-                        }
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                   }
-                });
-   }
+            if (spec.includes(specID)) {
 
-    else {
-    $box.prop("checked", false);
+                const index = spec.indexOf(specID);
+                if (index > -1) {
+                    spec.splice(index);
+                }
+            }
+            else {
+                spec.push(specID);
+            }
+
+            filter(currentCat, spec, option, 1);
+        });
+
+        $('.order-option').click(function () {
+            $($(this)
+                ).toggleClass("selected");
+             option = $(this).attr('id');
+            filter(currentCat, spec, option, 1);
+        });
+
+        $('#pag').on("click", '.page-number', function () {
+            var number = $(this).attr('id');
+            filter(currentCat, spec, option, number);
+        });
+
+        $('#pag').on("click", '.prev', function () {
+            console.log(pageNumber)
+            if (pageNumber <= 0) {
+                pageNumber = 1;
+            }
+            else {
+                pageNumber = pageNumber - 1;
+            }
+            filter(currentCat, spec, option, pageNumber);
+        });
+
+        $('#pag').on("click", '.next', function () {
+            console.log(pageNumber)
+            if (pageNumber > TotalPages) {
+                pageNumber = TotalPages;
+            }
+            else {
+                pageNumber = pageNumber + 1;
+            }
+            filter(currentCat, spec, option, pageNumber);
+        });
+
+
+    function filter(cat, spec, option, pageNumber) {
+        console.log(pageNumber);
+        if (pageNumber > TotalPages) {
+            pageNumber = TotalPages;
         }
-    });
+        if (pageNumber == 0) {
+            pageNumber = 1;
+        }
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("FilterProducts")",
+            data: { 'slug': cat, 'specs': spec, 'orderBy': option, 'pageNumber': pageNumber },
+            datatype: "json",
+            traditional: true,
+            success: function (response) {
+                //Assign vars
+                CurrentPage = parseInt(response.currentPage);
+                HasNext = response.hasNext;
+                HasPrev = response.hasPrevious;
+                TotalPages = parseInt(response.totalPages);
+
+                html = ``;
+                pig = ``;
+                $("#posts").empty();
+                $("#pag").empty();
+
+                console.log(response);
 
 
-    function myFunction(id) {
+                for (var i = 0; i < response.products.length; i++) {
+                    html += `
+                            <div class="product-item col-lg-4 col-md-6 col-sm-12">
 
-        window.location.href = '@Url.Action("ProductDetail", "Products")/' + id;
+                                        <div class="Product-Img">
+                                            <a href="#">
+                                                <img class="img-fluid" src="/uploads/`+ response.products[i].picture + `">
+                                            </a>
+                                        </div>
+
+                                        <div class="product-name">
+                                            `+ response.products[i].name + `
+                                        </div>
+
+                                        <div class="rating">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="product-price">
+
+                                            <span class="a-price-symbol">EGP</span>
+                                            <span class="a-price-whole">
+                                            `+ response.products[i].price + `
+                                            </span>
+                                            `;
+                    if (response.products[i].hasDiscountsApplied == true) {
+                        html += `<span class="a-price-discount">` + response.products[i].oldPrice + `</span>`;
+                    }
+
+                    html += `
+
+                                        </div>
+                             </div>
+                    `
+                    console.log(html);
+
+                }
+
+
+                $("#posts").html(html);
+
+
+                //Add Pag
+                pag = `
+                    <ul>
+                `
+                if (HasPrev == true) {
+                    pag += `
+                   <li>
+
+                         <a id="prev-btn" class="page-link prev">prev</a>
+
+                   </li>
+                `
+                }
+                else {
+                    pag += `
+                        <li class="disabled prev">
+                         <a id="prev-btn" class="page-link prev">prev</a>
+                        </li>
+                `
+                }
+                for (var i = 1; i <= response.totalPages; i++) {
+                    if (i == CurrentPage) {
+                        pag += `
+                                   <li class="disabled ">
+
+                                         <a id=`+ i + ` class="page-link page-number">` + i + `</a>
+
+                                   </li>
+                                `
+                    }
+                    else {
+                        pag += `
+                                    <li>
+
+                                         <a id=`+ i + ` class="page-link page-number">` + i + `</a>
+
+                                   </li>
+                                `
+                    }
+                }
+                if (HasNext == true) {
+                    pag += `
+                   <li>
+                        <a id="next-btn" class="page-link next">Next</a>
+                   </li>
+                `
+                }
+                else {
+                    pag += `
+                   <li class="disabled ">
+                        <a  id="next-btn" class="page-link next">Next</a>
+                   </li>
+                `
+                }
+
+                pag += `
+                    </ul>
+                `
+                $("#pag").html(pag);
+
+                const url = new URL(window.location);
+                if (spec.length > 0) {
+                    url.searchParams.set('spec', spec);
+                }
+                else {
+                    url.searchParams.delete('spec');
+
+                }
+                if (option > 0) {
+                    url.searchParams.set('orderBy', option);
+                }
+                else {
+                    url.searchParams.delete('orderBy');
+                }
+                window.history.pushState({}, '', url);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
 
     }
 
-
+    })
 
     </script>

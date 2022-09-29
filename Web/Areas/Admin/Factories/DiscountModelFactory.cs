@@ -32,14 +32,21 @@ namespace Web.Areas.Admin.Factories
         {
 
             var discountProducts = unitOfWork.Product.GetProductsWithAppliedDiscountAsync(discountid, filterSpec, pageSize,pageNumber,OrderFilter);
+
+            var AlldiscountProducts = unitOfWork.Product.GetAllProductsWithAppliedDiscountAsync(discountid);
+
             var TspecifcationAtrributes = unitOfWork.SpecificationAttributes.GetCommonSpecAttrFromProducts(discountProducts);
 
             var model = new ProductListModel();
-
+            foreach (var pr in discountProducts)
+            {
+                var pricingObj = await priceCalculation.GetFinalPriceAsync(pr);
+                pr.OldPrice = pricingObj.priceWithoutDiscounts;
+                pr.Price = pricingObj.finalPrice;
+            }
             if (discountProducts.Count > 0)
             {
 
-                var pricingObj = await priceCalculation.GetFinalPriceAsync(discountProducts.Data[0]);
                 model = new ProductListModel().PrepareToGrid(discountProducts, () =>
                 {
 
@@ -51,8 +58,8 @@ namespace Web.Areas.Admin.Factories
                         discountProductModel.Id = product.Id;
                         discountProductModel.Name = product.Name;
                         discountProductModel.Picture = product.productPictures[0].picture.MimeType;
-                        discountProductModel.OldPrice = pricingObj.priceWithoutDiscounts;
-                        discountProductModel.Price = pricingObj.finalPrice;
+                        discountProductModel.OldPrice = product.OldPrice;
+                        discountProductModel.Price = product.Price;
                         discountProductModel.HasDiscountsApplied = product.HasDiscountsApplied;
                         return discountProductModel;
                     });
@@ -108,16 +115,22 @@ namespace Web.Areas.Admin.Factories
         {
             var discountProducts = unitOfWork.Product.GetProductsWithAppliedDiscountSAsync(discountid,filterSpec, pageSize, pageNumber,OrderFilter);
 
-            var TspecifcationAtrributes = unitOfWork.SpecificationAttributes.GetCommonSpecAttrFromProducts(discountProducts);
+            var AlldiscountProducts = unitOfWork.Product.GetAllProductsWithAppliedDiscountSAsync(discountid);
+
+            var TspecifcationAtrributes = unitOfWork.SpecificationAttributes.GetCommonSpecAttrFromProducts(AlldiscountProducts);
 
             //var discountProductModels = mapper.Map<DiscountProductModel>(discountProducts.postsData);
 
             var model = new ProductListModel();
-
+            foreach (var pr in discountProducts)
+            {
+                var pricingObj = await priceCalculation.GetFinalPriceAsync(pr);
+                pr.OldPrice = pricingObj.priceWithoutDiscounts;
+                pr.Price = pricingObj.finalPrice;
+            }
             if (discountProducts.Count > 0)
             {
 
-                var pricingObj = await priceCalculation.GetFinalPriceAsync(discountProducts.Data[0]);
                 model = new ProductListModel().PrepareToGrid(discountProducts, () =>
                 {
                     //fill in model values from the entity
@@ -127,8 +140,8 @@ namespace Web.Areas.Admin.Factories
                         discountProductModel.Id = product.Id;
                         discountProductModel.Name = product.Name;
                         discountProductModel.Picture = product.productPictures[0].picture.MimeType;
-                        discountProductModel.OldPrice = pricingObj.priceWithoutDiscounts;
-                        discountProductModel.Price = pricingObj.finalPrice;
+                        discountProductModel.OldPrice = product.OldPrice;
+                        discountProductModel.Price = product.Price;
                         discountProductModel.HasDiscountsApplied = product.HasDiscountsApplied;
                         return discountProductModel;
                     });
