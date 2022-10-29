@@ -368,3 +368,17 @@ $(".filter-header").click(function () {
     $($(this).next()
     ).toggleClass("hide-option");
 });
+
+
+$('#sidebarCollapse').on('click', function () {
+    console.log("aa");
+    $('body').append("<div id='overlay'></div>");
+    $('#sidebar').toggleClass('active');
+    $('#close-menu').toggleClass('active');
+});
+
+$('#close-menu').on('click', function () {
+    $('#sidebar').toggleClass('active');
+    $("#overlay").remove();
+    $('#close-menu').toggleClass('active');
+})

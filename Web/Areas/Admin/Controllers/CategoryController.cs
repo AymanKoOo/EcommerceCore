@@ -106,7 +106,16 @@ namespace Web.Areas.Admin.Controllers
             };
 
             await _unitOfWork.picture.Add(picObj);
-           
+
+            //if parentcategoryid > 0
+            //get the parent cateogry make parentID=-1 as a parent
+            if (model.ParentCategoryId > 0)
+            {
+                var parentCategory = _unitOfWork.Category.GetCategoryByID(model.ParentCategoryId);
+                parentCategory.HasSubCategories = true;
+                _unitOfWork.Category.Update(parentCategory);
+            }
+            //
             var category = _mapper.Map<Category>(model);
             await _unitOfWork.Category.Add(category);
 

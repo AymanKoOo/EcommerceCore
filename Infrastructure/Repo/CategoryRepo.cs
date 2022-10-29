@@ -90,7 +90,7 @@ namespace Infrastructure.Repo
         {
             return await _dbcontext.Categories.Where(q=>q.ParentCategoryId==0).Include(x => x.categoryPictures).ThenInclude(e => e.picture).ToListAsync();
         }
-
+       
         public Category GetCategoryByID(int id)
         {
             return _dbcontext.Categories.Where(e=>e.Id==id).Include(x=>x.CategorySpecificationGroups).ThenInclude(r=>r.specificationAttributeGroup)
@@ -101,7 +101,15 @@ namespace Infrastructure.Repo
         {
             return await _dbcontext.Categories.Where(x => x.ParentCategoryId == CategoryId).ToListAsync();
         }
-
+        public async Task<List<Category>> GetSubCategoryBySlug(string Slug)
+        {
+            Category cat = await _dbcontext.Categories.FirstOrDefaultAsync(m => m.slug == Slug);
+            return await _dbcontext.Categories.Where(x => x.ParentCategoryId == cat.Id).ToListAsync();
+        }
+        public async Task<List<Category>> GetParentCategories()
+        {
+            return await _dbcontext.Categories.Where(x => x.ParentCategoryId == 0).ToListAsync();
+        }
         public async Task<Category> GetCategory(string categoryName)
         {
             return  await  _dbcontext.Categories.FirstOrDefaultAsync(m => m.Name == categoryName);

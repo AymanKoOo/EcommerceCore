@@ -1,0 +1,138 @@
+﻿@model IEnumerable<Core.Entites.Category>
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <button id="sidebar-home"><i class="fa-solid fa-house"></i> <span>Categories</span></button>
+            @*<a href=""></a>*@
+        </div>
+
+        <ul id="categories" class="list-unstyled components">
+            @foreach (var c in Model)
+            {
+            <li class="category__main-list-item">
+                @if (c.HasSubCategories == true)
+                {
+                    <a class="cat-item sub-cat" cat-slug="@c.slug">
+                        @c.Name
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                }
+                else
+                {
+                    {
+                        <a class="cat-item" asp-controller="Category" asp-action="Index" asp-route-slug="@c.slug">
+                            @c.Name
+                        </a>
+                    }
+                }
+            </li>
+            }
+        </ul>
+    </nav>
+    <button id="close-menu" type="button"><i class="fa-solid fa-x"></i></button>
+</div>
+
+<script>
+    $(function () {
+    
+
+        function getParentCategories() {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetParentCategories", "Category")",
+                datatype: "json",
+                traditional: true,
+                success: function (response) {
+
+                    html = ``;
+
+                    $("#categories").empty();
+                    console.log(response);
+
+                    for (var i = 0; i < response.length; i++) {
+                        if (response[i].hasSubCategories) {
+                            html += `
+                <li class="category__main-list-item">
+                    <a class="cat-item sub-cat" cat-slug="`+ response[i].slug + `"  href="#"> ` + response[i].name + ` <i class="fas fa-angle-right"></i></a>
+                </li>
+                     `;
+                        }
+                        else {
+                            html += `
+                            <li class="category__main-list-item">
+                                <a class="cat-item" cat-slug="`+ response[i].slug + `" href="/Category/` + response[i].slug + `"> ` + response[i].name + `</a>
+                            </li>
+                          `;
+                        }
+                        console.log(html);
+                    }
+
+                    $("#categories").html(html);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+        function getSubCategories(catSlug) {
+
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetSubCategories", "Category")",
+                data: { 'slug': catSlug },
+                datatype: "json",
+                traditional: true,
+                success: function (response) {
+                    console.log(response);
+                    html = ``;
+
+                    $("#categories").empty();
+                    console.log(response);
+
+                    for (var i = 0; i < response.length; i++) {
+                        if (response[i].hasSubCategories) {
+                            html += `
+                <li class="category__main-list-item">
+                    <a class="cat-item sub-cat" cat-slug="`+ response[i].slug + `"  href="#"> ` + response[i].name + ` <i class="fas fa-angle-right"></i></a>
+                </li>
+                     `;
+                        }
+                        else {
+                            html += `
+                            <li class="category__main-list-item">
+                                <a class="cat-item" cat-slug="`+ response[i].slug + `" href="/Category/` + response[i].slug + `"> ` + response[i].name + `</a>
+                            </li>
+                          `;
+                        }
+                        console.log(html);
+                    }
+
+                    $("#categories").html(html);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+
+        $(document).on("click", '.category__main-list-item .sub-cat', function () {
+            var catSlug = $(this).attr('cat-slug');
+            console.log(catSlug);
+            getSubCategories(catSlug);
+        });
+
+        $("#sidebar-home").on("click", function () {
+            getParentCategories();
+        })
+    })
+
+</script>

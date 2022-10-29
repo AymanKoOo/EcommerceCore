@@ -26,16 +26,34 @@
 
 </div>
 
+    <div class="contain">
 
-@foreach (var d in Model.deal.DealDiscounts)
-{
-    <div class="Product-Img">
+        <div id="owl-category" class="owl-carousel carousel-main">
 
-        <a asp-controller="Discount" asp-action="Index" asp-route-discountSlug="@d.discount.slug">
-            <img class="img-fluid" src="/uploads/@d.discount.picture.MimeType">
-        </a>
+            @foreach (var d in Model.deal.DealDiscounts)
+            {
+                <div class="item-card_list">
+
+                    <div class="category-image">
+
+                        <a asp-controller="Discount" asp-action="Index" asp-route-discountSlug="@d.discount.slug">
+
+                            <img class="lazyautosizes lazyloaded " data-widths="[160, 240, 320]"
+                                 data-aspectratio="" data-sizes="auto"
+                                 alt="" style=""
+                               src="/uploads/@d.discount.picture.MimeType">
+                        </a>
+                    </div>
+                    <div class="category-name">
+                        <h3 class="cat-block-title">@d.discount.Name</h3>
+                    </div>
+                </div>
+         
+            }
+
+        </div>
     </div>
-}
+
 
 <div class="sort-btn">
 

@@ -114,7 +114,22 @@ namespace Web.Controllers
                 return Ok(metadata);
         }
 
-
+        [HttpGet("GetSubCategories")]
+        public async Task<IActionResult> GetSubCategories(string slug)
+        {
+            if (slug == null)
+            {
+                return Ok("");
+            }
+            var categs =await _unitOfWork.Category.GetSubCategoryBySlug(slug);
+            return Ok(categs);
+        }
+        [HttpGet("GetParentCategories")]
+        public async Task<IActionResult> GetParentCategories()
+        {
+            var categs = await _unitOfWork.Category.GetParentCategories();
+            return Ok(categs);
+        }
         //[HttpPost]
         //[Route("index")]
         //public IActionResult Index(int categoryID,int s)
