@@ -10,23 +10,19 @@
 <!---Home Jumbotron -->
 @await Component.InvokeAsync("HomeJumbotron")
 
-
 <!---Deals -->
-
 @await Component.InvokeAsync("DealsBanner")
 
-
 <!---Discounts -->
+@*@await Component.InvokeAsync("DiscountBanner")*@
 
-@await Component.InvokeAsync("DiscountBanner")
 
 
-<hr />
 <!---Categories -->
 @await Component.InvokeAsync("HomeCategories")
 
 <!---Discounts -->
 @*@await Component.InvokeAsync("HomeProducts")*@
 
-<hr />
+
 @await Component.InvokeAsync("HomeRandomProducts")

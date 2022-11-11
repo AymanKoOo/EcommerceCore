@@ -3,23 +3,24 @@
 *@
 @{
 }
-@model IEnumerable<Core.Entites.Discount>
+@model IEnumerable<Core.Entites.Catalog.Deal>
 
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/uploads/@Model.First().picture.MimeType" class="d-block w-100" alt="...">
+            <img src="/uploads/@Model.First().dealPictures[0].picture.MimeType" class="d-block w-100" alt="...">
         </div>
-        @foreach (var discount in Model)
+        @foreach (var deal in Model)
         {
-            if (discount.DiscountTypeId == 1)
-            {
-                <div class="carousel-item">
-                    <img src="/uploads/@discount.picture.MimeType" class="d-block w-100" alt="...">
-                </div>
+            @if(deal.ShowOnBigBanner==true){
+            <div class="carousel-item">
+                <a asp-controller="Deals" asp-route-dealSlug="@deal.Slug" asp-action="Index">
+                    <img class="d-block w-100" alt="..."
+                         src="/uploads/@deal.dealPictures[0].picture.MimeType" />
+                </a>
+            </div>
             }
         }
-
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -786,14 +786,18 @@ body.open .lightbox {
 }
 
     .browse-btn a {
-        border: 1px solid gray;
-        color: black;
-        padding: 10px;
-        border-radius: 4px;
+        border: 2px solid #1ec737;
+        color: #1ec737;
+        padding: 15px;
+        padding-left: 60px;
+        border-radius: 8px;
+        padding-right: 60px;
+        font-weight: 600;
+        font-size: 16px;
     }
 
         .browse-btn a:hover {
-            background-color: rgba(223, 223, 223, 0.993);
+            border: 2px solid #8feb9c;
         }
 
 
@@ -1339,6 +1343,11 @@ button:focus .product-image img {
     height:400px;
 }
 
+    .carousel-item img:hover {
+        filter: brightness(70%);
+        cursor: pointer;
+        transition: all ease-in 0.2s;
+    }
 .jumbotron img {
     border-radius: 20px;
 }
@@ -1376,8 +1385,7 @@ button:focus .product-image img {
     max-height: 300px;
     opacity: 1;
     cursor: pointer;
-    width: 300px;
-    height:300px;
+    height:250px;
     margin-top: 10px;
 }
 
@@ -1539,8 +1547,11 @@ button:focus .product-image img {
 
 
 .product-image img {
-    height: 100%;
+    border-radius: 15px;
+    height: 230px;
     width: 100%;
+    object-fit: cover;
+    object-position: bottom;
 }
 
 nav .fa {
@@ -3154,17 +3165,8 @@ body.open .lightbox {
     margin-top: 50px;
 }
 
-    .browse-btn a {
-        border: 1px solid gray;
-        color: black;
-        padding: 10px;
-        border-radius: 4px;
-    }
 
-        .browse-btn a:hover {
-            background-color: rgba(223, 223, 223, 0.993);
-        }
-
+     
 
 .footer {
     width: 100%;
@@ -3880,6 +3882,7 @@ p {
     transition: visibility 0.3s linear,;
     align-content: center;
     height: 50px;
+    left:0;
 }
 
     .product .product-button a {
@@ -4228,7 +4231,6 @@ header {
 }
 
 .product {
-    border: 1px solid #eeeeee;
     border-radius: 15px;
 }
 

@@ -13,7 +13,8 @@ namespace Core.Interfaces.Catalog
         Deal geById(int id);
         string MakeDealSlugUnique(string Slug);
         IEnumerable<Deal> getallDeals();
-        Task<List<Deal>> GetForbanner();
+        Task<List<Deal>> GetForSmallbanner();
+        Task<List<Deal>> GetForBigbanner();
         Task AddDealDiscount(DealDiscount dealDiscount);
     }
 }

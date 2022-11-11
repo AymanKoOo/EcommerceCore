@@ -19,7 +19,7 @@ namespace Web.Components
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var deals = await unitOfWork.dealRepo.GetForbanner();
+            var deals = await unitOfWork.dealRepo.GetForSmallbanner();
             return View(deals);
         }
     }

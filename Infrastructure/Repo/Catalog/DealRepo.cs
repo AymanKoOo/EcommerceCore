@@ -54,11 +54,14 @@ namespace Infrastructure.Repo.Catalog
         }
 
 
-        public async Task<List<Deal>> GetForbanner()
+        public async Task<List<Deal>> GetForSmallbanner()
         {
-            return await _dbcontext.deals.Take(8).OrderBy(x => x.Id).Include(x=>x.dealPictures).ThenInclude(e=>e.picture).ToListAsync();
+            return await _dbcontext.deals.Where(x => x.ShowOnSmallBanner == true).Take(8).OrderBy(x => x.Id).Include(x=>x.dealPictures).ThenInclude(e=>e.picture).ToListAsync();
         }
-
+        public async Task<List<Deal>> GetForBigbanner()
+        {
+            return await _dbcontext.deals.Where(x=>x.ShowOnBigBanner==true).Take(8).OrderBy(x => x.Id).Include(x => x.dealPictures).ThenInclude(e => e.picture).ToListAsync();
+        }
         public IEnumerable<Deal> getallDeals()
         {
             return _dbcontext.deals.ToList();
