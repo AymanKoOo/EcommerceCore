@@ -2,11 +2,13 @@
 
 
 <div class="main-container grid-products mt-5 product-detail">
+  
+
     <div class="row ">
 
         @if (Model.PageSize > 0)
         {
-            <div class="col-lg-2 col-md-4 col-sm-4 col-12">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-12">
 
                 <div class="right">
 
@@ -23,54 +25,54 @@
             </div>
         }
 
-    <div class="col-lg-10 col-md-7 col-sm-7 col-12">
+        <div class="col-lg-9 col-md-7 col-sm-7 col-12">
 
-        <div class="left">
+            <div class="left">
 
-            <div class="products Container">
+                <div class="products Container">
 
-                <div id="posts" class="row">
-                    {
+                    <div id="posts" class="row">
+                        {
 
-                    @foreach (var product in Model.Data)
-                    {
-                        <div class="product-item col-lg-4 col-md-6 col-sm-12">
+                        @foreach (var product in Model.Data)
+                        {
+                            <div class="product-item col-lg-3 col-md-6 col-sm-12">
 
-                            <div class="Product-Img">
-                                <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.Id">
-                                    <img class="img-fluid" src="/uploads/@product.Picture">
-                                </a>
+                                <div class="Product-Img">
+                                    <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.Id">
+                                        <img class="img-fluid" src="/uploads/@product.Picture">
+                                    </a>
+                                </div>
+
+                                <div class="product-name">
+                                    @product.Name
+                                </div>
+
+                                <div class="rating">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </div>
+                                <div class="product-price">
+
+                                    <span class="a-price-symbol">EGP</span>
+                                    <span class="a-price-whole">@product.Price</span>
+                                    @if (product.HasDiscountsApplied == true)
+                                    {
+                                        <span class="a-price-discount">@product.OldPrice</span>
+                                    }
+                                </div>
                             </div>
+                        }
+                        }
 
-                            <div class="product-name">
-                                @product.Name
-                            </div>
-
-                            <div class="rating">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </div>
-                            <div class="product-price">
-
-                                <span class="a-price-symbol">EGP</span>
-                                <span class="a-price-whole">@product.Price</span>
-                                @if (product.HasDiscountsApplied == true)
-                                {
-                                    <span class="a-price-discount">@product.OldPrice</span>
-                                }
-                            </div>
-                        </div>
-                    }
-                    }
-
+                    </div>
                 </div>
+
             </div>
 
+
         </div>
-
-
-    </div>
 
 
     </div>
