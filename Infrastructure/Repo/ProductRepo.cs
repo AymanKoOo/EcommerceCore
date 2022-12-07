@@ -46,17 +46,26 @@ namespace Infrastructure.Repo
         //    return _dbcontext.products.FirstOrDefaultAsync(m => m.Id = productId);
         //}
 
-
+        public async Task<Product> GetProductBySlug(string slug)
+        {
+            return await _dbcontext.products.Include(x => x.productPictures).ThenInclude(x => x.picture)
+                .Include(x => x.ProductAttributeMappings).ThenInclude(x => x.productAttributeOptions).FirstOrDefaultAsync(x => x.Slug == slug);
+        }
         public async Task<Product> GetProductByName(string name)
         {
             return await _dbcontext.products.FirstOrDefaultAsync(x => x.Name == name);
+        }
+        public void UpdateProductPicture(ProductPicture productPic)
+        {
+             _dbcontext.productPictures.Update(productPic);
         }
         public async Task AddPicture(int prdouctID, int picID)
         {
             var model = new ProductPicture
             {
                 ProductId = prdouctID,
-                PictureId = picID
+                PictureId = picID,
+                DisplayOrder=1
             };
             await _dbcontext.productPictures.AddAsync(model);
         }
@@ -616,7 +625,15 @@ namespace Infrastructure.Repo
             return _dbcontext.productAttributeMappings.Where(x => x.ProductId == id)
                   .Include(x => x.productAttribute).Include(x=>x.productAttributeOptions);
         }
-
+        public IEnumerable<ProductPicture> GetProductPictureByProductID(int id)
+        {
+            return _dbcontext.productPictures.Where(x => x.ProductId == id)
+                  .Include(x=>x.picture);
+        }
+        public ProductPicture GetSingleProductPictureByProductID(int picId)
+        {
+            return _dbcontext.productPictures.Where(x => x.PictureId == picId).FirstOrDefault();
+        }
         public async Task<ProductAttributeMapping> GetProductAttrMappingByID(int id)
         {
             return await _dbcontext.productAttributeMappings.Include(x=>x.product).ThenInclude(x=>x.productPictures).ThenInclude(x=>x.picture)
@@ -628,6 +645,17 @@ namespace Infrastructure.Repo
               x=>x.picture).ToList();
         }
 
-       
+
+        public string MakeDealSlugUnique(string Slug)
+        {
+            int i = 0;
+            while (_dbcontext.products.Any(x => x.Slug == Slug))
+            {
+                Slug = $"{Slug}-{i++}";
+            }
+            return Slug;
+        }
+
+
     }
 }

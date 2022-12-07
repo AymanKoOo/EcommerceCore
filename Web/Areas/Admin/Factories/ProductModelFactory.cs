@@ -73,6 +73,9 @@ namespace Web.Areas.Admin.Factories
                         var discountProductModel = mapper.Map<ProductModel>(product);
 
                         discountProductModel.Id = product.Id;
+                        discountProductModel.Slug = product.Slug;
+
+
                         discountProductModel.Name = product.Name;
                         discountProductModel.Picture = product.productPictures[0].picture.MimeType;
                         discountProductModel.OldPrice = product.OldPrice;
@@ -125,6 +128,9 @@ namespace Web.Areas.Admin.Factories
             }
             var attr =  unitOfWork.Product.GetProductAttrMappingByProductID(product.Id);
             model.productAttributes = attr;
+
+            var pics = unitOfWork.Product.GetProductPictureByProductID(product.Id);
+            model.productPictures = pics;
             //prepare model select categories
             var categories = await unitOfWork.Category.GetAllCategoriesAsync();
             model.categories = categories;
@@ -164,11 +170,11 @@ namespace Web.Areas.Admin.Factories
             return model;
         }
        
-        public async Task<ProductDeatilsVM> PrepareProductDetailModelAsync(ProductDeatilsVM model, int productId)
+        public async Task<ProductDeatilsVM> PrepareProductDetailModelAsync(ProductDeatilsVM model, string slug)
         {
-            if (productId < 0) return null;
+            if (slug == null) return null;
 
-            var product = unitOfWork.Product.GetProduct(productId);
+            var product = await unitOfWork.Product.GetProductBySlug(slug);
             if (product == null)
             {
                 return null;
@@ -180,6 +186,9 @@ namespace Web.Areas.Admin.Factories
             product.Price = pricingObj.finalPrice;
 
             model.productAttributeMappings = unitOfWork.Product.GetProductAttrMappingByProductID(product.Id);
+
+            var pics = unitOfWork.Product.GetProductPictureByProductID(product.Id);
+            model.productPictures = pics;
             model.product = product;
             
             return model;

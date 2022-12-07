@@ -4600,3 +4600,9 @@ a.AddAttr {
         color: #1c1b1b;
         user-select: none;
     }
+
+
+.thmb-img {
+    width: 150px;
+    height: 100px;
+}

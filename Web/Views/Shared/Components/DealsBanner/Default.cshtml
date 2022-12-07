@@ -8,16 +8,28 @@
             {
                 @if (deals.ShowOnSmallBanner == true)
                 {
+                    @if (@deals.dealPictures.Count==0)
+                    {
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <a asp-controller="Deals" asp-route-dealSlug="@deals.Slug" asp-action="Index">
+                                <img class="img-fluid"
+                                     src="/images/images/noImage.png"/>
+                            </a>
+                        </div>
+                    }
 
-                    <div class="col-lg-3 col-md-6 col-12">
-                        <a asp-controller="Deals" asp-route-dealSlug="@deals.Slug" asp-action="Index">
+                    else
+                    {
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <a asp-controller="Deals" asp-route-dealSlug="@deals.Slug" asp-action="Index">
 
-                            <img class="img-fluid"
-                                 src="/uploads/@deals.dealPictures[0].picture.MimeType" />
-                        </a>
-                    </div>
+                                <img class="img-fluid"
+                                     src="/uploads/@deals.dealPictures.Where(x => x.DisplayOrder == 1).Single().picture.MimeType" />
+                            </a>
+                        </div>
+                    }
                 }
             }
-            </div>
+        </div>
     </div>
 </div>

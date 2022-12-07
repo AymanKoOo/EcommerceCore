@@ -23,5 +23,8 @@ namespace Infrastructure.Repo.Media
         {
             return _dbcontext.pictures.FirstOrDefaultAsync(x => x.MimeType == name);
         }
+        public Task<Picture> getPicById(int id) { 
+            return _dbcontext.pictures.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

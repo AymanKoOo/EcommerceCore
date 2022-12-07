@@ -12,5 +12,8 @@ namespace Core.Entites.Catalog
 
         public int PictureId { get; set; }
         public Picture picture { get; set; }
+
+        public int DisplayOrder { get; set; }
+
     }
 }

@@ -9,7 +9,7 @@
 
 <div class="contenti">
     <div class="container">
-        <form asp-controller="Product" asp-action="EditProduct" method="post">
+        <form asp-controller="Product"  enctype="multipart/form-data" asp-action="EditProduct" method="post">
 
             <input name="Id" value="@Model.Id" asp-for="Id" type="hidden" />
             <div class="row">
@@ -34,6 +34,28 @@
                     </div>
                 </div>
 
+
+                <div class="col-md-12">
+                    <div class="form-group">
+
+                        @foreach (var p in Model.productPictures)
+                        {
+                            @if (@p.picture.MimeType == null)
+                            {
+                                <input type="radio" class="form-control required"  asp-for="MainpictureID" value="@p.PictureId" />
+                                <img class="thumbnail-img fit-image" src="/uploads/noImage.png" />
+                            }
+                            else
+                            {
+                                <input type="radio" class="form-control required"  asp-for="MainpictureID" value="@p.PictureId" />
+                                <img class="thmb-img " src="/uploads/@p.picture.MimeType" />
+                            }
+                        }
+                    </div>
+                </div>
+
+
+
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>UnitPrice:</label>
@@ -54,7 +76,50 @@
                     }
 
                 </select>
+                @if (Model.productPictures != null)
+                {
 
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Picture</th>
+                                <th>Display Order</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+
+
+
+                        <tbody>
+                            @foreach (var p in Model.productPictures)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (@p.picture.MimeType == null)
+                                        {
+                                            <img class="thumbnail-img fit-image" src="/uploads/noImage.png" />
+                                        }
+                                        else
+                                        {
+                                            <img class="thumbnail-img fit-image" src="/uploads/@p.picture.MimeType" />
+                                        }
+                                    </td>
+                                    <td>
+                                        display Order
+                                    </td>
+                                    <td>
+
+                                        <a asp-controller="Product" asp-action="ProductAttributeOptionAdd" asp-route-ProductAttributeMappingEdit="@p.picture.Id">Edit</a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Product" asp-action="ProductPictureDelete" asp-route-id="@p.picture.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
 
                 <table class="table">
                     <thead>
@@ -82,7 +147,7 @@
                 <a asp-controller="Product" asp-action="ProductAttributeEdit" asp-route-productID="@Model.Id">Edit Product Atrribute</a>
 
                 <a asp-controller="Product" asp-action="ProductSpecAttributeAdd" asp-route-productID="@Model.Id">Add Specifaction Atrribute</a>
-                
+
                 <a asp-controller="Product" asp-action="ProductAttributeDelete" asp-route-productID="@Model.Id">Delete  Product Atrribute</a>
 
                 <button class="btn btn-primary" type="submit">

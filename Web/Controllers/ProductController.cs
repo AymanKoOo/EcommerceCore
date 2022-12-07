@@ -35,18 +35,18 @@ namespace Web.Controllers
         }
 
         [HttpGet("prod")]
-        public virtual async Task<IActionResult> ProductDetails(int productId, int updatecartitemid = 0)
+        public virtual async Task<IActionResult> ProductDetails(string slug, int updatecartitemid = 0)
         {
-            var productDetailVM = await _productModelFactory.PrepareProductDetailModelAsync(new ProductDeatilsVM(), productId);
+            var productDetailVM = await _productModelFactory.PrepareProductDetailModelAsync(new ProductDeatilsVM(), slug);
             return View(productDetailVM);
         }
 
         [HttpPost("GetExtraProductPriceByAjax")]
-        public virtual async Task<IActionResult> GetExtraProductPriceByAjax(List<int> options, int ProductID)
+        public virtual async Task<IActionResult> GetExtraProductPriceByAjax(List<int> options, string slug)
         {
             //_unitOfWork.Product.GetProduct()
             var ExtraPrice = _unitOfWork.productAttributes.getAttributePrices(options);
-            var product = _unitOfWork.Product.GetProduct(ProductID);
+            var product = await _unitOfWork.Product.GetProductBySlug(slug);
 
             var pricingObj = await priceCalculation.GetFinalPriceAsync(product);
 

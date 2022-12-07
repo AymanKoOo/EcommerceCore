@@ -53,11 +53,22 @@
 
                             <div class="product-image">
 
-                                <a href="#">
 
-                                    <img class="pic-prduct" src="/uploads/@product.productPictures[0].picture.MimeType" />
+                                @if (@product.productPictures.Count == 0)
+                                {
+                                <div class="col-lg-3 col-md-6 col-12">
+                                    <a asp-controller="Product" asp-action="ProductDetails" asp-route-slug="@product.Slug">
+                                        <img class="pic-prduct" src="/images/images/noImage.png" />
+                                    </a>
+                                </div>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Product" asp-action="ProductDetails" asp-route-slug="@product.Slug">
+                                        <img class="pic-prduct" src="/uploads/@product.productPictures.Where(x => x.DisplayOrder == 1).Single().picture.MimeType" />
+                                    </a>
+                                }
 
-                                </a>
                                 @if (product.HasDiscountsApplied == true)
                                 {
                                     <span class="discount">@product.Discounts[0].discounts.DiscountPercentage %</span>

@@ -11,13 +11,14 @@ namespace Web.DTOs
     public class ProductDTO
     {
         public int Id { get; set; }
-
+        public int MainpictureID { get; set; }
         public string Name { get; set; }
+        public string Slug { get; set; }
         public string Summary { get; set; }
         public string Description { get; set; }
         public decimal OldPrice { get; set; }
         public decimal Price { get; set; }
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public IFormFile PictureFile { get; set; }
         public string ImageFile { get; set; }
 

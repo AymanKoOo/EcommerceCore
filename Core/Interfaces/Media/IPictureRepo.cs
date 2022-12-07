@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Media
 {
-    public interface IPictureRepo:IGenericRepo<Picture>
+    public interface IPictureRepo : IGenericRepo<Picture>
     {
         public Task<Picture> getPicByName(string name);
+        public Task<Picture> getPicById(int id);
     }
 }

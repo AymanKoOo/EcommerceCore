@@ -23,6 +23,7 @@ namespace Infrastructure.Repo.Catalog
             var dp = new DealPictures();
             dp.DealID = dealID;
             dp.PictureId = PicID;
+            dp.DisplayOrder = 1;
             await _dbcontext.dealPictures.AddAsync(dp);
         }
         public string MakeDealSlugUnique(string Slug)

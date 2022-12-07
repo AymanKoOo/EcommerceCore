@@ -39,7 +39,7 @@
                             <div class="product-item col-lg-3 col-md-6 col-sm-12">
 
                                 <div class="Product-Img">
-                                    <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@product.Id">
+                                    <a asp-controller="Product" asp-action="ProductDetails" asp-route-slug="@product.Slug">
                                         <img class="img-fluid" src="/uploads/@product.Picture">
                                     </a>
                                 </div>
@@ -116,7 +116,7 @@
                                         <a href="">`+response.productDTOs[i].unitPrice+`</a>
                                     </div>
 
-                                    <button onclick="myFunction(`+response.productDTOs[i].id+`)">Details</button>
+                                    <button onclick="myFunction(`+response.productDTOs[i].slug+`)">Details</button>
 
                                 </div>
                             </div>
@@ -139,12 +139,10 @@
     });
 
 
-    function myFunction(id) {
+    function myFunction(slug) {
 
-        window.location.href = '@Url.Action("ProductDetail", "Products")/' + id;
-
+            window.location.href = '@Url.Action("ProductDetail", "Products")/' + slug;
     }
-
 
 
     </script>

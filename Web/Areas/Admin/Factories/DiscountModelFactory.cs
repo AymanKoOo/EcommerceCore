@@ -60,6 +60,7 @@ namespace Web.Areas.Admin.Factories
                         discountProductModel.Picture = product.productPictures[0].picture.MimeType;
                         discountProductModel.OldPrice = product.OldPrice;
                         discountProductModel.Price = product.Price;
+                        discountProductModel.Slug = product.Slug;
                         discountProductModel.HasDiscountsApplied = product.HasDiscountsApplied;
                         return discountProductModel;
                     });
@@ -139,6 +140,8 @@ namespace Web.Areas.Admin.Factories
                         var discountProductModel = mapper.Map<ProductModel>(product);
                         discountProductModel.Id = product.Id;
                         discountProductModel.Name = product.Name;
+                        discountProductModel.Slug = product.Slug;
+
                         discountProductModel.Picture = product.productPictures[0].picture.MimeType;
                         discountProductModel.OldPrice = product.OldPrice;
                         discountProductModel.Price = product.Price;

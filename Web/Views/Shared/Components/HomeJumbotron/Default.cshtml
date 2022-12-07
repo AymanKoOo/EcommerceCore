@@ -8,17 +8,40 @@
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/uploads/@Model.First().dealPictures[0].picture.MimeType" class="d-block w-100" alt="...">
+
+            @if (@Model.First().dealPictures[0].picture.MimeType == null)
+            {
+                <img src="/uploads/noImage.png" class="d-block w-100" alt="...">
+            }
+            else
+            {
+                <img src="/uploads/@Model.First().dealPictures.Where(x => x.DisplayOrder == 1).Select(x => x.picture.MimeType)" class="d-block w-100" alt="...">
+            }
+
         </div>
         @foreach (var deal in Model)
         {
-            @if(deal.ShowOnBigBanner==true){
-            <div class="carousel-item">
-                <a asp-controller="Deals" asp-route-dealSlug="@deal.Slug" asp-action="Index">
-                    <img class="d-block w-100" alt="..."
-                         src="/uploads/@deal.dealPictures[0].picture.MimeType" />
-                </a>
-            </div>
+            @if (deal.ShowOnBigBanner == true)
+            {
+                <div class="carousel-item">
+
+                    @if (@deal.dealPictures.Count == 0)
+                    {
+                    <a asp-controller="Deals" asp-route-dealSlug="@deal.Slug" asp-action="Index">
+                        <img src="/images/images/noImage.png" class="d-block w-100" alt="...">
+                    </a>
+                    }
+                
+                    else
+                    {
+
+                    <a asp-controller="Deals" asp-route-dealSlug="@deal.Slug" asp-action="Index">
+                        <img class="d-block w-100" alt="..."
+                             src="/uploads/@deal.dealPictures[0].picture.MimeType" />
+                    </a>
+                    }
+
+                </div>
             }
         }
     </div>

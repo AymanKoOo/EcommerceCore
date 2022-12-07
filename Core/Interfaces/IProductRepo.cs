@@ -11,10 +11,12 @@ namespace Core.Interfaces
 {
     public interface IProductRepo:IGenericRepo<Product>
     {
-        IEnumerable<Product> GetProductsByCatgory(int catgoryID);
+        public void UpdateProductPicture(ProductPicture productPic);
+        public ProductPicture GetSingleProductPictureByProductID(int picId);
 
+        IEnumerable<Product> GetProductsByCatgory(int catgoryID);
         public Task<Product> GetProductByName(string name);
-       
+        public Task<Product> GetProductBySlug(string slug);
         Task<IEnumerable<Product>> GetAllProducts();
 
         PagedList<Product> GetProductsByCatgoryList(int catgoryID, int pageSize, int pageNumber,List<SpecificationAttributeOption> filterSpec,int orderFilter);
@@ -40,6 +42,7 @@ namespace Core.Interfaces
         public PagedList<Product> GetProductsWithAppliedDiscountAsync(int discountId, List<SpecificationAttributeOption> filterSpec, int pageSize, int pageNumber, int OrderFilter);
         public Task AddProductTODiscount(Product product,int discountID);
 
+        public string MakeDealSlugUnique(string Slug);
 
         public Task AddProductSpecificationAttribute(ProductSpecificationAttribute model);
 
@@ -59,6 +62,7 @@ namespace Core.Interfaces
 
         public List<Product> GetProductByCartList(List<int> IDs);
 
+        public IEnumerable<ProductPicture> GetProductPictureByProductID(int id);
 
         public List<Product> GetAllProductsWithAppliedDiscountAsync(int discountId);
         public List<Product> GetAllProductsWithAppliedDiscountSAsync(List<int> discountId);

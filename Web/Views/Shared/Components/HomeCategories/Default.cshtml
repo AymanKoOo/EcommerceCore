@@ -21,7 +21,19 @@
                             <div class="item-card_list">
 
                                 <div class="category-image">
+                                    @if (@cat.categoryPictures.Count == 0)
+                                    {
+                                    <a asp-controller="Category" asp-action="Index" asp-route-slug="@cat.slug">
 
+                                        <img class="lazyautosizes lazyloaded " data-widths="[160, 240, 320]"
+                                             data-aspectratio="" data-sizes="auto"
+                                             alt="" style=""
+                                            src="/images/images/noImage.png" />
+
+                                    </a>
+                                    }
+                                    else 
+                                    {
                                     <a asp-controller="Category" asp-action="Index" asp-route-slug="@cat.slug">
 
                                         <img class="lazyautosizes lazyloaded " data-widths="[160, 240, 320]"
@@ -29,7 +41,8 @@
                                              alt="" style=""
                                              src="/uploads/@cat.categoryPictures[0].picture.MimeType" />
 
-                                    </a>
+                                    </a>}
+
                                 </div>
                                 <div class="category-name">
                                     <h3 class="cat-block-title">@cat.Name</h3>

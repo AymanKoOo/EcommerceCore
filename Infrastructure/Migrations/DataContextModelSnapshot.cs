@@ -179,6 +179,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("PictureId")
                         .HasColumnType("int");
 
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
                     b.HasKey("categoryID", "PictureId");
 
                     b.HasIndex("PictureId");
@@ -252,6 +255,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
 
                     b.HasKey("DealID", "PictureId");
@@ -345,6 +351,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PictureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId", "PictureId");
@@ -832,6 +841,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Star")
                         .HasColumnType("float");

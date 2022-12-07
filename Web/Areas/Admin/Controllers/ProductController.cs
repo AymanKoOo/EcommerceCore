@@ -29,10 +29,11 @@ namespace Web.Areas.Admin.Controllers
         private readonly IProductAttributeModelFactory _productAttributeModelFactory;
         private readonly IPictureService picture;
         private readonly IWebHostEnvironment environment;
+        private readonly ISlugService _slugService;
 
         public IProductModelFactory _productModelFactory { get; }
 
-        public ProductController(IUnitOfWork unitOfWork, IMapper mapper, IProductAttributeModelFactory productAttributeModelFactory , IProductModelFactory ProductModelFactory, IPictureService picture, IWebHostEnvironment environment)
+        public ProductController(IUnitOfWork unitOfWork, IMapper mapper, ISlugService slugService, IProductAttributeModelFactory productAttributeModelFactory , IProductModelFactory ProductModelFactory, IPictureService picture, IWebHostEnvironment environment)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -40,6 +41,7 @@ namespace Web.Areas.Admin.Controllers
             this._productModelFactory = ProductModelFactory;
             this.picture = picture;
             this.environment = environment;
+            _slugService = slugService;
         }
 
         public async Task<IActionResult> Index(int pageSize=5, int pageNumber=1)
@@ -61,17 +63,55 @@ namespace Web.Areas.Admin.Controllers
         }
 
         [HttpPost("EditProduct")]
-        public IActionResult EditProduct(Core.Entites.Product product)
+        public async Task<IActionResult> EditProduct(ProductDTO model)
         {
-            if (ModelState.IsValid)
+           if (ModelState.IsValid)
             {
-                var Product = _unitOfWork.Product.GetProduct(product.Id);
-                Product.ImageFile = product.ImageFile;
-                Product.Name = product.Name;
-                Product.Price = product.Price;
+                var Product = _unitOfWork.Product.GetProduct(model.Id);
 
-                Product.CategoryId = product.CategoryId;
-                Product.Description = product.Description;
+                var picName="";
+                //Add Picture
+                if (model.PictureFile != null)
+                {
+                    picName = await picture.UploadPictureAsync(model.PictureFile, environment.WebRootPath);
+
+                    var picObj = new Picture
+                    {
+                        MimeType = picName,
+                    };
+
+                    await _unitOfWork.picture.Add(picObj);
+                }
+                _unitOfWork.Save();
+
+                if (model.PictureFile != null)
+                {
+                    var pic = await _unitOfWork.picture.getPicByName(picName);
+
+                    var prod = await _unitOfWork.Product.GetProductBySlug(Product.Slug);
+
+                    await _unitOfWork.Product.AddPicture(prod.Id, pic.Id);
+                }
+                _unitOfWork.Save();
+
+                var ProductPics = _unitOfWork.Product.GetProductPictureByProductID(Product.Id);
+                
+                foreach (var p in ProductPics)
+                {
+                    p.DisplayOrder = 0;
+                    _unitOfWork.Product.UpdateProductPicture(p);
+                }
+
+                //Add Main Picture
+                var MainPicID = model.MainpictureID;
+                var Mpic = _unitOfWork.Product.GetSingleProductPictureByProductID(MainPicID);
+                Mpic.DisplayOrder = 1;
+                //end//
+                Product.Name = model.Name;
+                Product.Price = model.Price;
+
+                Product.CategoryId = model.CategoryId;
+                Product.Description = model.Description;
 
                 _unitOfWork.Product.Update(Product);
                 _unitOfWork.Save();
@@ -104,13 +144,20 @@ namespace Web.Areas.Admin.Controllers
             await _unitOfWork.picture.Add(picObj);
 
             var product = _mapper.Map<Product>(model);
+         
+            string ProductSlug = _slugService.createSlug(model.Name);
+
+            string uniqueSlug = _unitOfWork.Product.MakeDealSlugUnique(ProductSlug);
+
+            product.Slug = uniqueSlug;
+
             await _unitOfWork.Product.Add(product);
 
             _unitOfWork.Save();
 
             var pic = await _unitOfWork.picture.getPicByName(picName);
-
-            var prod = await _unitOfWork.Product.GetProductByName(model.Name);
+            
+            var prod = await _unitOfWork.Product.GetProductBySlug(uniqueSlug);
 
             await _unitOfWork.Product.AddPicture(prod.Id, pic.Id);
 
@@ -250,6 +297,16 @@ namespace Web.Areas.Admin.Controllers
                 ol.Add(o);
             }
             return Ok(ol);
+        }
+
+
+        [HttpGet("ProductPictureDelete")]
+        public async Task<IActionResult> ProductPictureDelete(int id)
+        {
+            var pic = await _unitOfWork.picture.getPicById(id);
+            _unitOfWork.picture.Delete(pic);
+            _unitOfWork.Save();
+            return Redirect("/");
         }
     }
 }

@@ -97,7 +97,7 @@
                                                         <div class="value">
                                                             @*<input type="radio" asp-for="SelectedAttributes" value="@option.Id" name="@map.productAttribute.Name">*@
 
-                                                            <a data-attrID="@map.productAttribute.Id" data-attrValue="@option.Name" data-attrValueId="@option.Id" data-attrType="@map.productAttribute.Name" data-productID="@Model.product.Id" class="AddAttr">
+                                                            <a data-attrID="@map.productAttribute.Id" data-attrValue="@option.Name" data-attrValueId="@option.Id" data-attrType="@map.productAttribute.Name" data-productSlug="@Model.product.Slug" class="AddAttr">
                                                                 @option.Name
                                                             </a>
                                                         </div>
@@ -166,17 +166,17 @@
         $('#product-details').on("click", '.AddAttr', function () {
             var AttrID = $(this).attr('data-attrID');
             var AttrName = $(this).attr('data-attrType');
-            var productId = $(this).attr('data-productID');
+            var ProductSlug = $(this).attr('data-productSlug');
             var attrValue = $(this).attr('data-attrValue');
             var AttrValueID = $(this).attr('data-attrValueId');
 
             EditAttributeAfter(AttrID,attrValue);
 
             console.log(attributesObj);
-            console.log(productId);
+            console.log(ProductSlug);
             attributesObj[AttrName] = AttrValueID;
             const myJSON = JSON.stringify(attributesObj);
-            GetProduct(myJSON,productId);
+            GetProduct(myJSON, ProductSlug);
         });
 
 
@@ -207,7 +207,7 @@
             $(".zoomImg").attr('src', tbimg.attr('src'));
         });
 
-        function GetProduct(attributesObj, ProductID) {
+        function GetProduct(attributesObj, ProductSlug) {
              var options=[];
              Object.values(attributesObj).forEach(val => {
                  console.log(options.push(val));
@@ -216,7 +216,7 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("GetExtraProductPriceByAjax")",
-                data: { 'options': options, 'ProductID': ProductID },
+                data: { 'options': options, 'slug': ProductSlug },
                 AddCart: "json",
                 traditional: true,
                 success: function (response) {
