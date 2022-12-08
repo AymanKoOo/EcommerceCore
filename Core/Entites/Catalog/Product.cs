@@ -29,7 +29,7 @@ namespace Core.Entites
         // n-1 relationships
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-
+        public bool Deleted { get; set; }
         public virtual ICollection<DiscountProduct> Discounts { get; set; }
 
         public List<ProductPicture> productPictures { get; set; }

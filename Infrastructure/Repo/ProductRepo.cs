@@ -48,7 +48,7 @@ namespace Infrastructure.Repo
 
         public async Task<Product> GetProductBySlug(string slug)
         {
-            return await _dbcontext.products.Include(x => x.productPictures).ThenInclude(x => x.picture)
+            return await _dbcontext.products.Where(x=>x.Deleted==false).Include(x => x.productPictures).ThenInclude(x => x.picture)
                 .Include(x => x.ProductAttributeMappings).ThenInclude(x => x.productAttributeOptions).FirstOrDefaultAsync(x => x.Slug == slug);
         }
         public async Task<Product> GetProductByName(string name)
@@ -93,7 +93,7 @@ namespace Infrastructure.Repo
 
         public PagedList<Product> GetAllProductsList(int pageSize, int pageNumber)
         {
-            var products = _dbcontext.products.Include(x => x.Category);
+            var products = _dbcontext.products.Where(x => x.Deleted == false).Include(x => x.Category);
 
             return PagedList<Product>.ToPagedList(products,
             pageNumber,
@@ -538,7 +538,7 @@ namespace Infrastructure.Repo
         }
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            return await _dbcontext.products.Include(d => d.Discounts).Include(q => q.Category).Include(x => x.productPictures).ThenInclude(e => e.picture).ToListAsync();
+            return await _dbcontext.products.Where(x=>x.Deleted==false).Include(d => d.Discounts).Include(q => q.Category).Include(x => x.productPictures).ThenInclude(e => e.picture).ToListAsync();
         }
 
 
@@ -606,15 +606,16 @@ namespace Infrastructure.Repo
 
         public Product GetProduct(int productId)
         {
-            return _dbcontext.products.Include(x=>x.productPictures).ThenInclude(x=>x.picture)
+            return _dbcontext.products.Where(x => x.Deleted == false).Include(x=>x.productPictures).ThenInclude(x=>x.picture)
                 .Include(x=>x.ProductAttributeMappings).ThenInclude(x=>x.productAttributeOptions).FirstOrDefault(x => x.Id == productId);
         }
+        
         //public Product GetProductByGivenAttribute(int[] options,int productId)
         //{
         //    //return _dbcontext.products.Where(x=>x.Id==productId).Include(x=>x.ProductAttributeMappings)
         //}
 
-        
+
         /// <summary>
         /// ////////
         /// </summary>

@@ -71,72 +71,73 @@
                             <span class="a-price-whole">@Model.product.Price</span>
                             <span class="a-price-discount">EGP @Model.product.OldPrice</span>
                         </div>
+                        @if (Model.productAttributeMappings!=null) { 
 
-                        <div class="img-box">
-                            @{ int w = 0;}
-                            @foreach (var map in Model.productAttributeMappings)
-                            {
-                                <div class="prod-attr">
+                                <div class="img-box">
+                                    @{ int w = 0;}
+                                    @foreach (var map in Model.productAttributeMappings)
+                                    {
+                                        <div class="prod-attr">
 
-                                    <div class="attributes">
-                                        <div class="attr-header">
-                                            @map.productAttribute.Name:
-                                        </div>
-                                        <div id="@map.productAttribute.Id" class="attr-v">
-                                            @map.productAttributeOptions.FirstOrDefault().Name
-                                        </div>
-                                    </div>
-                                   
-                                    <div class="att-values">
-                                        <div class="container">
-                                            <div class="row">
+                                            <div class="attributes">
+                                                <div class="attr-header">
+                                                    @map.productAttribute.Name:
+                                                </div>
+                                                <div id="@map.productAttribute.Id" class="attr-v">
+                                                    @map.productAttributeOptions.FirstOrDefault().Name
+                                                </div>
+                                            </div>
 
-                                                @foreach (var option in map.productAttributeOptions)
-                                                {
-                                                    <div class="col-lg-2">
-                                                        <div class="value">
-                                                            @*<input type="radio" asp-for="SelectedAttributes" value="@option.Id" name="@map.productAttribute.Name">*@
+                                            <div class="att-values">
+                                                <div class="container">
+                                                    <div class="row">
 
-                                                            <a data-attrID="@map.productAttribute.Id" data-attrValue="@option.Name" data-attrValueId="@option.Id" data-attrType="@map.productAttribute.Name" data-productSlug="@Model.product.Slug" class="AddAttr">
-                                                                @option.Name
-                                                            </a>
-                                                        </div>
-                                                        <img class="pic" src="/uploads/@option.PicturePath" />
+                                                        @foreach (var option in map.productAttributeOptions)
+                                                        {
+                                                            <div class="col-lg-2">
+                                                                <div class="value">
+                                                                    @*<input type="radio" asp-for="SelectedAttributes" value="@option.Id" name="@map.productAttribute.Name">*@
+
+                                                                    <a data-attrID="@map.productAttribute.Id" data-attrValue="@option.Name" data-attrValueId="@option.Id" data-attrType="@map.productAttribute.Name" data-productSlug="@Model.product.Slug" class="AddAttr">
+                                                                        @option.Name
+                                                                    </a>
+                                                                </div>
+                                                                <img class="pic" src="/uploads/@option.PicturePath" />
+                                                            </div>
+                                                        }
                                                     </div>
-                                                }
+                                                </div>
                                             </div>
                                         </div>
+                                    }
+                                    @{w++;}
+                                </div>
+                         }
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <label for="" class="Size"></label>
                                     </div>
+
+                                    <div class="counter">
+                                        <span class="down">-</span>
+
+                                        <input id="qty" type="text" asp-for="Qty" value="1">
+                                        <span class="up">+</span>
+                                    </div>
+
+                                    <button type="submit" class="btnn">ADD TO CART</button>
+
+                                    <div class="product-description">
+                                        <span>
+                                            About this item
+                                        </span>
+                                        <div class="product-desc">
+                                            @Model.product.Description
+                                        </div>
+                                    </div>
+
                                 </div>
-                            }
-                            @{w++;}
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                <label for="" class="Size"></label>
-                            </div>
-
-                            <div class="counter">
-                                <span class="down">-</span>
-
-                                    <input id="qty" type="text" asp-for="Qty" value="1">
-                                    <span class="up">+</span>
-                            </div>
-
-                            <button type="submit" class="btnn">ADD TO CART</button>
-
-                            <div class="product-description">
-                                <span>
-                                    About this item
-                                </span>
-                                <div class="product-desc">
-                                    @Model.product.Description
-                                </div>
-                            </div>
-
-                        </div>
-                    </form>
+                            </form>
                 </div>
             </div>
         </div>

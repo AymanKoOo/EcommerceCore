@@ -83,29 +83,38 @@ namespace Web.Areas.Admin.Controllers
                     await _unitOfWork.picture.Add(picObj);
                 }
                 _unitOfWork.Save();
-
-                if (model.PictureFile != null)
-                {
-                    var pic = await _unitOfWork.picture.getPicByName(picName);
-
-                    var prod = await _unitOfWork.Product.GetProductBySlug(Product.Slug);
-
-                    await _unitOfWork.Product.AddPicture(prod.Id, pic.Id);
-                }
-                _unitOfWork.Save();
-
                 var ProductPics = _unitOfWork.Product.GetProductPictureByProductID(Product.Id);
-                
+
                 foreach (var p in ProductPics)
                 {
                     p.DisplayOrder = 0;
                     _unitOfWork.Product.UpdateProductPicture(p);
                 }
 
-                //Add Main Picture
+                if (model.PictureFile != null)
+                {
+                    var pic = await _unitOfWork.picture.getPicByName(picName);
+                    
+                    var prod = await _unitOfWork.Product.GetProductBySlug(Product.Slug);
+
+                    await _unitOfWork.Product.AddPicture(prod.Id, pic.Id);
+                }
+                _unitOfWork.Save();
+
+           
+                //Add Main Picture               
                 var MainPicID = model.MainpictureID;
-                var Mpic = _unitOfWork.Product.GetSingleProductPictureByProductID(MainPicID);
-                Mpic.DisplayOrder = 1;
+                if (MainPicID != 0)
+                {
+                    foreach (var p in ProductPics)
+                    {
+                        p.DisplayOrder = 0;
+                        _unitOfWork.Product.UpdateProductPicture(p);
+                    }
+                    var Mpic = _unitOfWork.Product.GetSingleProductPictureByProductID(MainPicID);
+                    Mpic.DisplayOrder = 1;
+                }
+               
                 //end//
                 Product.Name = model.Name;
                 Product.Price = model.Price;
@@ -168,8 +177,9 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet("DeleteProduct")]
         public IActionResult DeleteProduct(int productID)
         {
-            var product =  _unitOfWork.Product.GetProduct(productID);
-            _unitOfWork.Product.Delete(product);
+            var product = _unitOfWork.Product.GetProduct(productID);
+            product.Deleted = true;
+            _unitOfWork.Product.Update(product);
             _unitOfWork.Save();
             return Redirect("/");
         }

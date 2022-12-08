@@ -54,7 +54,12 @@ namespace Infrastructure.Repo.Orders
 
             return orderItem;
         }
-
+        public IQueryable<OrderItem> GetOrderItemOfProduct(int id)
+        {
+            var orderItems = _dbcontext.orderItems.Where(x => x.ProductId == id)
+                .Include(x => x.order);
+            return orderItems;
+        }
         public List<Order> GetMyOrders(string userEmail)
         {
             var orderItems = _dbcontext.orderItems.Where(x => x.order.customer.Email == userEmail).Include(x => x.order).Include(x=>x.order.customer)
