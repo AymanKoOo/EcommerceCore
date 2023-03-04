@@ -58,8 +58,6 @@ namespace Web.Controllers
             return Ok(products);
         }
 
-
-
         [Route("ProductDetail/{productID}")]
         [HttpGet]
         public IActionResult ProductDetail(int productID)

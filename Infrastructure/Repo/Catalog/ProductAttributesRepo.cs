@@ -53,11 +53,13 @@ namespace Infrastructure.Repo.Catalog
         public async Task<List<ProductAttributeOption>> GetListProductAttrOptionByID(List<int> ids)
         {
             List<ProductAttributeOption> options = new List<ProductAttributeOption>();
+            if (ids != null) { 
             foreach (var id in ids)
             {
                 if (id < 0) return null;
                 var option = await _dbcontext.productAttributeOptions.Include(x=>x.productAttributeMapping).ThenInclude(x=>x.productAttribute).FirstOrDefaultAsync(x => x.Id == id);
                 options.Add(option);
+            }
             }
             return options;
         }
@@ -90,10 +92,11 @@ namespace Infrastructure.Repo.Catalog
         public decimal getAttributePrices(List<int> optionsIds)
         {
             decimal finalPrice = 0;
-
-            foreach(var id in optionsIds)
-            {
-               finalPrice += _dbcontext.productAttributeOptions.Where(x => x.Id == id).Select(x => x.PriceAdjustment).Single();
+            if (optionsIds != null) { 
+                foreach(var id in optionsIds)
+                {
+                   finalPrice += _dbcontext.productAttributeOptions.Where(x => x.Id == id).Select(x => x.PriceAdjustment).Single();
+                }
             }
             return finalPrice;
         }

@@ -9,13 +9,17 @@
     <div class="carousel-inner">
         <div class="carousel-item active">
 
-            @if (@Model.First().dealPictures[0].picture.MimeType == null)
+            @if (Model.First().dealPictures[0].picture.MimeType == null)
             {
                 <img src="/uploads/noImage.png" class="d-block w-100" alt="...">
             }
             else
             {
-                <img src="/uploads/@Model.First().dealPictures.Where(x => x.DisplayOrder == 1).Select(x => x.picture.MimeType)" class="d-block w-100" alt="...">
+                @*<img src="/uploads/@Model.First().dealPictures.Where(x => x.DisplayOrder == 1).Select(x => x.picture.MimeType)" class="d-block w-100" alt="...">*@
+                <a asp-controller="Deals" asp-route-dealSlug="/@Model.First().Slug" asp-action="Index">
+                    <img class="d-block w-100" alt="..."
+                         src="/uploads/@Model.First().dealPictures[0].picture.MimeType" />
+                </a>
             }
 
         </div>

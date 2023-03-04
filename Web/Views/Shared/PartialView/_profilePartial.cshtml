@@ -20,6 +20,6 @@ else
 {
     <div class="ec-btn-desc">
         <span class="ec-btn-title">Account</span>
-        @Html.ActionLink("Login", "Login", "Account", null, new { @class = "ec-btn-stitle" });
+        <a asp-controller="Account" asp-action="Login" class="ec-btn-stitle">Login</a>
     </div>
 }

@@ -48,7 +48,7 @@ namespace Web.Controllers
         [Route("Register")]
         public ActionResult Register()
         {
-            return View("~/Views/Account/LoginRegister.cshtml");
+            return View("~/Views/Account/Register.cshtml");
         }
 
 
@@ -104,10 +104,8 @@ namespace Web.Controllers
                 }
 
             }
-            return Ok();
+            return Redirect("/");
         }
-
-
 
         private async Task createRole()
         {
@@ -147,6 +145,7 @@ namespace Web.Controllers
             }
         }
 
+        //cookies
         public async void AddCookies(string username, string roleName, string userId, bool remeber,string email)
         {
             var claims = new List<Claim>
@@ -205,7 +204,6 @@ namespace Web.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-
             await createRole();
             await CreateAddmin();
 
@@ -232,7 +230,7 @@ namespace Web.Controllers
                 {
                     AddCookies(user.UserName, roleName, user.Id, true,model.Email);
                 }
-                return Ok();
+                return Redirect("/");
             }
             else if (result.IsLockedOut)
             {
@@ -254,7 +252,7 @@ namespace Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            return Redirect("/");
         }
 
         /////////////////Account Setting///////////////////

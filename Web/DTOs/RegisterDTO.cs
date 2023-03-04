@@ -8,14 +8,13 @@ namespace Web.DTOs
 {
     public class RegisterDTO
     {
-        [Required,DataType(DataType.EmailAddress)]
-
+        [Required]
         public string UserName { get; set; }
 
-        [Required]
+        [Required,DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        [Required]
 
+        [Required]
         public string Password { get; set; }
 
     }

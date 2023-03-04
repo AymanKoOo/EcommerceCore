@@ -66,8 +66,6 @@ namespace Web
             });
 
             services.AddAutoMapper(typeof(Startup));
-
-
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
             services.AddScoped(typeof(IAdminRepo), typeof(AdminRepo));

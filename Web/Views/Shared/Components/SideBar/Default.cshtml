@@ -4,32 +4,60 @@
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            <button id="sidebar-home"><i class="fa-solid fa-house"></i> <span>Categories</span></button>
+            <button id="sidebar-home"><i class="fa-solid fa-house"></i> <span>Hello, sign in</span></button>
             @*<a href=""></a>*@
         </div>
 
-        <ul id="categories" class="list-unstyled components">
-            @foreach (var c in Model)
-            {
-            <li class="category__main-list-item">
-                @if (c.HasSubCategories == true)
+        <div class="s-cateogry">
+
+            <span class="t">
+                Shop By Category
+            </span>
+
+            <ul id="categories" class="list-unstyled components">
+                @foreach (var c in Model)
                 {
-                    <a class="cat-item sub-cat" cat-slug="@c.slug">
-                        @c.Name
-                        <i class="fas fa-angle-right"></i>
-                    </a>
+                    <li class="category__main-list-item">
+                        @if (c.HasSubCategories == true)
+                        {
+                            <a class="cat-item sub-cat" cat-slug="@c.slug">
+                                @c.Name
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            {
+                                <a class="cat-item" asp-controller="Category" asp-action="Index" asp-route-slug="@c.slug">
+                                    @c.Name
+                                </a>
+                            }
+                        }
+                    </li>
                 }
-                else
-                {
-                    {
-                        <a class="cat-item" asp-controller="Category" asp-action="Index" asp-route-slug="@c.slug">
-                            @c.Name
-                        </a>
-                    }
-                }
-            </li>
-            }
-        </ul>
+            </ul>
+
+        </div>
+
+        <div class="s-settings">
+
+            <span class="t">
+                Help & Settings
+            </span>
+
+            <ul id="categories" class="list-unstyled components">
+
+                <li class="category__main-list-item">
+                    Your Account
+                </li>
+                <li class="category__main-list-item">
+                    Sign in
+                </li>
+            </ul>
+
+        </div>
+
+
     </nav>
     <button id="close-menu" type="button"><i class="fa-solid fa-x"></i></button>
 </div>
