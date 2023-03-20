@@ -91,6 +91,7 @@ namespace Web.Controllers
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
+                await _userManager.AddToRoleAsync(user, "User");
 
                 if (result.Succeeded)
                 {
@@ -145,49 +146,49 @@ namespace Web.Controllers
             }
         }
 
-        //cookies
-        public async void AddCookies(string username, string roleName, string userId, bool remeber,string email)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Email,email),
-                new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim(ClaimTypes.Role, roleName),
-            };
+        ////cookies
+        //public async void AddCookies(string username, string roleName, string userId, bool remeber,string email)
+        //{
+        //    var claims = new List<Claim>
+        //    {
+        //        new Claim(ClaimTypes.Name, username),
+        //        new Claim(ClaimTypes.Email,email),
+        //        new Claim(ClaimTypes.NameIdentifier, userId),
+        //        new Claim(ClaimTypes.Role, roleName),
+        //    };
 
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        //    var claimsIdentity = new ClaimsIdentity(
+        //        claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            if (remeber)
-            {
-                var authProperties = new AuthenticationProperties
-                {
-                    AllowRefresh = true,
-                    IsPersistent = remeber,
-                    ExpiresUtc = DateTime.UtcNow.AddDays(10)
-                };
+        //    if (remeber)
+        //    {
+        //        var authProperties = new AuthenticationProperties
+        //        {
+        //            AllowRefresh = true,
+        //            IsPersistent = remeber,
+        //            ExpiresUtc = DateTime.UtcNow.AddDays(10)
+        //        };
 
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-            }
-            else
-            {
-                var authProperties = new AuthenticationProperties
-                {
-                    AllowRefresh = true,
-                    IsPersistent = remeber,
-                    ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
-                };
+        //        await HttpContext.SignInAsync(
+        //            CookieAuthenticationDefaults.AuthenticationScheme,
+        //            new ClaimsPrincipal(claimsIdentity),
+        //            authProperties);
+        //    }
+        //    else
+        //    {
+        //        var authProperties = new AuthenticationProperties
+        //        {
+        //            AllowRefresh = true,
+        //            IsPersistent = remeber,
+        //            ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
+        //        };
 
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-            }
-        }
+        //        await HttpContext.SignInAsync(
+        //            CookieAuthenticationDefaults.AuthenticationScheme,
+        //            new ClaimsPrincipal(claimsIdentity),
+        //            authProperties);
+        //    }
+        //}
 
         //Check Email Exist
         //Check UserName Exist
@@ -200,46 +201,95 @@ namespace Web.Controllers
         //    }
         //    return null;
         //}
+        
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-            await createRole();
-            await CreateAddmin();
-
-            if (model == null) return NotFound();
-
-            var user = await _userManager.FindByEmailAsync(model.Email);
-
-            if (user == null) return NotFound();
-
-            var result = await _signInManger.PasswordSignInAsync(user, model.Password, true, true);
-
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                if (await _roleManager.RoleExistsAsync("User"))
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user == null)
                 {
-                    if (!await _userManager.IsInRoleAsync(user, "User") && !await _userManager.IsInRoleAsync(user, "Admin"))
+                    return NotFound();
+                }
+
+                if(user!=null && await _userManager.CheckPasswordAsync(user, model.Password) && await _userManager.IsInRoleAsync(user, "User"))
+                {
+                    var username = user.UserName;
+                    var email = user.Email;
+                    var roleName = "User";
+                    var userId = user.Id;
+
+                    var claims = new List<Claim>
                     {
-                        await _userManager.AddToRoleAsync(user, "User");
-                    }
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Email,email),
+                    new Claim(ClaimTypes.NameIdentifier, userId),
+                    new Claim(ClaimTypes.Role, roleName),
+                    };
+
+                    //authentication ticket
+                    var claimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = true, //When IsPersistent is set to true, the authentication cookie will be stored on the user's machine even after the browser is closed, and will remain valid until its expiration time is reached. 
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
+                        AllowRefresh = true, //get authentication token again from middleware will renew the expiredate
+                    };
+
+                    CookieOptions options = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddDays(7),
+                        IsEssential = true
+                    };
+                  
+                    Response.Cookies.Append("cart", "labtop", options);
+                    string cartValue = Request.Cookies["Cart"];
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimIdentity), // ClaimsPrincipal is a class that represents the user's identity and associated claims, and is used to perform authorization checks in your application. A ClaimsPrincipal object is created from a ClaimsIdentity object, which contains a collection of claims that represent the user's identity.
+                        authProperties
+                        );
+                    return Redirect("/");
                 }
 
-                var roleName = "Admin";
-                if (roleName != null)
+                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password) && await _userManager.IsInRoleAsync(user, "Admin"))
                 {
-                    AddCookies(user.UserName, roleName, user.Id, true,model.Email);
+                    var username = user.UserName;
+                    var email = user.Email;
+                    var roleName = "Admin";
+                    var userId = user.Id;
+
+                    var claims = new List<Claim>
+                    {
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Email,email),
+                    new Claim(ClaimTypes.NameIdentifier, userId),
+                    new Claim(ClaimTypes.Role, roleName),
+                    };
+
+                    //authentication ticket
+                    var claimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = true, //When IsPersistent is set to true, the authentication cookie will be stored on the user's machine even after the browser is closed, and will remain valid until its expiration time is reached. 
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
+                        AllowRefresh = true, //get authentication token again from middleware will renew the expiredate
+                    };
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimIdentity), // ClaimsPrincipal is a class that represents the user's identity and associated claims, and is used to perform authorization checks in your application. A ClaimsPrincipal object is created from a ClaimsIdentity object, which contains a collection of claims that represent the user's identity.
+                        authProperties
+                        );
+                    return Redirect("/");
                 }
-                return Redirect("/");
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
-            else if (result.IsLockedOut)
-            {
-                return Unauthorized("User account is locked");
-            }
-            else
-            {
-                return BadRequest(result.IsNotAllowed);
-            }
+            return View(model);
         }
 
         public IActionResult Index()

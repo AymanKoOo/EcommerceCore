@@ -51,6 +51,12 @@ namespace Web.Areas.Admin.Controllers
             return View(productsList);
         }
 
+        [HttpGet("TestDIProduct")]
+        public async Task<IActionResult> TestDIProduct()
+        {
+            var mod =  await _productModelFactory.PrepareProductListModelAsync(5, 1);
+            return View(mod);
+        }
 
         [HttpGet("EditProduct")]
         public async Task<IActionResult> EditProduct(int productID)

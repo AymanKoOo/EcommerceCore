@@ -47,9 +47,12 @@ namespace Web
             services.AddControllersWithViews();
             ///
             services.AddDbContext<DataContext>(option => option.UseSqlServer(Configuration.GetConnectionString("EcoMeraceDb")));
+            
+           
+            
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<DataContext>();
-            ///
+
 
             services.AddAuthentication(options =>
             {
@@ -103,12 +106,7 @@ namespace Web
                 });
             });
 
-            //Add Session Cart//
-            services.AddSession(option=>
-            {
-                option.Cookie.Name = "Cart";
-                option.Cookie.MaxAge = TimeSpan.FromDays(14);
-            });
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,10 +116,9 @@ namespace Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            
 
             app.UseCors("policyName");
-
-
             //Static FIles//
             app.UseStaticFiles();
             //

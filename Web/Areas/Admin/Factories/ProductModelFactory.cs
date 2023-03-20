@@ -31,6 +31,8 @@ namespace Web.Areas.Admin.Factories
         {
             var products = unitOfWork.Product.GetAllProductsList(pageSize, pageNumber);
 
+            //using deletate to retrieve data instead of passing data directly to the PreareToGrid function 
+            //Overall, using a delegate to retrieve the data is a design pattern that promotes loose coupling and makes the code more flexible and reusable.
             var model = new ProductListModel().PrepareToGrid(products, () =>
             {
                 //fill in model values from the entity
